@@ -1,0 +1,14 @@
+.addCar, .addTrip {
+    background-color: rgb(60, 241, 60);
+}
+
+.addCar {
+    /* margin-right: 300px; */
+    margin-left: -80px;
+    position: relative;
+}
+.addTrip {
+    /* margin-right: 400px; */
+    margin-left: -175px;
+    position: relative;
+}

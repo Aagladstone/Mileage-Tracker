@@ -1,0 +1,13 @@
+
+.jumbotron {
+    width: 100%;
+    text-align: center;
+    height: 22%;
+    vertical-align: middle;
+}
+
+#welcome {
+    text-align: left;
+    height: 10%;
+    margin-top: -30px;
+}
