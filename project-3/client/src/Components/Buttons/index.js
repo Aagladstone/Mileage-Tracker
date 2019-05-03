@@ -1,12 +1,12 @@
 import React from "react";
 import "./style.css";
 
-export default function AddCar() {
+export default function AddCar(props) {
 
 
   return (
   <div id="addCar">
-<button class="pure-button addCar">Add a Car</button>
+<button class="pure-button addCar">{props.children}</button>
 </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Modal from './modal'
+import MyVerticallyCenteredModal from '../Modals/modal'
 
 class Dashboard extends Component {
   state = { show: false };
