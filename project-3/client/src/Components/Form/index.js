@@ -60,7 +60,7 @@ class SignIn extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="fName"
               label="First Name"
               type="text"
               fullWidth
@@ -68,7 +68,7 @@ class SignIn extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="lName"
               label="First Name"
               type="text"
               fullWidth
@@ -76,7 +76,7 @@ class SignIn extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="email"
               label="Email Address"
               type="email"
               fullWidth
@@ -84,7 +84,7 @@ class SignIn extends React.Component {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="password"
               label="Password"
               type="text"
               fullWidth
@@ -92,7 +92,7 @@ class SignIn extends React.Component {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="password2"
               label="Re-enter Password"
               type="text"
               fullWidth
