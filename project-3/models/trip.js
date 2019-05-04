@@ -15,18 +15,18 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true
       }
     );
-    Trip.associate = function(models) {
-        Trip.belongsTo(models.Car, {
-          foreignKey: {
-            allowNull: false
-          }
-        }),
-        Trip.belongsTo(models.Trip_Purpose, {
-          foreignKey: {
-            allowNull: true
-          }
-        });
-      };
+    // Trip.associate = function(models) {
+    //     Trip.belongsTo(models.Car, {
+    //       foreignKey: {
+    //         allowNull: false
+    //       }
+    //     }),
+    //     Trip.belongsTo(models.Trip_Purpose, {
+    //       foreignKey: {
+    //         allowNull: true
+    //       }
+    //     });
+    //   };
     return Trip;
   };
   
