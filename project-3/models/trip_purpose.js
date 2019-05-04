@@ -12,12 +12,12 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true
       }
     );
-    // Trip_Purpose.associate = function(models) {
-    //     Trip_Purpose.belongsTo(models.Trip, {
-    //       foreignKey: {
-    //         allowNull: false
-    //       }
-    //     });
-    // };
+    Trip_Purpose.associate = function(models) {
+        Trip_Purpose.belongsTo(models.Trip, {
+          foreignKey: {
+            allowNull: false
+          }
+        });
+    };
     return Trip_Purpose;
   };
