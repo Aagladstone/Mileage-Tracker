@@ -109,8 +109,8 @@ render() {
               type="text"
               fullWidth
             />
-          </DialogContent>
-          <DialogActions>
+          </DialogContent> 
+         <DialogActions>   
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
@@ -177,8 +177,9 @@ render() {
               type="text"
               fullWidth
             />
-          
+           <h6>Mileage Type: </h6>
             <select id="user-list" required>
+           
             <option label="Select Trip Type"></option>
               <option value="Personal" name="" >Personal</option>
               <option value="Work" name="" >Work</option>
