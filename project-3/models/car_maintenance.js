@@ -11,17 +11,17 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true
       }
     );
-    Car_Maintenance.associate = function(models) {
-        Car_Maintenance.belongsTo(models.Car, {
-          foreignKey: {
-            allowNull: false
-          }
-        }),
-        Car_Maintenance.belongsTo(models.Maintenance, {
-            foreignKey: {
-              allowNull: false
-            }
-          });
-    };
+    // Car_Maintenance.associate = function(models) {
+    //     Car_Maintenance.belongsTo(models.Car, {
+    //       foreignKey: {
+    //         allowNull: false
+    //       }
+    //     }),
+    //     Car_Maintenance.belongsTo(models.Maintenance, {
+    //         foreignKey: {
+    //           allowNull: false
+    //         }
+    //       });
+    // };
     return Car_Maintenance;
   };
