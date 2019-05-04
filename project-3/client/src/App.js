@@ -11,7 +11,7 @@ function App() {
       <Fragment>
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/user/"/*:id*/ component={UserPage} />
+          <Route exact path="/user/" component={UserPage} />
           <Route exact path="/reports" component={Reports} />
           <Route component={NoMatch} />
         </Switch>

@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import Wrapper from "../Components/Wrapper/index"
 import {Welcome} from "../Components/Banner/index"
 import CarDrop from "../Components/Dropdowns/index"
-// import AddCar from '../Components/Buttons/index'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,8 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-
 
 
 class UserPage extends Component {
@@ -67,7 +64,7 @@ render() {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="cName"
               label="Car Name"
               type="text"
               fullWidth
@@ -75,7 +72,7 @@ render() {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="make"
               label="Make"
               type="text"
               fullWidth
@@ -83,7 +80,7 @@ render() {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="model"
               label="Model"
               type="text"
               fullWidth
@@ -91,7 +88,7 @@ render() {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="year"
               label="Year"
               type="text"
               fullWidth
@@ -99,7 +96,7 @@ render() {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="plate"
               label="Plate"
               type="text"
               fullWidth
@@ -107,7 +104,7 @@ render() {
               <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="mileage"
               label="Mileage"
               type="text"
               fullWidth
@@ -138,13 +135,16 @@ render() {
             <DialogContentText>
               Add a Trip for your Car
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              type="date"
-              fullWidth
-            />
+            <br></br>
+              <TextField
+                id="date"
+                label="Date of trip"
+                type="date"
+                defaultValue="2017-05-24"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <TextField
               autoFocus
               margin="dense"
