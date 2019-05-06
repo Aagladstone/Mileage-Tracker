@@ -86,7 +86,7 @@ class SignIn extends React.Component {
               margin="dense"
               id="password"
               label="Password"
-              type="text"
+              type="password"
               fullWidth
             />
               <TextField
@@ -94,7 +94,7 @@ class SignIn extends React.Component {
               margin="dense"
               id="password2"
               label="Re-enter Password"
-              type="text"
+              type="password"
               fullWidth
             />
           </DialogContent>

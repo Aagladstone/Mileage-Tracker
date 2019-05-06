@@ -32,12 +32,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
-
-
-
-
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -77,6 +71,9 @@ require('./config/passport')(passport, db.User);
 
 // Define API routes here
 require('./routes/users.js')(app, passport);
+// require('./routes/api/cars')
+
+var syncOptions = {force: false}
 
 // Send every other request to the React app
 // Define any API routes before this runs
@@ -85,7 +82,7 @@ app.get("*", (req, res) => {
 });
 
 
-db.sequelize.sync().then(function () {
+db.sequelize.sync(syncOptions).then(function () {
   app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
   });
