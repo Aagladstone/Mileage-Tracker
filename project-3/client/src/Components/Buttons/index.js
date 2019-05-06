@@ -20,3 +20,14 @@ export function AddTrip() {
   </div>
     )
   }
+
+  
+export function ResetMaint() {
+
+
+  return (
+  <div id="resetMaint">
+<button class="pure-button resetMaint">Reset</button>
+</div>
+  )
+}
