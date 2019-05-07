@@ -85,7 +85,7 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then(res => this.loadBooks())
+        .then("hello")
         .catch(err => console.log(err));
     
   };

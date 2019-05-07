@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 // Init App
 var app = express();
+var routes = require("./routes")
 var db = require("./models");
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
@@ -70,8 +71,7 @@ app.use(expressValidator({
 require('./config/passport')(passport, db.User);
 
 // Define API routes here
-require('./routes/users.js')(app, passport);
-// require('./routes/api/cars')
+app.use(routes)
 
 var syncOptions = {force: false}
 
