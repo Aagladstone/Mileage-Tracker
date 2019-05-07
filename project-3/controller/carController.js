@@ -2,7 +2,7 @@ const db = require("../models");
 
 module.exports = {
 
-    create: function(req, res) {
+    createCar: function(req, res) {
         console.log(req.body)
 db.Car
           .create( {      
@@ -15,6 +15,17 @@ db.Car
             batMileage: req.body.batMileage,
             brakeMileage: req.body.brakeMileage,
             UserId: 1
+        })
+          .then(console.log("save successful"))
+          .catch(err => res.status(422).json(err));
+      },
+      createTrip: function(req, res) {
+        console.log(req.body)
+db.Trip
+          .create( {      
+            date: req.body.date,
+            totalmiles: req.body.totalmiles,
+            CarId: 2
         })
           .then(console.log("save successful"))
           .catch(err => res.status(422).json(err));

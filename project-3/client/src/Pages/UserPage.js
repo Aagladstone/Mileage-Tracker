@@ -45,7 +45,7 @@ class UserPage extends Component {
     startingMileage: "",
     startingAddress: "",
     endAddress: "",
-    totalMileage: "",
+    totalmiles: "",
     mileageType: ""
   };
 
@@ -85,10 +85,18 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-      
-        .then("d")
+        .then("CAR CHECK")
         .catch(err => console.log(err));
-    
+  };
+  handleFormSubmit2 = event => {
+    event.preventDefault();
+        this.setState({ open: false });
+      API.saveTrip({
+        date: this.state.date,
+        totalmiles: this.state.totalmiles
+      })
+        .then("TRIP")
+        .catch(err => console.log(err));
   };
 
   // When this component mounts, grab the book with the _id of this.props.match.params.id
@@ -256,15 +264,17 @@ render() {
             <br></br>
               <TextField
                 id="date"
+                onChange={this.handleInputChange}
                 label="Date of trip"
                 type="date"
                 name="date"
+                value={this.state.date}
                 defaultValue="date"
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-              <TextField
+              {/* <TextField
               autoFocus
               margin="dense"
               id="name"
@@ -299,20 +309,20 @@ render() {
               type="text"
               fullWidth
               required
-            />
+            /> */}
             <TextField
               autoFocus
               margin="dense"
               id="name"
               label="Total Mileage"
-              name="totalmileage"
+              name="totalmiles"
               onChange={this.handleInputChange}
-              value={this.state.totalmileage}
+              value={this.state.totalmiles}
               type="number"
               fullWidth
               required
             />
-           <h6>Mileage Type:   
+           {/* <h6>Mileage Type:   
             <select id="user-list" sty required>
           
             <option label="Select Trip Type"></option>
@@ -320,13 +330,13 @@ render() {
               <option value="Work" name="" >Work</option>
             </select>
             </h6> 
-            <h7>* is a required field</h7>
+            <h6>* is a required field</h6> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose1} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose1} color="primary">
+            <Button onClick={this.handleFormSubmit2} color="primary">
               Add Trip
             </Button>
           </DialogActions>
