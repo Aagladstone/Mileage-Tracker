@@ -32,7 +32,7 @@ class UserPage extends Component {
   state = {
     open: false,
     open1: false,
-    carName: "",
+    nickname: "",
     model: "", 
     year: "",
     plate: "",
@@ -76,7 +76,7 @@ class UserPage extends Component {
     event.preventDefault();
         this.setState({ open: false });
       API.saveCar({
-        carName: this.state.carName,
+        nickname: this.state.nickname,
         plate: this.state.plate,
         initialMileage: this.state.initialMileage,
         oilMileage: this.state.oilMileage,
@@ -85,7 +85,8 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then("hello")
+      
+        .then("d")
         .catch(err => console.log(err));
     
   };
@@ -130,10 +131,10 @@ render() {
               autoFocus
               onChange={this.handleInputChange}
               margin="dense"
-              id="cName"
+              id="nickname"
               label="Car Name"
-              name="carName"
-              value={this.state.carName}
+              name="nickname"
+              value={this.state.nickname}
               type="text"
               fullWidth
               required

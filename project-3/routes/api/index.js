@@ -5,7 +5,6 @@ const carRoutes = require("./cars");
 console.log("2")
 // API Routes
 router.use("/car", carRoutes);
-
 router.use(function(req, res) {
  
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
