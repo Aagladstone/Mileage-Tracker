@@ -1,29 +1,28 @@
-# Create React Express App
+# Mileage-Tracker/"Name"
 
-## About This Boilerplate
+Project Members
 
-This setup allows for a Node/Express/React app which can be easily deployed to Heroku.
+- Aaron Gladstone
+- Indra Nallappan
+- Pedro Magalhaes
+- Liane Suarez
 
-The front-end React app will auto-reload as it's updated via webpack dev server, and the backend Express app will auto-reload independently with nodemon.
+Mileage Tracker is to help people keep track of how people rack up mileage on their car by keeping track of trips, and count down to specific car maintenance a car might need. It will help make sure that your car stayings in mint condition, and there are no surprises and keep damage off your car. 
 
-## Starting the app locally
 
-Start by installing front and backend dependencies. While in this directory, run the following command:
+Resources Used: 
 
-```
-npm install
-```
+- mySql/sequelize
+- React.js
+- passport
 
-This should install node modules within the server and the client folder.
+Features:
 
-After both installations complete, run the following command in your terminal:
+- Trip Tracker => This allows the user to input trips where ever they may be, choose the reason why they drove(work or personal), and we keep track of the mileage piling up on the car. 
 
-```
-npm start
-```
+- Maintenance Tracker => We keep track of 5 of the most common car maintenance items; Oil change, air filter change, tire rotation, brake check, and battery check/change. After the user inputs their trips, our maintenance tracker will show every mile on the way UP OR DOWN the mileage until that specific maintenance needs to be checked on. 
 
-Your app should now be running on <http://localhost:3000>. The Express server should intercept any AJAX requests from the client.
+- Reminders => When any maintenance type is close to being hit, we will send an email to give the driver a notice that they are coming up on this maintenance. 
 
-## Deployment (Heroku)
+- Add a Car => The user will be able to add any car they own, whether they have two cars or maybe they lease cars and it changes every six months to a year. 
 
-To deploy, simply add and commit your changes, and push to Heroku. As is, the NPM scripts should take care of the rest.

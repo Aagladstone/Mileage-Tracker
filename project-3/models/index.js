@@ -1,6 +1,3 @@
-// module.exports = {
-//   Car: require("./car")
-// };
 "use strict";
 
 var fs = require("fs");

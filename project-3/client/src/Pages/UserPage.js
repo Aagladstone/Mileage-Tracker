@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Wrapper from "../Components/Wrapper/index"
 import {Welcome} from "../Components/Banner/index"
-import CarDrop from "../Components/Dropdowns/index"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +13,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
+import List, { ListItem } from "../Components/List/List";
 
     const styles = theme => ({
       root: {
@@ -32,7 +32,7 @@ class UserPage extends Component {
   state = {
     open: false,
     open1: false,
-    carName: "",
+    nickname: "",
     model: "", 
     year: "",
     plate: "",
@@ -45,9 +45,21 @@ class UserPage extends Component {
     startingMileage: "",
     startingAddress: "",
     endAddress: "",
-    totalMileage: "",
-    mileageType: ""
+    totalmiles: "",
+    mileageType: "",
+    CarName: []
   };
+
+  componentDidMount() {
+    this.loadCars();
+  }
+
+  loadCars = () => {
+    console.log("1")
+    API.getCarName()
+    .then(res => this.setState({CarName: res.data}))
+    .catch(err => console.log(err));
+  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -76,7 +88,7 @@ class UserPage extends Component {
     event.preventDefault();
         this.setState({ open: false });
       API.saveCar({
-        carName: this.state.carName,
+        nickname: this.state.nickname,
         plate: this.state.plate,
         initialMileage: this.state.initialMileage,
         oilMileage: this.state.oilMileage,
@@ -85,9 +97,19 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then(res => this.loadBooks())
+        .then("CAR CHECK")
         .catch(err => console.log(err));
-    
+  };
+  handleFormSubmit2 = event => {
+    event.preventDefault();
+        this.setState({ open1: false });
+        console.log(this.state.open)
+      API.saveTrip({
+        date: this.state.date,
+        totalmiles: this.state.totalmiles
+      })
+        .then("TRIP")
+        .catch(err => console.log(err));
   };
 
   // When this component mounts, grab the book with the _id of this.props.match.params.id
@@ -105,7 +127,18 @@ render() {
 <div>
         <Wrapper>
         <Welcome />
-        <CarDrop> </CarDrop>
+        {this.state.CarName.length ? (
+        <List> 
+      {this.state.CarName.map(car => (
+        <ListItem>
+          <li className="pure-menu-item pure-menu-selected" key={car.id}><a href="#" class="pure-menu-link">{car.nickname}</a></li>
+     </ListItem> 
+     ))}       
+    
+  
+  </List>
+  ) : (<h3> Add a car to your Account -> </h3>)}
+     
         
         {/* Add a Car dialog */}
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
@@ -130,10 +163,10 @@ render() {
               autoFocus
               onChange={this.handleInputChange}
               margin="dense"
-              id="cName"
+              id="nickname"
               label="Car Name"
-              name="carName"
-              value={this.state.carName}
+              name="nickname"
+              value={this.state.nickname}
               type="text"
               fullWidth
               required
@@ -255,15 +288,17 @@ render() {
             <br></br>
               <TextField
                 id="date"
+                onChange={this.handleInputChange}
                 label="Date of trip"
                 type="date"
                 name="date"
+                value={this.state.date}
                 defaultValue="date"
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-              <TextField
+              {/* <TextField
               autoFocus
               margin="dense"
               id="name"
@@ -298,20 +333,20 @@ render() {
               type="text"
               fullWidth
               required
-            />
+            /> */}
             <TextField
               autoFocus
               margin="dense"
               id="name"
               label="Total Mileage"
-              name="totalmileage"
+              name="totalmiles"
               onChange={this.handleInputChange}
-              value={this.state.totalmileage}
+              value={this.state.totalmiles}
               type="number"
               fullWidth
               required
             />
-           <h6>Mileage Type:   
+           {/* <h6>Mileage Type:   
             <select id="user-list" sty required>
           
             <option label="Select Trip Type"></option>
@@ -319,13 +354,13 @@ render() {
               <option value="Work" name="" >Work</option>
             </select>
             </h6> 
-            <h7>* is a required field</h7>
+            <h6>* is a required field</h6> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose1} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose1} color="primary">
+            <Button onClick={this.handleFormSubmit2} color="primary">
               Add Trip
             </Button>
           </DialogActions>

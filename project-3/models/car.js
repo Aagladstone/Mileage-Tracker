@@ -2,17 +2,17 @@
 module.exports = function(sequelize, DataTypes) {
     var Car = sequelize.define(
       "Car",
-      {
+      {        nickname: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            len: [45]
+        },
         plate: {
           type: DataTypes.STRING,
           allowNull: false,
           len: [45]
-        },
-        nickname: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            len: [45]
         }
+
       },
       {
         freezeTableName: true
