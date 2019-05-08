@@ -14,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
 import List, { ListItem } from "../Components/List/List";
+import TPList, { TPItem } from "../Components/Dropdowns/index"
 
     const styles = theme => ({
       root: {
@@ -47,17 +48,25 @@ class UserPage extends Component {
     endAddress: "",
     totalmiles: "",
     mileageType: "",
-    CarName: []
+    CarName: [],
+    TripType: []
   };
 
   componentDidMount() {
     this.loadCars();
+    this.loadTripTypes();
   }
 
   loadCars = () => {
-    console.log("1")
     API.getCarName()
     .then(res => this.setState({CarName: res.data}))
+    .catch(err => console.log(err));
+  }
+
+  loadTripTypes = () => {
+    console.log("1")
+    API.getTripType()
+    .then(res => this.setState({TripType: res.data}))
     .catch(err => console.log(err));
   }
 
@@ -131,7 +140,7 @@ render() {
         <List> 
       {this.state.CarName.map(car => (
         <ListItem>
-          <li className="pure-menu-item pure-menu-selected" key={car.id}><a href="#" class="pure-menu-link">{car.nickname}</a></li>
+          <li className="pure-menu-item pure-menu-selected" key={car.id}><a href="#" className="pure-menu-link">{car.nickname}</a></li>
      </ListItem> 
      ))}       
     
@@ -346,6 +355,16 @@ render() {
               fullWidth
               required
             />
+            <p>Trip Type:</p>
+              {this.state.TripType.length ? (
+                <TPList> 
+              {this.state.TripType.map(trip => (
+                <TPItem key={trip.id}>{trip.purpose}
+                  
+            </TPItem> 
+            ))}      
+          </TPList>
+          ) : (<h6> null </h6>)}
            {/* <h6>Mileage Type:   
             <select id="user-list" sty required>
           

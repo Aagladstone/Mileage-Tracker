@@ -6,7 +6,7 @@ import React from "react";
 export default function List({ children }) {
   return (
     <div className="pure-menu pure-menu-horizontal">
-         <ul class="pure-menu-list">{children}</ul>
+         <ul className="pure-menu-list">{children}</ul>
 
     </div>
   );

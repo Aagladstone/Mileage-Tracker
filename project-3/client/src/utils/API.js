@@ -14,6 +14,9 @@ export default {
   saveTrip: function(TripData) {
     console.log(TripData);
     return axios.post("/api/trip", TripData)
+  },
+  getTripType: function() {
+    return axios.get("/api/trippurpose")
   }
 
 
