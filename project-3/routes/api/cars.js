@@ -3,8 +3,11 @@ const carController = require("../../controller/carController");
 
 
 router.route("/")
-  .post(carController.createCar);
-  console.log("3")
+
+  .get(carController.findAll)
+  .post(carController.createCar)
+
+
 
 module.exports = router;
 

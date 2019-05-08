@@ -3,10 +3,11 @@ const router = require("express").Router();
 const carRoutes = require("./cars");
 const tripRoutes = require("./trips");
 
-console.log("2")
+
 // API Routes
 router.use("/car", carRoutes);
 router.use("/trip", tripRoutes);
+
 router.use(function(req, res) {
  
     res.sendFile(path.join(__dirname, "../client/build/index.html"));

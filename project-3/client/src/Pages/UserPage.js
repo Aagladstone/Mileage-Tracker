@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Wrapper from "../Components/Wrapper/index"
 import {Welcome} from "../Components/Banner/index"
-import CarDrop from "../Components/Dropdowns/index"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +13,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
+import List, { ListItem } from "../Components/List/List";
 
     const styles = theme => ({
       root: {
@@ -46,8 +46,20 @@ class UserPage extends Component {
     startingAddress: "",
     endAddress: "",
     totalmiles: "",
-    mileageType: ""
+    mileageType: "",
+    CarName: []
   };
+
+  componentDidMount() {
+    this.loadCars();
+  }
+
+  loadCars = () => {
+    console.log("1")
+    API.getCarName()
+    .then(res => this.setState({CarName: res.data}))
+    .catch(err => console.log(err));
+  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -90,7 +102,8 @@ class UserPage extends Component {
   };
   handleFormSubmit2 = event => {
     event.preventDefault();
-        this.setState({ open: false });
+        this.setState({ open1: false });
+        console.log(this.state.open)
       API.saveTrip({
         date: this.state.date,
         totalmiles: this.state.totalmiles
@@ -114,7 +127,18 @@ render() {
 <div>
         <Wrapper>
         <Welcome />
-        <CarDrop> </CarDrop>
+        {this.state.CarName.length ? (
+        <List> 
+      {this.state.CarName.map(car => (
+        <ListItem>
+          <li className="pure-menu-item pure-menu-selected" key={car.id}><a href="#" class="pure-menu-link">{car.nickname}</a></li>
+     </ListItem> 
+     ))}       
+    
+  
+  </List>
+  ) : (<h3> Add a car to your Account -> </h3>)}
+     
         
         {/* Add a Car dialog */}
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>

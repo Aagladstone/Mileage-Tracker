@@ -1,10 +1,13 @@
 const db = require("../models");
 
 module.exports = {
-
+      findAll: function(req, res) {
+        db.Car.findAll({}).then(function(results) {
+            res.json(results);
+          });
+        },
     createCar: function(req, res) {
-        console.log(req.body)
-db.Car
+        db.Car
           .create( {      
             nickname: req.body.nickname,
             plate: req.body.plate,
@@ -21,14 +24,16 @@ db.Car
       },
       createTrip: function(req, res) {
         console.log(req.body)
-db.Trip
+        db.Trip
           .create( {      
             date: req.body.date,
             totalmiles: req.body.totalmiles,
-            CarId: 2
+            CarId: 2,
+            TripPurposeId: 1
         })
           .then(console.log("save successful"))
           .catch(err => res.status(422).json(err));
       }
+
     }
         
