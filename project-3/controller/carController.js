@@ -29,8 +29,7 @@ module.exports = {
           .create( {      
             date: req.body.date,
             totalmiles: req.body.totalmiles,
-            CarId: 2,
-            TripPurposeId: 1
+            CarId: 2
         })
           .then(console.log("save successful"))
           .catch(err => res.status(422).json(err));

@@ -1,9 +1,9 @@
 import React from "react";
-// import "./style.css";
+import "./style.css";
 
 // This file exports both the List and ListItem components
 
-export default function List({ children }) {
+export function List({ children }) {
   return (
     <div className="pure-menu pure-menu-horizontal">
          <ul className="pure-menu-list">{children}</ul>
@@ -13,5 +13,6 @@ export default function List({ children }) {
 }
 
 export function ListItem(props) {
-  return <li className="list-group-item"{...props}></li>;
+  return <li className="list-group-item"value={props.key}><a href="#" className="pure-menu-link">{props.children}</a></li>;
 }
+

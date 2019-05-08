@@ -13,8 +13,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
-import List, { ListItem } from "../Components/List/List";
+import  { List, ListItem } from "../Components/List/List";
 import TPList, { TPItem } from "../Components/Dropdowns/index"
+import TripLog from "../Components/Trip Log/index"
 
     const styles = theme => ({
       root: {
@@ -64,7 +65,6 @@ class UserPage extends Component {
   }
 
   loadTripTypes = () => {
-    console.log("1")
     API.getTripType()
     .then(res => this.setState({TripType: res.data}))
     .catch(err => console.log(err));
@@ -106,18 +106,17 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then("CAR CHECK")
+        .then(res => this.loadCars())
         .catch(err => console.log(err));
   };
   handleFormSubmit2 = event => {
     event.preventDefault();
         this.setState({ open1: false });
-        console.log(this.state.open)
       API.saveTrip({
         date: this.state.date,
         totalmiles: this.state.totalmiles
       })
-        .then("TRIP")
+        .then(res => this.loadTripTypes())
         .catch(err => console.log(err));
   };
 
@@ -129,30 +128,30 @@ render() {
     const { classes } = this.props;
   return (
 
-
-  
-      
-
 <div>
         <Wrapper>
         <Welcome />
         {this.state.CarName.length ? (
         <List> 
       {this.state.CarName.map(car => (
-        <ListItem>
-          <li className="pure-menu-item pure-menu-selected" key={car.id}><a href="#" className="pure-menu-link">{car.nickname}</a></li>
-     </ListItem> 
+        <ListItem className="pure-menu-item pure-menu-selected pure-menu-link" key={car.id}>{car.nickname} </ListItem> 
      ))}       
-    
-  
+          <Button variant="outlined" className="addCar" color="primary" onClick={this.handleClickOpen}>
+          Add a Car 
+        </Button>   
   </List>
-  ) : (<h3> Add a car to your Account -> </h3>)}
+  ) : (
+    <div>
+    <h3> Add a car to your Account: </h3>
+    <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        Add a Car 
+      </Button>
+    </div> )
+}
      
         
         {/* Add a Car dialog */}
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Add a Car 
-        </Button>
+
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -273,17 +272,20 @@ render() {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleFormSubmit} color="primary">
+            <Button className="addCar" onClick={this.handleFormSubmit} color="primary">
               Add Car
             </Button>
           </DialogActions>
         </Dialog>
+        <br></br><br></br><br></br>
+        <TripLog>
 
-
-        {/* Add a Trip dialog */}
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
+        </TripLog> 
+               <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
           Add a Trip 
         </Button>
+        {/* Add a Trip dialog */}
+
         <Dialog
           open={this.state.open1}
           onClose={this.handleClose1}
