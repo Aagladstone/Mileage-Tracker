@@ -18,7 +18,7 @@ export function Welcome() {
 
     return (<div className="jumbotron jumbotron-fluid" id="welcome">
     <div className="container">
-      <h3 className="display-5">Welcome "User Name",</h3>
+      <h2 className="display-5">Welcome "User Name",</h2>
     </div>
   </div>
     )
