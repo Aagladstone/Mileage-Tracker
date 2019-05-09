@@ -28,10 +28,13 @@ app.use(session({
 }));
 
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+// Define middleware here
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -70,11 +73,10 @@ app.use(expressValidator({
 require('./config/passport')(passport, db.User);
 
 // Define API routes here
-require('./routes/users.js')(app, passport);
+require('./routes/api/users.js')(app, passport);
 // require('./routes/api/cars')
 
-var syncOptions = {force: false}
-
+var syncOptions = { force: false }
 // Send every other request to the React app
 // Define any API routes before this runs
 app.get("*", (req, res) => {

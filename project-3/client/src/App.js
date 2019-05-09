@@ -12,6 +12,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/user" component={UserPage} />
+
           {/* <Route exact path="/reports" component={Reports} /> */}
           <Route component={NoMatch} />
         </Switch>
