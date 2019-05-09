@@ -1,4 +1,3 @@
-
 var express = require('express');
 var path = require('path');
 // Init App
@@ -9,6 +8,7 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
+var routes = require("./routes")
 require('dotenv').config();
 
 var PORT = process.env.PORT || 3001;
@@ -50,7 +50,7 @@ app.use(function (req, res, next) {
   //res.locals.lmessage = req.flash('lmessage');
   next();
 });
-
+app.use(routes);
 // Express Validator Middleware
 app.use(expressValidator({
   errorFormatter: function (param, msg, value) {
@@ -84,20 +84,8 @@ app.get("*", (req, res) => {
 });
 
 
-db.sequelize.sync(syncOptions).then(function () {
+db.sequelize.sync().then(function () {
   app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-

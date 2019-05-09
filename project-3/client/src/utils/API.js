@@ -2,19 +2,30 @@ import axios from "axios";
 
 export default {
 
-  // Saves a car to the database
-  saveCar: function (CarData) {
-    console.log("0");
-    console.log(CarData)
-    return axios.post("/api/car", CarData);
 
-  },
+  // Save User to database
 
   addUserToDB: (userData) => {
     return axios.post("/register", userData);
     console.log(userData)
+  },
+
+
+
+
+  // Saves a car to the database 
+  getCarName: function () {
+    return axios.get("/api/car")
+  },
+  saveCar: function (CarData) {
+    return axios.post("/api/car", CarData);
+  },
+  saveTrip: function (TripData) {
+    return axios.post("/api/trip", TripData)
+  },
+  getTripType: function () {
+    return axios.get("/api/trippurpose")
   }
+
+
 };
-
-
-

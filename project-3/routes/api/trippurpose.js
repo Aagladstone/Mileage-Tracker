@@ -4,10 +4,8 @@ const carController = require("../../controller/carController");
 
 router.route("/")
 
-  .get(carController.findAll)
-  .post(carController.createCar)
+  .get(carController.findPurpose)
 
 
 
 module.exports = router;
-

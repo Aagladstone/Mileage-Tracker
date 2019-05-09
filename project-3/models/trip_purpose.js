@@ -13,10 +13,9 @@ module.exports = function(sequelize, DataTypes) {
       }
     );
     Trip_Purpose.associate = function(models) {
-        Trip_Purpose.belongsTo(models.Trip, {
-          foreignKey: {
-            allowNull: false
-          }
+        Trip_Purpose.hasMany(models.Trip, {
+          onDelete: "restrict",
+          onUpdate: "restrict"
         });
     };
     return Trip_Purpose;

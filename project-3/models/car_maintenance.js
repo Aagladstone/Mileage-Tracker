@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes) {
     var Car_Maintenance = sequelize.define(
       "Car_Maintenance",
       {
-        plate: {
+        mileage: {
           type: DataTypes.INTEGER,
           allowNull: false
         }

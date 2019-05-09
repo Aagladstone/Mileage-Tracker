@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Wrapper from "../Components/Wrapper/index"
 import {Welcome} from "../Components/Banner/index"
-import CarDrop from "../Components/Dropdowns/index"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +13,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
+import  { List, ListItem } from "../Components/List/List";
+import TPList, { TPItem } from "../Components/Dropdowns/index"
+import TripLog from "../Components/Trip Log/index"
 
     const styles = theme => ({
       root: {
@@ -32,7 +34,7 @@ class UserPage extends Component {
   state = {
     open: false,
     open1: false,
-    carName: "",
+    nickname: "",
     model: "", 
     year: "",
     plate: "",
@@ -45,9 +47,28 @@ class UserPage extends Component {
     startingMileage: "",
     startingAddress: "",
     endAddress: "",
-    totalMileage: "",
-    mileageType: ""
+    totalmiles: "",
+    mileageType: "",
+    CarName: [],
+    TripType: []
   };
+
+  componentDidMount() {
+    this.loadCars();
+    this.loadTripTypes();
+  }
+
+  loadCars = () => {
+    API.getCarName()
+    .then(res => this.setState({CarName: res.data}))
+    .catch(err => console.log(err));
+  }
+
+  loadTripTypes = () => {
+    API.getTripType()
+    .then(res => this.setState({TripType: res.data}))
+    .catch(err => console.log(err));
+  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -76,7 +97,7 @@ class UserPage extends Component {
     event.preventDefault();
         this.setState({ open: false });
       API.saveCar({
-        carName: this.state.carName,
+        nickname: this.state.nickname,
         plate: this.state.plate,
         initialMileage: this.state.initialMileage,
         oilMileage: this.state.oilMileage,
@@ -85,9 +106,18 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then(res => this.loadBooks())
+        .then(res => this.loadCars())
         .catch(err => console.log(err));
-    
+  };
+  handleFormSubmit2 = event => {
+    event.preventDefault();
+        this.setState({ open1: false });
+      API.saveTrip({
+        date: this.state.date,
+        totalmiles: this.state.totalmiles
+      })
+        .then(res => this.loadTripTypes())
+        .catch(err => console.log(err));
   };
 
   // When this component mounts, grab the book with the _id of this.props.match.params.id
@@ -98,19 +128,30 @@ render() {
     const { classes } = this.props;
   return (
 
-
-  
-      
-
 <div>
         <Wrapper>
         <Welcome />
-        <CarDrop> </CarDrop>
+        {this.state.CarName.length ? (
+        <List> 
+      {this.state.CarName.map(car => (
+        <ListItem className="pure-menu-item pure-menu-selected pure-menu-link" key={car.id}>{car.nickname} </ListItem> 
+     ))}       
+          <Button variant="outlined" className="addCar" color="primary" onClick={this.handleClickOpen}>
+          Add a Car 
+        </Button>   
+  </List>
+  ) : (
+    <div>
+    <h3> Add a car to your Account: </h3>
+    <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        Add a Car 
+      </Button>
+    </div> )
+}
+     
         
         {/* Add a Car dialog */}
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Add a Car 
-        </Button>
+
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -130,10 +171,10 @@ render() {
               autoFocus
               onChange={this.handleInputChange}
               margin="dense"
-              id="cName"
+              id="nickname"
               label="Car Name"
-              name="carName"
-              value={this.state.carName}
+              name="nickname"
+              value={this.state.nickname}
               type="text"
               fullWidth
               required
@@ -231,17 +272,20 @@ render() {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleFormSubmit} color="primary">
+            <Button className="addCar" onClick={this.handleFormSubmit} color="primary">
               Add Car
             </Button>
           </DialogActions>
         </Dialog>
+        <br></br><br></br><br></br>
+        <TripLog>
 
-
-        {/* Add a Trip dialog */}
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
+        </TripLog> 
+               <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
           Add a Trip 
         </Button>
+        {/* Add a Trip dialog */}
+
         <Dialog
           open={this.state.open1}
           onClose={this.handleClose1}
@@ -255,15 +299,17 @@ render() {
             <br></br>
               <TextField
                 id="date"
+                onChange={this.handleInputChange}
                 label="Date of trip"
                 type="date"
                 name="date"
+                value={this.state.date}
                 defaultValue="date"
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-              <TextField
+              {/* <TextField
               autoFocus
               margin="dense"
               id="name"
@@ -298,20 +344,30 @@ render() {
               type="text"
               fullWidth
               required
-            />
+            /> */}
             <TextField
               autoFocus
               margin="dense"
               id="name"
               label="Total Mileage"
-              name="totalmileage"
+              name="totalmiles"
               onChange={this.handleInputChange}
-              value={this.state.totalmileage}
+              value={this.state.totalmiles}
               type="number"
               fullWidth
               required
             />
-           <h6>Mileage Type:   
+            <p>Trip Type:</p>
+              {this.state.TripType.length ? (
+                <TPList> 
+              {this.state.TripType.map(trip => (
+                <TPItem key={trip.id}>{trip.purpose}
+                  
+            </TPItem> 
+            ))}      
+          </TPList>
+          ) : (<h6> null </h6>)}
+           {/* <h6>Mileage Type:   
             <select id="user-list" sty required>
           
             <option label="Select Trip Type"></option>
@@ -319,13 +375,13 @@ render() {
               <option value="Work" name="" >Work</option>
             </select>
             </h6> 
-            <h7>* is a required field</h7>
+            <h6>* is a required field</h6> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose1} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose1} color="primary">
+            <Button onClick={this.handleFormSubmit2} color="primary">
               Add Trip
             </Button>
           </DialogActions>
