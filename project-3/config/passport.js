@@ -3,8 +3,6 @@
 var bCrypt = require('bcrypt-nodejs');
 
 
-
-
 module.exports = function (passport, user) {
 
   var User = user;
@@ -54,12 +52,10 @@ module.exports = function (passport, user) {
         else {
           var userPassword = generateHash(password);
 
-
           var data = {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             email: email,
-            username: req.body.username,
             password: userPassword,
 
           }
@@ -85,7 +81,6 @@ module.exports = function (passport, user) {
   //local-signin
   //LOCAL SIGNIN
   passport.use('local-signin', new LocalStrategy(
-
     {
       // by default, local strategy uses username and password, we will override with email
       usernameField: 'email',
