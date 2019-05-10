@@ -13,9 +13,13 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import API from '../utils/API'
-import  { List, ListItem } from "../Components/List/List";
+import  {/* List, ListItem,*/ TabContainer } from "../Components/List/List";
 import TPList, { TPItem } from "../Components/Dropdowns/index"
 import TripLog from "../Components/Trip Log/index"
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import MuiVirtualizedTable from '../Components/Trip Table/TripTable'
 
     const styles = theme => ({
       root: {
@@ -35,8 +39,6 @@ class UserPage extends Component {
     open: false,
     open1: false,
     nickname: "",
-    model: "", 
-    year: "",
     plate: "",
     initialMileage: "",
     oilMileage: "",
@@ -44,13 +46,18 @@ class UserPage extends Component {
     tireMileage: "", 
     batMileage: "",
     brakeMileage: "",
-    startingMileage: "",
-    startingAddress: "",
-    endAddress: "",
+    // startingMileage: "",
+    // startingAddress: "",
+    // endAddress: "",
     totalmiles: "",
+    date: "",
     mileageType: "",
     CarName: [],
-    TripType: []
+    TripType: [],
+    TripPurposeId: "",
+    value: 0,
+    CarId: "",
+    flag: 0
   };
 
   componentDidMount() {
@@ -58,15 +65,33 @@ class UserPage extends Component {
     this.loadTripTypes();
   }
 
+
   loadCars = () => {
     API.getCarName()
-    .then(res => this.setState({CarName: res.data}))
-    .catch(err => console.log(err));
+      .then(res => this.setState({
+          CarName: res.data,   
+          nickname: "",
+          plate: "",
+          initialMileage: "",
+          oilMileage: "",
+          filterMileage: "",
+          tireMileage: "", 
+          batMileage: "",
+          brakeMileage: "",
+        })
+      )
+      .catch(err => console.log(err));
   }
+
+  setFlag = () => {
+    console.log("Load");
+  };
+
 
   loadTripTypes = () => {
     API.getTripType()
-    .then(res => this.setState({TripType: res.data}))
+    .then(res => this.setState({TripType: res.data, date: "", totalmiles: ""
+    }))
     .catch(err => console.log(err));
   }
 
@@ -93,6 +118,39 @@ class UserPage extends Component {
     });
   };
 
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  selectPurpose = key => {
+    console.log(key);
+    this.setState({TripPurposeId: key})
+  }
+
+  selectCar = id => {
+    console.log('firing')
+    console.log(id);
+    this.setState({CarId: id})
+  }
+
+  resetTripForm = () => { 
+    this.setState({...this.state, date: '', totalmiles: ''
+    })
+  }
+
+  resetCarForm = () => { 
+    this.setState({...this.state,
+    nickname: "",
+    plate: "",
+    initialMileage: "",
+    oilMileage: "",
+    filterMileage: "",
+    tireMileage: "", 
+    batMileage: "",
+    brakeMileage: ""
+    })
+  }
+
   handleFormSubmit = event => {
     event.preventDefault();
         this.setState({ open: false });
@@ -106,7 +164,8 @@ class UserPage extends Component {
         batMileage: this.state.batMileage,
         brakeMileage: this.state.brakeMileage
       })
-        .then(res => this.loadCars())
+        .then(res => this.resetCarForm(), this.loadCars())
+
         .catch(err => console.log(err));
   };
   handleFormSubmit2 = event => {
@@ -114,9 +173,10 @@ class UserPage extends Component {
         this.setState({ open1: false });
       API.saveTrip({
         date: this.state.date,
-        totalmiles: this.state.totalmiles
+        totalmiles: this.state.totalmiles,
+        TripPurposeId: this.state.TripPurposeId,
       })
-        .then(res => this.loadTripTypes())
+        .then(res =>  this.resetTripForm(), this.loadTripTypes())
         .catch(err => console.log(err));
   };
 
@@ -124,14 +184,14 @@ class UserPage extends Component {
   // e.g. localhost:3000/books/599dcb67f0f16317844583fc
 
 render() {    
-
+    const { value } = this.state;
     const { classes } = this.props;
   return (
 
 <div>
         <Wrapper>
         <Welcome />
-        {this.state.CarName.length ? (
+        {/* {this.state.CarName.length ? (
         <List> 
       {this.state.CarName.map(car => (
         <ListItem className="pure-menu-item pure-menu-selected pure-menu-link" key={car.id}>{car.nickname} </ListItem> 
@@ -146,11 +206,45 @@ render() {
     <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
         Add a Car 
       </Button>
-    </div> )
-}
-     
-        
-        {/* Add a Car dialog */}
+    </div> ) */}
+{/* } */}
+    {this.state.CarName.length ? (      
+      <div className={classes.root} >
+
+        <AppBar position="static" color="default">
+            <Tabs
+            value={value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+
+        {this.state.CarName.map(car => (
+            <div key={car.id} onClick={(e) => this.selectCar(parseInt(e.target.id))}>
+              <Tab  label={car.nickname} id={car.id} value={car.id} ></Tab> 
+
+            {/* <TabContainer>{car.id}</TabContainer> */}
+            </div>
+            
+          ))}
+          <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+          Add a Car 
+        </Button>  
+          </Tabs>
+        </AppBar> 
+
+    </div>      
+         ) : (
+          <div>
+          <h3> Add a car to your Account: </h3>
+          <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+              Add a Car 
+            </Button>
+          </div>
+          )    
+         }
 
         <Dialog
           open={this.state.open}
@@ -279,11 +373,14 @@ render() {
         </Dialog>
         <br></br><br></br><br></br>
         <TripLog>
-
-        </TripLog> 
-               <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
+        <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
           Add a Trip 
         </Button>
+        </TripLog>  
+          <MuiVirtualizedTable>
+
+          </MuiVirtualizedTable>
+
         {/* Add a Trip dialog */}
 
         <Dialog
@@ -359,29 +456,22 @@ render() {
             />
             <p>Trip Type:</p>
               {this.state.TripType.length ? (
-                <TPList> 
+              <TPList onChange={(e) => {
+                this.selectPurpose(parseInt(e.target.value))
+              }}> 
+              <option label="Select Trip Type" disabled selected></option>
               {this.state.TripType.map(trip => (
-                <TPItem key={trip.id}>{trip.purpose}
-                  
+                <TPItem key={trip.id} id={trip.id}>{trip.purpose}
             </TPItem> 
             ))}      
           </TPList>
           ) : (<h6> null </h6>)}
-           {/* <h6>Mileage Type:   
-            <select id="user-list" sty required>
-          
-            <option label="Select Trip Type"></option>
-              <option value="Personal" name="" >Personal</option>
-              <option value="Work" name="" >Work</option>
-            </select>
-            </h6> 
-            <h6>* is a required field</h6> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose1} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleFormSubmit2} color="primary">
+            <Button onClick={this.handleFormSubmit2}  color="primary">
               Add Trip
             </Button>
           </DialogActions>
@@ -400,12 +490,43 @@ render() {
       UserPage.propTypes = {
         classes: PropTypes.object.isRequired
       }
-
-
+      UserPage.propTypes = {
+        classes: PropTypes.object.isRequired,
+      };
+      TabContainer.propTypes = {
+        children: PropTypes.node.isRequired,
+      };
 
 export default withStyles(styles)(UserPage);
+// export withStyles(styles)(UserPage);
 
 
+
+
+
+
+
+
+
+// const styles = theme => ({
+//   root: {
+//     flexGrow: 1,
+//     width: '100%',
+//     backgroundColor: theme.palette.background.paper,
+//   },
+// });
+
+
+
+
+
+
+
+
+
+
+  
+  
 
 
 

@@ -3,7 +3,6 @@ const db = require("../models");
 module.exports = {
       findAll: function(req, res) {
         db.Car.findAll({}).then(function(results) {
-            console.log(results)
             res.json(results);
           });
         },
@@ -13,14 +12,43 @@ module.exports = {
             nickname: req.body.nickname,
             plate: req.body.plate,
             initialMileage: req.body.initialMileage,
-            oilMileage: req.body.oilMileage,
-            filterMileage: req.body.filterMileage,
-            tireMileage: req.body.tireMileage, 
-            batMileage: req.body.batMileage,
-            brakeMileage: req.body.brakeMileage,
             UserId: 1
         })
-          .then(console.log("save successful"))
+          .then( 
+           db.Car_Maintenance
+            .create( {      
+              mileage: req.body.oilMileage,
+              CarId: 13,
+              MaintenanceId: 1              
+          }).then( 
+            db.Car_Maintenance
+             .create( {      
+               mileage: req.body.filterMileage,
+               CarId: 13,
+               MaintenanceId: 3              
+           }).then( 
+            db.Car_Maintenance
+             .create( {      
+               mileage: req.body.tireMileage,
+               CarId: 13,
+               MaintenanceId: 2             
+           }).then( 
+            db.Car_Maintenance
+             .create( {      
+               mileage: req.body.batMileage,
+               CarId: 13,
+               MaintenanceId: 4             
+           }).then( 
+            db.Car_Maintenance
+             .create( {      
+               mileage: req.body.brakeMileage,
+               CarId: 13,
+               MaintenanceId: 5            
+           }))
+           .catch(err => res.status(422).json(err)))
+           .catch(err => res.status(422).json(err)))
+           .catch(err => res.status(422).json(err)))
+           .catch(err => res.status(422).json(err)))
           .catch(err => res.status(422).json(err));
       },
       createTrip: function(req, res) {
@@ -29,14 +57,15 @@ module.exports = {
           .create( {      
             date: req.body.date,
             totalmiles: req.body.totalmiles,
-            CarId: 2
+            CarId: 13,
+            TripPurposeId: req.body.TripPurposeId
+
         })
-          .then(console.log("save successful"))
+          .then(console.log("save UNSUCCESSFUL"))
           .catch(err => res.status(422).json(err));
       },
       findPurpose: function(req, res) {
         db.Trip_Purpose.findAll({}).then(function(results) {
-            console.log(results)
             res.json(results);
           });
         }

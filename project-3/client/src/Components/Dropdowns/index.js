@@ -2,9 +2,11 @@ import React from "react";
 import "./style.css";
 
 
-  export default function TPList({ children }) {
+  export default function TPList(props) {
+    const { children, onChange } = props
     return (
-      <select class="form-control" >{children}
+      <select class="form-control" onChange={(e) => onChange(e)} >{children}
+      
 
         </select>
      
@@ -13,8 +15,9 @@ import "./style.css";
 
   export function TPItem(props) {
     return (
-      <option value={props.key}>{props.children}</option>
+      <option value={props.id}>{props.children}</option>
 
     )
   }
   
+
