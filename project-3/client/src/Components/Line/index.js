@@ -90,8 +90,6 @@ const data = [
   {
     month: "Feb-2020",
     miles: 3490,
-    pv: 4300,
-    amt: 2100
   }
 ];
 
