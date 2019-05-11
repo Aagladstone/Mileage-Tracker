@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import Wrapper from "../Components/Wrapper/index"
 import {Welcome} from "../Components/Banner/index"
 import Button from '@material-ui/core/Button';
@@ -19,7 +19,7 @@ import TripLog from "../Components/Trip Log/index"
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import MuiVirtualizedTable from '../Components/Trip Table/TripTable'
+import {Table, TableRow} from '../Components/Trip Table/TripTable'
 
     const styles = theme => ({
       root: {
@@ -53,22 +53,70 @@ class UserPage extends Component {
     date: "",
     mileageType: "",
     CarName: [],
+    Trip: [],
     TripType: [],
     TripPurposeId: "",
     value: 0,
     CarId: "",
-    flag: 0
+    purpose: "",
+    loadingCar: false,
+    loadingTrip: false,
+    selectedCar: null
+
   };
 
   componentDidMount() {
     this.loadCars();
     this.loadTripTypes();
+    this.loadTrip();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.loadingCar) {
+
+      API.saveCar({
+        nickname: this.state.nickname,
+        plate: this.state.plate,
+        initialMileage: this.state.initialMileage,
+        oilMileage: this.state.oilMileage,
+        filterMileage: this.state.filterMileage,
+        tireMileage: this.state.tireMileage, 
+        batMileage: this.state.batMileage,
+        brakeMileage: this.state.brakeMileage
+      })
+      .then(res => {
+        // this.setState({ CarName: [...this.state.cars, res]})
+        this.loadCars()
+      })
+      .catch(err => {
+        console.log(err)
+      });
+    }
+    console.log(this.state.loadingTrip)
+    if (this.state.loadingTrip) {
+      console.log("TRIP WORKING?")
+      API.saveTrip({
+        date: this.state.date,
+        totalmiles: this.state.totalmiles,
+        TripPurposeId: this.state.TripPurposeId,
+      })
+      .then(res => {
+        console.log(res, 'WORKING')
+        this.loadTrip() 
+      })
+      .catch(err => {
+        this.loadTrip()
+        console.log(err)
+      });
+    }
+
   }
 
 
   loadCars = () => {
-    API.getCarName()
+    return API.getCarName()
       .then(res => this.setState({
+          ...this.state,
           CarName: res.data,   
           nickname: "",
           plate: "",
@@ -78,15 +126,25 @@ class UserPage extends Component {
           tireMileage: "", 
           batMileage: "",
           brakeMileage: "",
+          loadingCar: false
         })
       )
       .catch(err => console.log(err));
   }
 
-  setFlag = () => {
-    console.log("Load");
-  };
-
+  loadTrip = () => {
+    API.getTrip()
+    .then(res =>       
+      this.setState({
+        Trip: res.data,
+        date: "",
+        totalmiles: "",
+        purpose: "",
+        loadingTrip: false
+      })
+    ) 
+    .catch(err => console.log(err));
+  }
 
   loadTripTypes = () => {
     API.getTripType()
@@ -127,61 +185,38 @@ class UserPage extends Component {
     this.setState({TripPurposeId: key})
   }
 
-  selectCar = id => {
+  selectCar = car => {
     console.log('firing')
-    console.log(id);
-    this.setState({CarId: id})
+    this.setState({CarId: parseInt(car.id), selectedCar: car})
   }
 
-  resetTripForm = () => { 
-    this.setState({...this.state, date: '', totalmiles: ''
-    })
-  }
+  // resetTripForm = () => { 
+  //   this.setState({...this.state, date: "", totalmiles: "", purpose: ""
+  //   })
+  // }
 
-  resetCarForm = () => { 
-    this.setState({...this.state,
-    nickname: "",
-    plate: "",
-    initialMileage: "",
-    oilMileage: "",
-    filterMileage: "",
-    tireMileage: "", 
-    batMileage: "",
-    brakeMileage: ""
-    })
-  }
+  // resetCarForm = () => { 
+  //   this.setState({...this.state,
+  //   nickname: "",
+  //   plate: "",
+  //   initialMileage: "",
+  //   oilMileage: "",
+  //   filterMileage: "",
+  //   tireMileage: "", 
+  //   batMileage: "",
+  //   brakeMileage: ""
+  //   })
+  // }
 
   handleFormSubmit = event => {
     event.preventDefault();
-        this.setState({ open: false });
-      API.saveCar({
-        nickname: this.state.nickname,
-        plate: this.state.plate,
-        initialMileage: this.state.initialMileage,
-        oilMileage: this.state.oilMileage,
-        filterMileage: this.state.filterMileage,
-        tireMileage: this.state.tireMileage, 
-        batMileage: this.state.batMileage,
-        brakeMileage: this.state.brakeMileage
-      })
-        .then(res => this.resetCarForm(), this.loadCars())
-
-        .catch(err => console.log(err));
+    this.setState({ open: false, loadingCar: true });
   };
+
   handleFormSubmit2 = event => {
     event.preventDefault();
-        this.setState({ open1: false });
-      API.saveTrip({
-        date: this.state.date,
-        totalmiles: this.state.totalmiles,
-        TripPurposeId: this.state.TripPurposeId,
-      })
-        .then(res =>  this.resetTripForm(), this.loadTripTypes())
-        .catch(err => console.log(err));
+    this.setState({ open1: false, loadingTrip: true });
   };
-
-  // When this component mounts, grab the book with the _id of this.props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
 
 render() {    
     const { value } = this.state;
@@ -191,23 +226,7 @@ render() {
 <div>
         <Wrapper>
         <Welcome />
-        {/* {this.state.CarName.length ? (
-        <List> 
-      {this.state.CarName.map(car => (
-        <ListItem className="pure-menu-item pure-menu-selected pure-menu-link" key={car.id}>{car.nickname} </ListItem> 
-     ))}       
-          <Button variant="outlined" className="addCar" color="primary" onClick={this.handleClickOpen}>
-          Add a Car 
-        </Button>   
-  </List>
-  ) : (
-    <div>
-    <h3> Add a car to your Account: </h3>
-    <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-        Add a Car 
-      </Button>
-    </div> ) */}
-{/* } */}
+
     {this.state.CarName.length ? (      
       <div className={classes.root} >
 
@@ -222,18 +241,20 @@ render() {
           >
 
         {this.state.CarName.map(car => (
-            <div key={car.id} onClick={(e) => this.selectCar(parseInt(e.target.id))}>
+            <div key={car.id} onClick={(e) => this.selectCar(car)}>
               <Tab  label={car.nickname} id={car.id} value={car.id} ></Tab> 
-
-            {/* <TabContainer>{car.id}</TabContainer> */}
+              {console.log(this.state.selectedCar)}
             </div>
             
           ))}
-          <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+          </Tabs>
+        </AppBar>  
+        {/* <TabContainer></TabContainer> */}
+
+        <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
           Add a Car 
         </Button>  
-          </Tabs>
-        </AppBar> 
+
 
     </div>      
          ) : (
@@ -376,11 +397,26 @@ render() {
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
           Add a Trip 
         </Button>
-        </TripLog>  
-          <MuiVirtualizedTable>
+        </TripLog>
+        <br></br>          <br></br>
+        <Table>
+        {this.state.Trip.length ? (
+          <Fragment>
+              <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
 
-          </MuiVirtualizedTable>
+               {this.state.Trip.map(triparr => (
 
+               <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
+
+           
+            ))}      
+          </Fragment>
+           ) : (<h6> Add a Trip with your car </h6>)
+          }
+
+
+
+        </Table>
         {/* Add a Trip dialog */}
 
         <Dialog
@@ -487,15 +523,16 @@ render() {
 }
 
       };
+      TabContainer.propTypes = {
+        children: PropTypes.node.isRequired,
+      };
       UserPage.propTypes = {
         classes: PropTypes.object.isRequired
       }
       UserPage.propTypes = {
         classes: PropTypes.object.isRequired,
       };
-      TabContainer.propTypes = {
-        children: PropTypes.node.isRequired,
-      };
+      
 
 export default withStyles(styles)(UserPage);
 // export withStyles(styles)(UserPage);
