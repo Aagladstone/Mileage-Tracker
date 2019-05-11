@@ -95,14 +95,14 @@ const data = [
   }
 ];
 
-export default class Example extends PureComponent {
+export default class Line extends PureComponent {
   static jsfiddleUrl = "https://jsfiddle.net/alidingling/Lrffmzfc/";
 
   render() {
     return (
       <AreaChart
-        width={1200}
-        height={200}
+        width={1250}
+        height={250}
         data={data}
         margin={{
           top: 20,
