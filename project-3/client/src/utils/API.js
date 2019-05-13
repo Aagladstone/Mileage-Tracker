@@ -25,6 +25,9 @@ export default {
   },
   getTripType: function () {
     return axios.get("/api/trippurpose")
+  }, 
+  getTrip: function(car) {
+    return axios.get("/api/trip", car)
   }
 
 
