@@ -10,30 +10,39 @@ import {
   Legend
 } from "recharts";
 
+
+const air_change = 15000;
+const battery_change = 50000;
+const brakes_change = 50000;
+const oil_change = 10000;
+const tires_change = 40000;
+
+
+
 const data = [
   {
     name: "Air",
-    Remaining: 4000,
+    Remaining: air_change - 2400,
     Current: 2400
   },
   {
     name: "Battery",
-    Remaining: 3000,
-    Current: 1398
+    Remaining: battery_change - 27098,
+    Current: 27098
   },
   {
     name: "Brakes",
-    Remaining: 2000,
+    Remaining: brakes_change - 5800,
     Current: 5800
   },
   {
     name: "Oil",
-    Remaining: 1200,
-    Current: 1800
+    Remaining: oil_change - 5500,
+    Current: 5500
   },
   {
     name: "Tires",
-    Remaining: 1890,
+    Remaining: tires_change - 4800,
     Current: 4800
   }
 ];
