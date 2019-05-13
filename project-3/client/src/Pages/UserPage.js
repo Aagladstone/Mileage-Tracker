@@ -34,7 +34,6 @@ import {Table, TableRow} from '../Components/Trip Table/TripTable'
 
 
 class UserPage extends Component {
-
   state = {
     open: false,
     open1: false,
@@ -43,7 +42,7 @@ class UserPage extends Component {
     initialMileage: "",
     oilMileage: "",
     filterMileage: "",
-    tireMileage: "", 
+    tireMileage: "",
     batMileage: "",
     brakeMileage: "",
     // startingMileage: "",
@@ -226,9 +225,8 @@ class UserPage extends Component {
 render() {    
     const { value } = this.state;
     const { classes } = this.props;
-  return (
-
-<div>
+    return (
+      <div>
         <Wrapper>
         <Welcome />
 
@@ -446,7 +444,7 @@ render() {
                 value={this.state.date}
                 defaultValue="date"
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true
                 }}
               />
               {/* <TextField
@@ -485,19 +483,19 @@ render() {
               fullWidth
               required
             /> */}
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Total Mileage"
-              name="totalmiles"
-              onChange={this.handleInputChange}
-              value={this.state.totalmiles}
-              type="number"
-              fullWidth
-              required
-            />
-            <p>Trip Type:</p>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Total Mileage"
+                name="totalmiles"
+                onChange={this.handleInputChange}
+                value={this.state.totalmiles}
+                type="number"
+                fullWidth
+                required
+              />
+              <p>Trip Type:</p>
               {this.state.TripType.length ? (
               <TPList onChange={(e) => {
                 this.selectPurpose(parseInt(e.target.value))
@@ -521,15 +519,11 @@ render() {
         </Dialog>
 
         </Wrapper>
-        </div>
-
-    
- );
-         
-   
+      </div>
+    );
+  }
 }
 
-      };
       TabContainer.propTypes = {
         children: PropTypes.node.isRequired,
       };
