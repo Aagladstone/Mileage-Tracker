@@ -21,9 +21,10 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
           }
         }),
-        Trip.hasMany(models.Trip_Purpose, {
-          onDelete: "restrict",
-          onUpdate: "restrict"
+        Trip.belongsTo(models.Trip_Purpose, {
+          foreignKey: {
+            allowNull: false
+          }
         });
       };
     return Trip;

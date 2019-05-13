@@ -1,0 +1,23 @@
+#user-list {
+    margin-left: 5px;
+}
+
+.list-group-item {
+    padding: 0px;
+    font-size: 18px;
+}
+
+.pure-menu-horizontal .pure-menu-list {
+    display: flex;
+    width: 75%;
+    margin-left: 202px;
+}
+
+.pure-menu-list {
+    margin: 0px;
+}
+
+h3 {
+    margin-left: 195px;
+}
+

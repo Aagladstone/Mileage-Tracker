@@ -1,4 +1,3 @@
-
 var express = require('express');
 var path = require('path');
 // Init App
@@ -9,6 +8,7 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
+var routes = require("./routes")
 require('dotenv').config();
 
 var PORT = process.env.PORT || 3001;
@@ -28,16 +28,13 @@ app.use(session({
 }));
 
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-
-
-
-
-
+// Define middleware here
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -53,7 +50,7 @@ app.use(function (req, res, next) {
   //res.locals.lmessage = req.flash('lmessage');
   next();
 });
-
+app.use(routes);
 // Express Validator Middleware
 app.use(expressValidator({
   errorFormatter: function (param, msg, value) {
@@ -76,8 +73,10 @@ app.use(expressValidator({
 require('./config/passport')(passport, db.User);
 
 // Define API routes here
-require('./routes/users.js')(app, passport);
+require('./routes/api/users.js')(app, passport);
+// require('./routes/api/cars')
 
+var syncOptions = { force: false }
 // Send every other request to the React app
 // Define any API routes before this runs
 app.get("*", (req, res) => {
@@ -90,15 +89,3 @@ db.sequelize.sync().then(function () {
     console.log("App listening on PORT " + PORT);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
