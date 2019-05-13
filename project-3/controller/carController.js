@@ -1,6 +1,4 @@
 const db = require("../models");
-var moment = require("moment");
-
 
 
 module.exports = {
@@ -37,12 +35,12 @@ module.exports = {
           });
       },
       createTrip: function(req, res) {
-        console.log(req.body)
+        console.log("HEELLLLOOO" + req.body.CarId)
         db.Trip
           .create( {      
             date: req.body.date,
             totalmiles: req.body.totalmiles,
-            // CarId: req.body.CarId,
+            CarId: req.body.CarId,
             TripPurposeId: req.body.TripPurposeId
 
         })
@@ -55,9 +53,10 @@ module.exports = {
           });
         },
       findTrips: function(req, res) {
-        // console.log("Hello" + req.body.CarId)
+        
+
         db.Trip.findAll({   
-          // where: {CarId: req.body.CarId},         
+          // where: {CarId: req.params.car},         
           order: [
           ['date', 'ASC']
         ],

@@ -16,7 +16,6 @@ export default {
     return axios.get("/api/trippurpose")
   }, 
   getTrip: function(car) {
-    // console.log("Hello" + car)
     return axios.get("/api/trip", car)
   }
 

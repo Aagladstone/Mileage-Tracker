@@ -68,7 +68,7 @@ class UserPage extends Component {
   componentDidMount() {
     this.loadCars();
     this.loadTripTypes();
-    this.loadTrip();
+    // this.loadTrip(this.state.selectedCar);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -92,20 +92,23 @@ class UserPage extends Component {
         console.log(err)
       });
     }
-    console.log(this.state.loadingTrip)
+    // console.log(this.state.loadingTrip)
     if (this.state.loadingTrip) {
-      console.log("TRIP WORKING?")
+      // console.log("TRIP WORKING?")
       API.saveTrip({
+        CarId: this.state.selectedCar,
         date: this.state.date,
         totalmiles: this.state.totalmiles,
         TripPurposeId: this.state.TripPurposeId,
-      })
+      }, 
+      console.log("HELLO" + this.state.CarId)
+      )
       .then(res => {
-        console.log(res, 'WORKING')
-        this.loadTrip() 
+        // console.log(res, 'WORKING')
+        this.loadTrip(this.state.selectedCar) 
       })
       .catch(err => {
-        this.loadTrip()
+        this.loadTrip(this.state.selectedCar)
         console.log(err)
       });
     }
@@ -126,8 +129,9 @@ class UserPage extends Component {
           tireMileage: "", 
           batMileage: "",
           brakeMileage: "",
-          loadingCar: false
-        })
+          loadingCar: false,
+          selectedCar:res.data[0].id
+        }), this.loadTrip(this.state.selectedCar)
       )
       .catch(err => console.log(err));
   }
@@ -140,6 +144,7 @@ class UserPage extends Component {
         date: "",
         totalmiles: "",
         purpose: "",
+        CarId: this.state.selectedCar,
         loadingTrip: false
       })
     ) 
@@ -181,13 +186,13 @@ class UserPage extends Component {
   };
 
   selectPurpose = key => {
-    console.log(key);
+    // console.log(key);
     this.setState({TripPurposeId: key})
   }
 
   selectCar = car => {
-    console.log('firing')
-    this.setState({CarId: parseInt(car.id), selectedCar: car})
+    // console.log('firing')
+    this.setState({CarId: parseInt(car.id), selectedCar: car.id})
   }
 
   // resetTripForm = () => { 
@@ -229,7 +234,7 @@ render() {
 
     {this.state.CarName.length ? (      
       <div className={classes.root} >
-
+       
         <AppBar position="static" color="default">
             <Tabs
             value={value}
@@ -242,15 +247,17 @@ render() {
 
         {this.state.CarName.map(car => (
             <div key={car.id} onClick={(e) => this.selectCar(car)}>
-              <Tab  label={car.nickname} id={car.id} value={car.id} ></Tab> 
-              {console.log(this.state.selectedCar)}
+              <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab> 
+               {/* {this.loadTrip(this.state.selectedCar)} */}
+               
             </div>
             
           ))}
           </Tabs>
         </AppBar>  
         {/* <TabContainer></TabContainer> */}
-
+{console.log(this.state.selectedCar)} 
+{console.log(this.state.Trip)}
         <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
           Add a Car 
         </Button>  
