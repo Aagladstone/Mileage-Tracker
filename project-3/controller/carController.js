@@ -15,24 +15,28 @@ module.exports = {
             initialMileage: req.body.initialMileage,
             UserId: 1
         })
+        .then(response => 
+          db.Car.findOne({where: {plate: req.body.plate}})
+        
           .then(response => {
-              const maintenances = [req.body.oilMileage, req.body.tireMileage, req.body.filterMileage, req.body.batMileage, req.body.brakeMileage];
+            const maintenances = [req.body.oilMileage, req.body.tireMileage, req.body.filterMileage, req.body.batMileage, req.body.brakeMileage];
 
-              const promises = maintenances.reduce((arr, maintenance, i) => {
-                arr.push(
-                  db.Car_Maintenance.create({
-                    mileage: maintenance,
-                    CarId: 13,
-                    MaintenanceId: i + 1
-                  })
-                )
+            const promises = maintenances.reduce((arr, maintenance, i) => {
+              arr.push(
+                db.Car_Maintenance.create({
+                  mileage: maintenance,
+                  CarId: response.id,
+                  MaintenanceId: i + 1
+                })
+              )
 
-                return arr;
-              }, [])
+              return arr;
+            }, [])
 
-              return Promise.all(promises)
-                .then(response => res.json(response))
-          });
+            return Promise.all(promises)
+              .then(response => res.json(response))
+        })
+        )
       },
       createTrip: function(req, res) {
         console.log("HEELLLLOOO" + req.body.CarId)
@@ -53,18 +57,28 @@ module.exports = {
           });
         },
       findTrips: function(req, res) {
-        
+            console.log("Hello " + req.params)
+            db.Trip.findAll({
+              where: {
+                // CarId: req.body.CarId
+              }, 
+              // order: ['date', 'ASC'], 
+              include: [db.Trip_Purpose]
+            }).then(function(results) {
+              return res.json(results);
+            });
+      
 
-        db.Trip.findAll({   
-          // where: {CarId: req.params.car},         
-          order: [
-          ['date', 'ASC']
-        ],
-          include: [db.Trip_Purpose]
-        })
-        .then(function(results) {
-            res.json(results)
-          });
+        // db.Trip.findAll({   
+        // // where: {CarId: res},         
+        //   order: [
+        //   ['date', 'ASC']
+        // ],
+        //   include: [db.Trip_Purpose]
+        // })
+        // .then(function(results) {
+        //     res.json(results)
+        //   });
         },
 
     }

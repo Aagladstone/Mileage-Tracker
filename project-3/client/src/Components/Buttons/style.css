@@ -16,3 +16,11 @@
 .MuiTouchRipple-child-48 {
     margin-left: 30px;
 }
+
+.logout {
+    position: absolute;
+    z-index: 10;
+    top: 30px;
+    right: 35px;
+    background-color: burlywood
+}

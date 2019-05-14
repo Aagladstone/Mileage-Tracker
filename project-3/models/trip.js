@@ -4,13 +4,22 @@ module.exports = function(sequelize, DataTypes) {
       {
         date: {
           type: DataTypes.DATEONLY,
-          allowNull: false
+          allowNull: false,
+          validate: {
+            required: true,
+            notNull: {
+              msg: 'Please enter a date'
+            }
+          }
         },
         totalmiles: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            validate: {
+              required: true
+            }
           }
-      },
+        },
       {
         freezeTableName: true
       }
