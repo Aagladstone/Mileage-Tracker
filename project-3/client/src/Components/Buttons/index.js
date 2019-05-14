@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 
-export default function AddCar(props) {
+export function AddCar(props) {
 
 
   return (
@@ -28,6 +28,16 @@ export function ResetMaint() {
   return (
   <div id="resetMaint">
 <button class="pure-button resetMaint">Reset</button>
+</div>
+  )
+}
+
+export function Logout() {
+
+
+  return (
+  <div id="logout">
+<button class="pure-button logout">Logout</button>
 </div>
   )
 }

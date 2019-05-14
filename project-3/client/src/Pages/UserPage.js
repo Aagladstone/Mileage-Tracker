@@ -20,10 +20,15 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {Table, TableRow} from '../Components/Trip Table/TripTable'
+import ScrollableTabsButtonAuto from "../Components/ScrollBar/Scroll"
+import {Logout} from "../Components/Buttons/index"
 
     const styles = theme => ({
       root: {
         flexGrow: 1,
+        width: '80%',
+        backgroundColor: theme.palette.background.paper,
+
       },
       paper: {
         padding: theme.spacing.unit * 2,
@@ -31,6 +36,10 @@ import {Table, TableRow} from '../Components/Trip Table/TripTable'
         color: theme.palette.text.secondary,
       },
     });
+
+    TabContainer.propTypes = {
+      children: PropTypes.node.isRequired,
+    };
 
 
 class UserPage extends Component {
@@ -45,9 +54,6 @@ class UserPage extends Component {
     tireMileage: "",
     batMileage: "",
     brakeMileage: "",
-    // startingMileage: "",
-    // startingAddress: "",
-    // endAddress: "",
     totalmiles: "",
     date: "",
     mileageType: "",
@@ -67,7 +73,7 @@ class UserPage extends Component {
   componentDidMount() {
     this.loadCars();
     this.loadTripTypes();
-    // this.loadTrip(this.state.selectedCar);
+ // this.loginfunction();  
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -111,15 +117,14 @@ class UserPage extends Component {
         console.log(err)
       });
     }
-
   }
-
 
   loadCars = () => {
     return API.getCarName()
-      .then(res => this.setState({
+      .then(res =>       
+          this.setState({
           ...this.state,
-          CarName: res.data,   
+          CarName: res.data,  
           nickname: "",
           plate: "",
           initialMileage: "",
@@ -130,13 +135,19 @@ class UserPage extends Component {
           brakeMileage: "",
           loadingCar: false,
           selectedCar:res.data[0].id
-        }), this.loadTrip(this.state.selectedCar)
-      )
-      .catch(err => console.log(err));
+        }
+        )
+        , this.loadTrip(this.state.selectedCar)
+       )
+       .catch(
+        // this.loadTrip(this.state.selectedCar),
+        err => console.log(err)
+      );
   }
 
   loadTrip = () => {
-    API.getTrip()
+
+    API.getTrip({ CarId: this.state.selectedCar})
     .then(res =>       
       this.setState({
         Trip: res.data,
@@ -145,7 +156,7 @@ class UserPage extends Component {
         purpose: "",
         CarId: this.state.selectedCar,
         loadingTrip: false
-      })
+      }), console.log(this.state.selectedCar)
     ) 
     .catch(err => console.log(err));
   }
@@ -191,7 +202,7 @@ class UserPage extends Component {
 
   selectCar = car => {
     // console.log('firing')
-    this.setState({CarId: parseInt(car.id), selectedCar: car.id})
+    this.setState({CarId: parseInt(car.id), selectedCar: car.id })
   }
 
   // resetTripForm = () => { 
@@ -227,12 +238,15 @@ render() {
     const { classes } = this.props;
     return (
       <div>
-        <Wrapper>
-        <Welcome />
+        <Wrapper><Logout />
+        <Welcome>       
+
+        </Welcome>
+
+
 
     {this.state.CarName.length ? (      
-      <div className={classes.root} >
-       
+      <div id="tabBar" className={classes.root} >
         <AppBar position="static" color="default">
             <Tabs
             value={value}
@@ -240,25 +254,26 @@ render() {
             indicatorColor="primary"
             textColor="primary"
             variant="scrollable"
-            scrollButtons="auto"
+            scrollButtons="on"
           >
 
         {this.state.CarName.map(car => (
-            <div key={car.id} onClick={(e) => this.selectCar(car)}>
+            <div  key={car.id} onClick={(e) => this.selectCar(car)}>
               <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab> 
                {/* {this.loadTrip(this.state.selectedCar)} */}
                
             </div>
-            
-          ))}
+
+          ))} 
+         <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+          Add a Car 
+        </Button>
           </Tabs>
         </AppBar>  
         {/* <TabContainer></TabContainer> */}
 {console.log(this.state.selectedCar)} 
 {console.log(this.state.Trip)}
-        <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Add a Car 
-        </Button>  
+  
 
 
     </div>      
@@ -288,16 +303,18 @@ render() {
             <Grid container spacing={24}>
             <Grid item xs={6}>
              <TextField
+              required
               autoFocus
               onChange={this.handleInputChange}
               margin="dense"
+              className={classes.textField}
               id="nickname"
               label="Car Name"
               name="nickname"
               value={this.state.nickname}
               type="text"
               fullWidth
-              required
+              errorMessage={["please name"]}
             />
               <TextField
               autoFocus
@@ -311,7 +328,6 @@ render() {
               fullWidth
               required
             />
-
               <TextField
               autoFocus
               onChange={this.handleInputChange}
@@ -324,8 +340,6 @@ render() {
               fullWidth
               required
             />   
-
-
               <TextField
               autoFocus
               onChange={this.handleInputChange}
@@ -397,14 +411,17 @@ render() {
             </Button>
           </DialogActions>
         </Dialog>
-        <br></br><br></br><br></br>
+
+    <Grid container spacing={24}>
+    <Grid className="" item xs={6}>
+    <h2>Miles Table Here</h2>
+    <h2>Maint Table Here</h2>
+    </Grid>
+    <Grid id="tripTable" item xs={6}>
+
         <TripLog>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen1}>
-          Add a Trip 
-        </Button>
-        </TripLog>
-        <br></br>          <br></br>
-        <Table>
+          
+                  <Table className="tripTable">
         {this.state.Trip.length ? (
           <Fragment>
               <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
@@ -420,8 +437,13 @@ render() {
           }
 
 
-
         </Table>
+        </TripLog> 
+      <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
+        Add a Trip 
+      </Button>
+    </Grid>
+    </Grid>
         {/* Add a Trip dialog */}
 
         <Dialog
@@ -530,9 +552,10 @@ render() {
       UserPage.propTypes = {
         classes: PropTypes.object.isRequired
       }
-      UserPage.propTypes = {
+      ScrollableTabsButtonAuto.propTypes = {
         classes: PropTypes.object.isRequired,
       };
+
       
 
 export default withStyles(styles)(UserPage);
@@ -546,13 +569,7 @@ export default withStyles(styles)(UserPage);
 
 
 
-// const styles = theme => ({
-//   root: {
-//     flexGrow: 1,
-//     width: '100%',
-//     backgroundColor: theme.palette.background.paper,
-//   },
-// });
+
 
 
 
