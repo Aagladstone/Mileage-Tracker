@@ -14,9 +14,11 @@ router.use("/api/car", carRoutes);
 router.use("/api/trip", tripRoutes);
 router.use("/api/trippurpose", tripPurpose)
 router.use("/user", userRegister)
- router.use("/user/login", userLogin)
+router.use("/user/login", userLogin)
 router.use("/logout", userLogout)
 router.use("/user", userGet)
+router.use("/api/trip/:car?", tripRoutes)
+
 
 
 module.exports = router;
