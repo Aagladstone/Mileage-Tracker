@@ -16,7 +16,11 @@ export default {
     return axios.get("/api/trippurpose")
   }, 
   getTrip: function(car) {
-    return axios.get("/api/trip", car)
+    console.log(car)
+    return axios.get("/api/trip", {
+      params: {
+        carId: car
+      }})
   },
   postRegister:function(PostRegister){
     return axios.post("/user",PostRegister)

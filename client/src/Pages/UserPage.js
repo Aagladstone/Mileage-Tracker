@@ -8,7 +8,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import "./style.css";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -22,6 +21,7 @@ import Tab from '@material-ui/core/Tab';
 import {Table, TableRow} from '../Components/Trip Table/TripTable'
 import ScrollableTabsButtonAuto from "../Components/ScrollBar/Scroll"
 import {Logout} from "../Components/Buttons/index"
+import "./style.css";
 
     const styles = theme => ({
       root: {
@@ -66,8 +66,7 @@ class UserPage extends Component {
     purpose: "",
     loadingCar: false,
     loadingTrip: false,
-    selectedCar: null
-
+    selectedCar: ""
   };
 
   componentDidMount() {
@@ -90,40 +89,34 @@ class UserPage extends Component {
         brakeMileage: this.state.brakeMileage
       })
       .then(res => {
-        // this.setState({ CarName: [...this.state.cars, res]})
         this.loadCars()
       })
       .catch(err => {
         console.log(err)
       });
     }
-    // console.log(this.state.loadingTrip)
     if (this.state.loadingTrip) {
-      // console.log("TRIP WORKING?")
       API.saveTrip({
         CarId: this.state.selectedCar,
         date: this.state.date,
         totalmiles: this.state.totalmiles,
         TripPurposeId: this.state.TripPurposeId,
       }, 
-      console.log("HELLO" + this.state.CarId)
       )
       .then(res => {
-        // console.log(res, 'WORKING')
-        this.loadTrip(this.state.selectedCar) 
+        // this.loadTrip(this.state.selectedCar) 
       })
       .catch(err => {
-        this.loadTrip(this.state.selectedCar)
+        // this.loadTrip(this.state.selectedCar)
         console.log(err)
       });
     }
   }
 
   loadCars = () => {
-    return API.getCarName()
-      .then(res =>       
+    API.getCarName()
+      .then(res =>  { 
           this.setState({
-          ...this.state,
           CarName: res.data,  
           nickname: "",
           plate: "",
@@ -134,20 +127,18 @@ class UserPage extends Component {
           batMileage: "",
           brakeMileage: "",
           loadingCar: false,
-          selectedCar:res.data[0].id
-        }
-        )
-        , this.loadTrip(this.state.selectedCar)
-       )
-       .catch(
-        // this.loadTrip(this.state.selectedCar),
-        err => console.log(err)
-      );
+          selectedCar: res.data[0].id})
+        this.loadTrip(this.state.selectedCar)
+        console.log(this.state.selectedCar)
+        })
+        .catch(
+          err => console.log(err)
+          );
   }
 
   loadTrip = () => {
-
-    API.getTrip({ CarId: this.state.selectedCar})
+   API.getTrip(this.state.selectedCar) 
+   
     .then(res =>       
       this.setState({
         Trip: res.data,
@@ -156,9 +147,10 @@ class UserPage extends Component {
         purpose: "",
         CarId: this.state.selectedCar,
         loadingTrip: false
-      }), console.log(this.state.selectedCar)
+      })
     ) 
     .catch(err => console.log(err));
+    
   }
 
   loadTripTypes = () => {
@@ -196,32 +188,16 @@ class UserPage extends Component {
   };
 
   selectPurpose = key => {
-    // console.log(key);
     this.setState({TripPurposeId: key})
   }
 
   selectCar = car => {
-    // console.log('firing')
-    this.setState({CarId: parseInt(car.id), selectedCar: car.id })
+    this.setState({CarId: parseInt(car.id),
+       selectedCar: car.id })
+    // console.log(this.state.selectedCar)
+    console.log(car.id)
+
   }
-
-  // resetTripForm = () => { 
-  //   this.setState({...this.state, date: "", totalmiles: "", purpose: ""
-  //   })
-  // }
-
-  // resetCarForm = () => { 
-  //   this.setState({...this.state,
-  //   nickname: "",
-  //   plate: "",
-  //   initialMileage: "",
-  //   oilMileage: "",
-  //   filterMileage: "",
-  //   tireMileage: "", 
-  //   batMileage: "",
-  //   brakeMileage: ""
-  //   })
-  // }
 
   handleFormSubmit = event => {
     event.preventDefault();
@@ -258,6 +234,7 @@ render() {
           >
 
         {this.state.CarName.map(car => (
+          
             <div  key={car.id} onClick={(e) => this.selectCar(car)}>
               <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab> 
                {/* {this.loadTrip(this.state.selectedCar)} */}
@@ -271,8 +248,8 @@ render() {
           </Tabs>
         </AppBar>  
         {/* <TabContainer></TabContainer> */}
-{console.log(this.state.selectedCar)} 
-{console.log(this.state.Trip)}
+{/* // {console.log(this.state.selectedCar)} 
+// {console.log(this.state.Trip)} */}
   
 
 
@@ -412,12 +389,12 @@ render() {
           </DialogActions>
         </Dialog>
 
-    <Grid container spacing={24}>
-    <Grid className="" item xs={6}>
+    <Grid container spacing={12}>
+    <Grid className="" item xs={9}>
     <h2>Miles Table Here</h2>
     <h2>Maint Table Here</h2>
     </Grid>
-    <Grid id="tripTable" item xs={6}>
+    <Grid id="tripTable" item xs={3}>
 
         <TripLog>
           
@@ -559,7 +536,6 @@ render() {
       
 
 export default withStyles(styles)(UserPage);
-// export withStyles(styles)(UserPage);
 
 
 
