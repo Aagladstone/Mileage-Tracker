@@ -57,15 +57,20 @@ module.exports = {
           });
         },
       findTrips: function(req, res) {
-            console.log("Hello " + req.params)
+            console.log(req.query)
+
+
             db.Trip.findAll({
               where: {
-                // CarId: req.body.CarId
+                CarId: req.query.carId
               }, 
               // order: ['date', 'ASC'], 
               include: [db.Trip_Purpose]
             }).then(function(results) {
+                console.log(req.query.carId);
+
               return res.json(results);
+
             });
       
 

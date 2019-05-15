@@ -17,13 +17,13 @@
     margin: 0px;
 }
 
-h3 {
+/* h3 {
     margin-left: 195px;
-}
+} */
 
-.MuiPaper-root-64, .MuiPaper-elevation4-70, .MuiAppBar-root-55, .MuiAppBar-positionStatic-59, .MuiAppBar-colorDefault-61, .tabBar {
-    width: 80%;
-}
+/* .MuiPaper-root-64, .MuiPaper-elevation4-70, .MuiAppBar-root-55, .MuiAppBar-positionStatic-59, .MuiAppBar-colorDefault-61, .tabBar {
+    width: 70%;
+} */
 
 .tripTable {
 display: center;
@@ -31,10 +31,9 @@ display: center;
 }
 
 .MuiGrid-spacing-xs-24-72, .MuiGrid-item-49 {
-    padding: 12px;
     padding-top: 30px;
     text-align: -webkit-center;
-    display: grid;
+
 }
 
 #tripTable {
@@ -45,6 +44,7 @@ table {
     width: 80%
 }
 
-.MuiDialog-paperWidthSm-40 {
-    width: 655px;
+.MuiGrid-spacing-xs-24-72 {
+    width: 100%;
+    margin: 0px;
 }

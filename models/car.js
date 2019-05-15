@@ -19,10 +19,10 @@ module.exports = function(sequelize, DataTypes) {
         plate: {
           type: DataTypes.STRING,
           allowNull: false,
-          len: [45],
-          validate: {
-            required: true
-          }
+          len: [45]
+          // validate: {
+          //   required: true
+          // }
         }
       },
       // {
