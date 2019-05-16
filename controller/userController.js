@@ -82,7 +82,8 @@ userGet: function(req, res) {
         //    res.send(user);
         console.log('logged in', user.firstname);
                var userInfo = {
-                   firstname: user.firstname
+                   firstname: user.firstname,
+                   id: user.id
              };
              res.json(userInfo);
           }

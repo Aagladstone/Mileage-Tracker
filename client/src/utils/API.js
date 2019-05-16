@@ -3,8 +3,11 @@ import axios from "axios";
 export default {
 
   // Saves a car to the database 
-  getCarName: function () {
-    return axios.get("/api/car")
+  getCarName: function (user) {
+    return axios.get("/api/car", {
+      params: {
+        UserId: user
+      }})
   },
   saveCar: function (CarData) {
     return axios.post("/api/car", CarData);
@@ -31,6 +34,9 @@ export default {
       },
     postUser:function(PostUser){
         return axios.post("/user/login",PostUser)
+        },
+        getMaintenance:function(){
+          return axios.get("/api/maintenance")
         }
 
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 
-export default function Banner() {
+export default function Banner(props) {
 
 
   return (<div className="jumbotron jumbotron-fluid">
@@ -14,11 +14,11 @@ export default function Banner() {
 }
 
 
-export function Welcome() {
+export function Welcome(props) {
 
     return (<div className="jumbotron jumbotron-fluid" id="welcome">
     <div className="container">
-      <h2 className="display-5">Welcome "User Name",</h2>
+      <h2 className="display-5">Welcome {props.username}</h2>
     </div>
   </div>
     )

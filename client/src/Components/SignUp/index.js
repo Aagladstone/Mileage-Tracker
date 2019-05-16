@@ -14,7 +14,8 @@ class SignUp extends Component {
       email: "",
       password: '',
       confirmPassword: '',
-      redirectTo: null
+      redirectTo: null,
+      signupMessage: ""
 
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,33 +27,59 @@ class SignUp extends Component {
     })
   }
   handleSubmit(event) {
-    console.log('sign-up handleSubmit, username: ')
-    console.log(this.state.firstname)
     event.preventDefault()
 
     //request to server to add a new username/password
-    API.postRegister( {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      email: this.state.email,
-      password: this.state.password,
-
-    })
-      .then(response => {
-        console.log(response)
-        if (!response.data.errmsg) {
-          console.log('successful signup')
-          this.setState({ //redirect to login page
-            redirectTo: '/'
-          })
-        } else {
-          console.log('email already taken')
-        }
-      }).catch(error => {
-        console.log('signup error: ')
-        console.log(error)
-
+    if(this.state.firstname === ""){
+      this.setState({
+        signupMessage: "Plese enter your Name"
       })
+    }else if(this.state.lastname === ""){
+      this.setState({
+        signupMessage: "Plese enter your Last Name"
+      })
+    } else if(this.state.email === ""){
+      this.setState({
+        signupMessage: "Plese enter your email address"
+      })
+    }else if(this.state.password === ""){
+      this.setState({
+        signupMessage: "Plese enter your password"
+      })
+    }else if(this.state.confirmPassword === ""){
+      this.setState({
+        signupMessage: "Plese confirm your password"
+      })
+    }else if(this.state.password !== this.state.confirmPassword){
+      this.setState({
+        signupMessage: "The passwords don't match",
+        password:"",
+        confirmPassword:""
+      })
+    } else{
+      API.postRegister( {
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        email: this.state.email,
+        password: this.state.password,
+  
+      })
+        .then(response => {
+          console.log(response)
+          if (!response.data.errmsg) {
+            console.log('successful signup')
+            this.setState({ //redirect to login page
+              redirectTo: '/'
+            })
+          } else {
+            console.log('email already taken')
+          }
+        }).catch(error => {
+          console.log('signup error: ')
+          console.log(error)
+  
+        })
+    }
   }
 
 
@@ -140,6 +167,7 @@ class SignUp extends Component {
                 />
               </div>
             </div>
+            <h5>{this.state.signupMessage}</h5>
             <div className="form-group ">
               <div className="col-7"></div>
               <button

@@ -98,12 +98,16 @@ const data = [
 export default class Line extends PureComponent {
   static jsfiddleUrl = "https://jsfiddle.net/alidingling/Lrffmzfc/";
 
-  render() {
+  constructor(props){
+    super(props);
+    this.state={...props}
+  }
+  render(props) {
     return (
       <AreaChart
-        width={1250}
+        width={950}
         height={250}
-        data={data}
+        data={this.props.mileage}
         margin={{
           top: 20,
           right: 30,
@@ -112,10 +116,10 @@ export default class Line extends PureComponent {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
+        <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Area type="monotone" dataKey="miles" stroke="#8884d8" fill="#8884d8" />
+        <Area type="monotone" dataKey="totalmiles" stroke="#8884d8" fill="#8884d8" />
       </AreaChart>
     );
   }

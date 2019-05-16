@@ -1,67 +1,96 @@
-import React, { PureComponent } from "react";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
+import React, { PureComponent } from 'react';
+import { PieChart, Pie, Sector } from 'recharts';
 
 const data = [
-  {
-    name: "Air",
-    Remaining: 4000,
-    Current: 2400
-  },
-  {
-    name: "Battery",
-    Remaining: 3000,
-    Current: 1398
-  },
-  {
-    name: "Brakes",
-    Remaining: 2000,
-    Current: 5800
-  },
-  {
-    name: "Oil",
-    Remaining: 1200,
-    Current: 1800
-  },
-  {
-    name: "Tires",
-    Remaining: 1890,
-    Current: 4800
-  }
+  { name: 'Oil', value: 3000,fill:'red' },
+  { name: 'Group B', value: 300 },
 ];
 
-export default class Barra extends PureComponent {
-  static jsfiddleUrl = "https://jsfiddle.net/alidingling/90v76x08/";
+const renderActiveShape = (props) => {
+  const RADIAN = Math.PI / 180;
+  const {
+    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+    fill, payload, percent, value,
+  } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? 'start' : 'end';
 
-  render() {
+  return (
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+      </text>
+    </g>
+  );
+};
+
+
+export default class Bar extends PureComponent {
+  static jsfiddleUrl = 'https://jsfiddle.net/alidingling/hqnrgxpj/';
+
+  state = {
+    activeIndex: 0,
+  };
+
+  onPieEnter = (data, index) => {
+    this.setState({
+      activeIndex: index,
+    });
+  };
+
+
+
+  constructor(props){
+    super(props);
+    this.state={...props}
+    console.log(props)
+  }
+
+  render(props) {
     return (
-      <BarChart
-        width={900}
-        height={300}
-        data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="Current" stackId="a" fill="#8884d8" />
-        <Bar dataKey="Remaining" stackId="a" fill="#82ca9d" />
-      </BarChart>
+      <PieChart width={400} height={400}>
+        <Pie
+          activeIndex={this.state.activeIndex}
+          activeShape={renderActiveShape}
+          data={data}
+          cx={200}
+          cy={200}
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="value"
+          onMouseEnter={this.onPieEnter}
+        />
+      </PieChart>
     );
   }
 }
