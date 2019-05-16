@@ -33,7 +33,10 @@ display: center;
 .MuiGrid-spacing-xs-24-72, .MuiGrid-item-49 {
     padding-top: 30px;
     text-align: -webkit-center;
+}
 
+h5{
+    color: red;
 }
 
 #tripTable {

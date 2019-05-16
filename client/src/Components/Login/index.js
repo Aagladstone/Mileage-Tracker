@@ -11,7 +11,8 @@ class LoginForm extends Component {
     this.state = {
       email: '',
       password: '',
-      redirectTo: null
+      redirectTo: null,
+      userMessage: ""
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -34,9 +35,17 @@ class LoginForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    console.log('handleSubmit')
 
-    API.postUser( {
+    if(this.state.email === ""){
+      this.setState({
+        userMessage: "Plese enter the user email"
+      })
+    }else if(this.state.password === ""){
+      this.setState({
+        userMessage: "Plese enter the password"
+      })
+    }else{
+      API.postUser( {
         email: this.state.email,
         password: this.state.password
       })
@@ -50,6 +59,8 @@ class LoginForm extends Component {
             email: response.data.email
           })
           // update the state to redirect to home
+          localStorage.setItem('user', response.data.firstname);
+          localStorage.setItem('userid', response.data.id);
           this.setState({
             redirectTo: '/UserPage'
           })
@@ -60,6 +71,7 @@ class LoginForm extends Component {
         console.log(error);
 
       })
+    }
   }
 
   render() {
@@ -107,6 +119,7 @@ class LoginForm extends Component {
                 onClick={this.handleSubmit}
                 type="submit">Login</button>
             </div>
+            <h5>{this.state.userMessage}</h5>
             <div className="row">
               <p className="col-3">Dont have an account ? </p>
               <div className=" col-3 form-group ">

@@ -3,7 +3,13 @@ const db = require("../models");
 
 module.exports = {
       findAll: function(req, res) {
-        db.Car.findAll({}).then(function(results) {
+      // console.log("Heloooo");
+      // console.log(localStorage.getItem('userid'));
+        db.Car.findAll({
+          // where: {UserId: 3}
+          // where: {UserId: localStorage.getItem('userid')}
+        })
+        .then(function(results) {
             res.json(results);
           });
         },
@@ -72,19 +78,11 @@ module.exports = {
               return res.json(results);
 
             });
-      
-
-        // db.Trip.findAll({   
-        // // where: {CarId: res},         
-        //   order: [
-        //   ['date', 'ASC']
-        // ],
-        //   include: [db.Trip_Purpose]
-        // })
-        // .then(function(results) {
-        //     res.json(results)
-        //   });
         },
-
+        getMaintenance: function(req, res) {
+          db.Maintenance.findAll({}).then(function(results) {
+              res.json(results);
+            });
+          }
     }
         
