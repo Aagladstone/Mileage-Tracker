@@ -3,11 +3,8 @@ const db = require("../models");
 
 module.exports = {
       findAll: function(req, res) {
-      // console.log("Heloooo");
-      // console.log(localStorage.getItem('userid'));
         db.Car.findAll({
-          // where: {UserId: 3}
-          // where: {UserId: localStorage.getItem('userid')}
+          where: {UserId: req.query.UserId}
         })
         .then(function(results) {
             res.json(results);
@@ -19,7 +16,7 @@ module.exports = {
             nickname: req.body.nickname,
             plate: req.body.plate,
             initialMileage: req.body.initialMileage,
-            UserId: 1
+            UserId: req.body.UserId
         })
         .then(response => 
           db.Car.findOne({where: {plate: req.body.plate}})
@@ -45,7 +42,6 @@ module.exports = {
         )
       },
       createTrip: function(req, res) {
-        console.log("HEELLLLOOO" + req.body.CarId)
         db.Trip
           .create( {      
             date: req.body.date,
@@ -63,20 +59,15 @@ module.exports = {
           });
         },
       findTrips: function(req, res) {
-            console.log(req.query)
-
-
             db.Trip.findAll({
               where: {
                 CarId: req.query.carId
               }, 
-              // order: ['date', 'ASC'], 
+              order: ['date'], 
               include: [db.Trip_Purpose]
             }).then(function(results) {
                 console.log(req.query.carId);
-
               return res.json(results);
-
             });
         },
         getMaintenance: function(req, res) {

@@ -4,6 +4,7 @@ export default {
 
   // Saves a car to the database 
   getCarName: function (user) {
+    console.log(user)
     return axios.get("/api/car", {
       params: {
         UserId: user
@@ -26,14 +27,14 @@ export default {
       }})
   },
   postRegister:function(PostRegister){
-    return axios.post("/user",PostRegister)
+    return axios.post("/user", PostRegister)
     },
     
     getRegister:function(){
       return axios.get("/user")
       },
     postUser:function(PostUser){
-        return axios.post("/user/login",PostUser)
+        return axios.post("/user/login", PostUser)
         },
         getMaintenance:function(){
           return axios.get("/api/maintenance")
