@@ -72,17 +72,22 @@ class UserPage extends Component {
     selectedCar: "",
     message: "",
     messageTrip:"",
-    username: "",
-    id:""
-    
+    id: "",
+    username: ""
   };
 
-  componentDidMount() {
-    this.loadCars(this.state.id);
+  componentDidMount() {  
     this.loadTripTypes();
     this.loadMaintenance();
-    this.setState({username:localStorage.getItem('user')});
-    this.setState({id:localStorage.getItem('userid')});
+    this.setState({
+      username:localStorage.getItem('user'),
+      id:localStorage.getItem('userid')
+    }, () => {
+      this.loadCars();
+      console.log(this.state.id)
+    });
+        
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -95,10 +100,11 @@ class UserPage extends Component {
           filterMileage: this.state.filterMileage,
           tireMileage: this.state.tireMileage, 
           batMileage: this.state.batMileage,
-          brakeMileage: this.state.brakeMileage
+          brakeMileage: this.state.brakeMileage,
+          UserId: this.state.id
         })
         .then(res => {
-          this.loadCars(this.state.id)
+          this.loadCars()
         })
         .catch(err => {
           console.log(err)
@@ -113,16 +119,16 @@ class UserPage extends Component {
       }, 
       )
       .then(res => {
-        // this.loadTrip(this.state.selectedCar) 
+        this.loadTrip() 
       })
       .catch(err => {
-        // this.loadTrip(this.state.selectedCar)
         console.log(err)
       });
     }
   }
 
-  loadCars = () => {
+loadCars = () => {
+    // API.getCarName(car)
     API.getCarName(this.state.id)
       .then(res =>  { 
           this.setState({
@@ -137,9 +143,7 @@ class UserPage extends Component {
           brakeMileage: "",
           loadingCar: false,
           message:"",
-          selectedCar: res.data[0].id})
-        this.loadTrip(this.state.selectedCar)
-        console.log(this.state.selectedCar)
+          selectedCar: res.data[0].id}, () => {this.loadTrip()})
         })
         .catch(
           err => console.log(err)
@@ -147,8 +151,7 @@ class UserPage extends Component {
   }
 
   loadTrip = () => {
-   API.getTrip(this.state.selectedCar) 
-   
+   API.getTrip(this.state.selectedCar)
     .then(res =>       
       this.setState({
         Trip: res.data,
@@ -157,8 +160,7 @@ class UserPage extends Component {
         purpose: "",
         CarId: this.state.selectedCar,
         loadingTrip: false
-      })
-    ) 
+      })) 
     .catch(err => console.log(err));
     
   }
@@ -202,10 +204,11 @@ class UserPage extends Component {
   }
 
   selectCar = car => {
-    this.setState({CarId: parseInt(car.id),
-       selectedCar: car.id })
-       console.log(car.id)
-
+    this.setState({
+       CarId: car.id,
+       selectedCar: car.id
+    }, () => {this.loadTrip(this.state.selectedCar)})
+       console.log(this.state.selectedCar)
   }
 
   loadMaintenance=() => {
@@ -313,8 +316,8 @@ render() {
           </Tabs>
         </AppBar>  
         {/* <TabContainer></TabContainer> */}
-{/* // {console.log(this.state.selectedCar)} 
-// {console.log(this.state.Trip)} */}
+  {console.log(this.state.selectedCar)}
+  {console.log(this.state.Trip)}
   
 
 
@@ -458,11 +461,14 @@ render() {
     <Grid container spacing={12}>
     <Grid className="" item xs={9}>
     <Line mileage={this.state.Trip} />
+    <Barra 
+    maintenance={this.state.maintenance}
+    // miles={whatever we save in state as sum of totalmiles}
+    />
+    {/* <Barra maintenance={this.state.CarName} />
     <Barra maintenance={this.state.CarName} />
     <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
+    <Barra maintenance={this.state.CarName} /> */}
     </Grid>
     <Grid id="tripTable" item xs={3}>
 
