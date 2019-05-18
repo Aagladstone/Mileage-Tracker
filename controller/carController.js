@@ -136,7 +136,7 @@ module.exports = {
           // console.log('---------------------')
           
           // console.log('SUM')
-          // console.log(sum)
+          console.log(sum)
           // console.log('---------------------')
           }
 
