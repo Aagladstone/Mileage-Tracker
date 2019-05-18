@@ -36,8 +36,11 @@ export default {
     postUser:function(PostUser){
         return axios.post("/user/login", PostUser)
         },
-        getMaintenance:function(){
-          return axios.get("/api/maintenance")
+        getMaintenance:function(car){
+          return axios.get("/api/maintenance" ,{
+            params: {
+              carId: car
+            }})
         }
 
 };

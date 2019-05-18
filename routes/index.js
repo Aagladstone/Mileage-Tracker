@@ -18,7 +18,7 @@ router.use("/user/login", userLogin)
 router.use("/logout", userLogout)
 router.use("/user", userGet)
 router.use("/api/trip/:car?", tripRoutes)
-router.use("/api/maintenance", maintRoutes)
+router.use("/api/maintenance/:car?", maintRoutes)
 
 
 

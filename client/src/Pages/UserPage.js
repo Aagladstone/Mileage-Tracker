@@ -62,7 +62,6 @@ class UserPage extends Component {
     CarName: [],
     Trip: [],
     TripType: [],
-    maintenance: [],
     TripPurposeId: "",
     value: 0,
     CarId: "",
@@ -73,12 +72,13 @@ class UserPage extends Component {
     message: "",
     messageTrip:"",
     id: "",
-    username: ""
+    username: "",
+    Maintenance: [],
+    loadingMaintenance: false
   };
 
   componentDidMount() {  
     this.loadTripTypes();
-    this.loadMaintenance();
     this.setState({
       username:localStorage.getItem('user'),
       id:localStorage.getItem('userid')
@@ -119,7 +119,7 @@ class UserPage extends Component {
       }, 
       )
       .then(res => {
-        this.loadTrip() 
+        this.loadTrip()
       })
       .catch(err => {
         console.log(err)
@@ -160,10 +160,22 @@ loadCars = () => {
         purpose: "",
         CarId: this.state.selectedCar,
         loadingTrip: false
-      })) 
-    .catch(err => console.log(err));
-    
+      }, () => {
+        this.loadMaintenance()
+      }))
+    .catch(err => console.log(err)); 
   }
+
+  loadMaintenance = () => {
+    API.getMaintenance(this.state.selectedCar)
+     .then(res =>       
+       this.setState({
+         Maintenance: res.data,
+         loadingMaintenance: false
+       }, () => {console.log(this.state.Maintenance)})) 
+     .catch(err => console.log(err));
+     
+   }
 
   loadTripTypes = () => {
     API.getTripType()
@@ -209,12 +221,6 @@ loadCars = () => {
        selectedCar: car.id
     }, () => {this.loadTrip(this.state.selectedCar)})
        console.log(this.state.selectedCar)
-  }
-
-  loadMaintenance=() => {
-    API.getMaintenance()
-    .then(res => this.setState({maintenance: res.data}))
-    .catch(err => console.log(err));
   }
 
   handleFormSubmit = event => {
@@ -304,11 +310,8 @@ render() {
         {this.state.CarName.map(car => (
           
             <div  key={car.id} onClick={(e) => this.selectCar(car)}>
-              <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab> 
-               {/* {this.loadTrip(this.state.selectedCar)} */}
-               
+              <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab>                
             </div>
-
           ))} 
          <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
           Add a Car 
@@ -325,9 +328,14 @@ render() {
          ) : (
           <div>
           <h3> Add a car to your Account: </h3>
-          <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-              Add a Car 
-            </Button>
+          <h5>Welcome to your personal Mileage Tracker!</h5>
+          <h5>Here is how to use your mileage tracker:</h5>
+          <h6>1. Add a car to your profile with this button <i class="fas fa-long-arrow-alt-down"></i></h6>
+          <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}> Add a Car </Button>
+          <h6>Then either before your trip or after you've arrived to your destination you should enter that here <i class="fas fa-long-arrow-alt-right"></i></h6>
+          <h6> We will then help you see how often you drive and when it is getting close to that time to check on your car, you will see that too!</h6>
+
+
           </div>
           )    
          }
@@ -458,17 +466,13 @@ render() {
         </DialogActions>
       </Dialog>
 
-    <Grid container spacing={12}>
+    <Grid className="bar" container spacing={12}>
     <Grid className="" item xs={9}>
     <Line mileage={this.state.Trip} />
     <Barra 
-    maintenance={this.state.maintenance}
+    maintenance={this.state.Maintenance}
     // miles={whatever we save in state as sum of totalmiles}
     />
-    {/* <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} /> */}
     </Grid>
     <Grid id="tripTable" item xs={3}>
 
@@ -481,18 +485,23 @@ render() {
 
                {this.state.Trip.map(triparr => (
 
-               <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
-           
-            ))}      
-          </Fragment>
-           ) : (<h6> Add a Trip with your car </h6>)
-          }
-
-        </Table>
-        </TripLog> 
+                <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
+            ))} 
       <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
         Add a Trip 
       </Button>
+              </Fragment>
+           ) : (
+            <Fragment>
+            <h6> After you've input your car information you may add a trip with this button 
+                   <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} > Add a Trip </Button> </h6>
+            <h6> After you create your trip, your trips will be recorded here </h6>
+            <h6>* Note: if you have multiple cars, please make sure to select that car before adding that trip</h6>
+            </Fragment>
+           )}
+        </Table>
+        </TripLog> 
+
     </Grid>
     </Grid>
         {/* Add a Trip dialog */}

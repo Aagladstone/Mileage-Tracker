@@ -51,3 +51,8 @@ table {
     width: 100%;
     margin: 0px;
 }
+
+.bar {
+    margin-top: 50px;
+    position: relative;
+}
