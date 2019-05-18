@@ -24,6 +24,7 @@ import {Logout} from "../Components/Buttons/index"
 import Barra from '../Components/Bar/index'
 import Line from '../Components/Line/index'
 import "./style.css";
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -223,6 +224,26 @@ loadCars = () => {
        console.log(this.state.selectedCar)
   }
 
+  logout = () => {
+    localStorage.clear();
+
+    this.setState({
+      username: null,
+      redirectTo: '/'
+    })
+
+    // if (this.state.redirectTo) {
+    
+    // }
+
+  }
+
+  loadMaintenance=() => {
+    API.getMaintenance()
+    .then(res => this.setState({maintenance: res.data}))
+    .catch(err => console.log(err));
+  }
+
   handleFormSubmit = event => {
     event.preventDefault();
     if(this.state.nickname === ""){
@@ -283,49 +304,58 @@ loadCars = () => {
     }
   };
 
-render() {    
+  render() {
     const { value } = this.state;
     const { classes } = this.props;
-    return (
-      <div>
-        <Wrapper><Logout />
-        <Welcome username={this.state.username}>       
 
-        </Welcome>
+   if (this.state.username) {
+
+      return (
+        <div>
+          <Wrapper> <div id="logout">
+            <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
+          </div>
+            <Welcome username={this.state.username}>
+
+            </Welcome>
 
 
 
-    {this.state.CarName.length ? (      
-      <div id="tabBar" className={classes.root} >
-        <AppBar position="static" color="default">
-            <Tabs
-            value={value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="on"
-          >
+            {this.state.CarName.length ? (
+              <div id="tabBar" className={classes.root} >
+                <AppBar position="static" color="default">
+                  <Tabs
+                    value={value}
+                    onChange={this.handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="scrollable"
+                    scrollButtons="on"
+                  >
 
-        {this.state.CarName.map(car => (
-          
-            <div  key={car.id} onClick={(e) => this.selectCar(car)}>
-              <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab>                
-            </div>
-          ))} 
-         <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Add a Car 
+                    {this.state.CarName.map(car => (
+
+                      <div key={car.id} onClick={(e) => this.selectCar(car)}>
+                        <Tab label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab>
+                        {/* {this.loadTrip(this.state.selectedCar)} */}
+
+                      </div>
+
+                    ))}
+                    <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                      Add a Car
         </Button>
-          </Tabs>
-        </AppBar>  
-        {/* <TabContainer></TabContainer> */}
-  {console.log(this.state.selectedCar)}
-  {console.log(this.state.Trip)}
-  
+                  </Tabs>
+                </AppBar>
+                {/* <TabContainer></TabContainer> */}
+                {console.log(this.state.selectedCar)}
+                {console.log(this.state.Trip)}
 
 
-    </div>      
-         ) : (
+
+              </div>
+            ) : (
+                <div>
           <div>
           <h3> Add a car to your Account: </h3>
           <h5>Welcome to your personal Mileage Tracker!</h5>
@@ -334,108 +364,208 @@ render() {
           <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}> Add a Car </Button>
           <h6>Then either before your trip or after you've arrived to your destination you should enter that here <i class="fas fa-long-arrow-alt-right"></i></h6>
           <h6> We will then help you see how often you drive and when it is getting close to that time to check on your car, you will see that too!</h6>
-
-
           </div>
-          )    
-         }
 
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Car</DialogTitle>
-          <DialogContent >
-            <DialogContentText>
-             Add a Car to your profile
-            </DialogContentText> 
-            <Grid container spacing={24}>
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  autoFocus
-                  onChange={this.handleInputChange}
-                  margin="dense"
-                  className={classes.textField}
-                  id="nickname"
-                  label="Car Name"
-                  name="nickname"
-                  value={this.state.nickname}
-                  type="text"
-                  fullWidth
+                </div>
+              )
+            }
+
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Car</DialogTitle>
+              <DialogContent >
+                <DialogContentText>
+                  Add a Car to your profile
+            </DialogContentText>
+                <Grid container spacing={24}>
+                  <Grid item xs={6}>
+                    <TextField
+                      required
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      className={classes.textField}
+                      id="nickname"
+                      label="Car Name"
+                      name="nickname"
+                      value={this.state.nickname}
+                      type="text"
+                      fullWidth
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="plate"
+                      label="Plate"
+                      name="plate"
+                      value={this.state.plate}
+                      type="text"
+                      fullWidth
+                      required
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="initial-mileage"
+                      label="Initial Mileage"
+                      name="initialMileage"
+                      value={this.state.initialMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="Mileage at last oil change"
+                      label="Mileage at last oil change"
+                      name="oilMileage"
+                      value={this.state.oilMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <h5>* is a required field</h5>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="Mileage at last air filter change"
+                      label="Mileage at last air filter change"
+                      name="filterMileage"
+                      value={this.state.filterMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="Mileage at last tire rotation"
+                      label="Mileage at last tire rotation"
+                      name="tireMileage"
+                      value={this.state.tireMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="Mileage at last battery change"
+                      label="Mileage at last battery change"
+                      name="batMileage"
+                      value={this.state.batMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <TextField
+                      autoFocus
+                      onChange={this.handleInputChange}
+                      margin="dense"
+                      id="Mileage at last break check"
+                      label="Mileage at last break check"
+                      name="brakeMileage"
+                      value={this.state.brakeMileage}
+                      type="number"
+                      fullWidth
+                      required
+                    />
+                    <h5>{this.state.message}</h5>
+                  </Grid>
+                </Grid>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+          </Button>
+                <Button className="addCar" onClick={this.handleFormSubmit} color="primary">
+                  Add Car
+          </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Grid container spacing={12}>
+              <Grid className="" item xs={9}>
+                <Line mileage={this.state.Trip} />
+                <Barra
+                  maintenance={this.state.maintenance}
+                // miles={whatever we save in state as sum of totalmiles}
                 />
-                <TextField
-                  autoFocus
-                  onChange={this.handleInputChange}
-                  margin="dense"
-                  id="plate"
-                  label="Plate"
-                  name="plate"
-                  value={this.state.plate}
-                  type="text"
-                  fullWidth
-                  required
-                />
-                <TextField
-                  autoFocus
-                  onChange={this.handleInputChange}
-                  margin="dense"
-                  id="initial-mileage"
-                  label="Initial Mileage"
-                  name="initialMileage"
-                  value={this.state.initialMileage}
-                  type="number"
-                  fullWidth
-                  required
-                />   
-                <TextField
-                  autoFocus
-                  onChange={this.handleInputChange}
-                  margin="dense"
-                  id="Mileage at last oil change"
-                  label="Mileage at last oil change"
-                  name="oilMileage"
-                  value={this.state.oilMileage}
-                  type="number"
-                  fullWidth
-                  required
-                /> 
-                <h5>* is a required field</h5>
+                {/* <Barra maintenance={this.state.CarName} />
+    <Barra maintenance={this.state.CarName} />
+    <Barra maintenance={this.state.CarName} />
+    <Barra maintenance={this.state.CarName} /> */}
               </Grid>
-              <Grid item xs={6}>
+              <Grid id="tripTable" item xs={3}>
+
+                <TripLog>
+
+                  <Table className="tripTable">
+                    {this.state.Trip.length ? (
+                      <Fragment>
+                        <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
+
+                        {this.state.Trip.map(triparr => (
+
+                          <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow>
+
+                        ))}
+                      </Fragment>
+                    ) : (<h6> Add a Trip with your car </h6>)
+                    }
+
+                  </Table>
+                </TripLog>
+                <Button variant="outlined" color="primary" onClick={this.handleClickOpen1} >
+                  Add a Trip
+      </Button>
+              </Grid>
+            </Grid>
+            {/* Add a Trip dialog */}
+
+            <Dialog
+              open={this.state.open1}
+              onClose={this.handleClose1}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Trip</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Add a Trip for your Car
+            </DialogContentText>
+                <br></br>
                 <TextField
-                  autoFocus
+                  id="date"
                   onChange={this.handleInputChange}
-                  margin="dense"
-                  id="Mileage at last air filter change"
-                  label="Mileage at last air filter change"
-                  name="filterMileage"
-                  value={this.state.filterMileage}
-                  type="number"
-                  fullWidth
-                  required
+                  label="Date of trip"
+                  type="date"
+                  name="date"
+                  value={this.state.date}
+                  defaultValue="date"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
                 />
                 <TextField
                   autoFocus
-                  onChange={this.handleInputChange}
                   margin="dense"
-                  id="Mileage at last tire rotation"
-                  label="Mileage at last tire rotation"
-                  name="tireMileage"
-                  value={this.state.tireMileage}
-                  type="number"
-                  fullWidth
-                  required
-                />
-                <TextField
-                  autoFocus
+                  id="name"
+                  label="Total Mileage"
+                  name="totalmiles"
                   onChange={this.handleInputChange}
-                  margin="dense"
-                  id="Mileage at last battery change"
-                  label="Mileage at last battery change"
-                  name="batMileage"
-                  value={this.state.batMileage}
+                  value={this.state.totalmiles}
                   type="number"
                   fullWidth
                   required
@@ -453,8 +583,6 @@ render() {
                   required
                 /> 
                 <h5>{this.state.message}</h5>
-              </Grid>
-            </Grid>
           </DialogContent> 
         <DialogActions>   
           <Button onClick={this.handleClose} color="primary">
@@ -559,39 +687,40 @@ render() {
             <Button onClick={this.handleClose1} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleFormSubmit2}  color="primary">
-              Add Trip
+                <Button onClick={this.handleFormSubmit2} color="primary">
+                  Add Trip
             </Button>
-          </DialogActions>
-        </Dialog>
+              </DialogActions>
+            </Dialog>
 
-        </Wrapper>
-      </div>
-    );
+          </Wrapper>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div>
+          {this.state.redirectTo && <Redirect to={{ pathname: this.state.redirectTo }} />}
+        "404 not found"
+        </div>
+      );
+    }
   }
 }
 
-      TabContainer.propTypes = {
-        children: PropTypes.node.isRequired,
-      };
-      UserPage.propTypes = {
-        classes: PropTypes.object.isRequired
-      }
-      ScrollableTabsButtonAuto.propTypes = {
-        classes: PropTypes.object.isRequired,
-      };
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+UserPage.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+ScrollableTabsButtonAuto.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
-      
+
 
 export default withStyles(styles)(UserPage);
-
-
-
-
-
-
-
-
 
 
 

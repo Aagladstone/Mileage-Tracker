@@ -3,6 +3,7 @@ import "./style.css";
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import API from "../../utils/API";
+import { FormErrors } from '../../Pages/FormErrors';
 
 
 class LoginForm extends Component {
@@ -12,7 +13,11 @@ class LoginForm extends Component {
       email: '',
       password: '',
       redirectTo: null,
-      userMessage: ""
+      // userMessage: ""
+      formErrors: { email: '', password: '' },
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -27,28 +32,58 @@ class LoginForm extends Component {
 
   }
 
-  handleChange(event) {
+  handleChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value },
+      () => { this.validateField(name, value) });
+  }
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+
+    switch (fieldName) {
+      case 'email':
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        break;
+      case 'password':
+        passwordValid = value.length >= 6;
+        fieldValidationErrors.password = passwordValid ? '' : ' is too short';
+        break;
+      default:
+        break;
+      // break;
+    }
     this.setState({
-      [event.target.name]: event.target.value
-    })
+      formErrors: fieldValidationErrors,
+      emailValid: emailValid,
+      passwordValid: passwordValid
+    }, this.validateForm);
+  }
+
+  validateForm() {
+    this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
   }
 
   handleSubmit(event) {
     event.preventDefault()
 
-    if(this.state.email === ""){
-      this.setState({
-        userMessage: "Plese enter the user email"
-      })
-    }else if(this.state.password === ""){
-      this.setState({
-        userMessage: "Plese enter the password"
-      })
-    }else{
-      API.postUser( {
-        email: this.state.email,
-        password: this.state.password
-      })
+    // if (this.state.email === "") {
+    //   this.setState({
+    //     userMessage: "Plese enter the user email"
+    //   })
+    // } else if (this.state.password === "") {
+    //   this.setState({
+    //     userMessage: "Plese enter the password"
+    //   })
+    // } else {
+    API.postUser({
+      email: this.state.email,
+      password: this.state.password
+    })
       .then(response => {
         console.log('login response: ')
         console.log(response)
@@ -71,7 +106,7 @@ class LoginForm extends Component {
         console.log(error);
 
       })
-    }
+    // }
   }
 
   render() {
@@ -82,6 +117,9 @@ class LoginForm extends Component {
       return (
         <div id="signin" >
           <h4>Login</h4>
+          <div className="panel panel-default">
+            <FormErrors formErrors={this.state.formErrors} />
+          </div>
           <form className="pure-form pure-form-stacked">
             <div className="form-group">
               <div className="col-1 col-ml-auto">
@@ -123,7 +161,7 @@ class LoginForm extends Component {
             <div className="row">
               <p className="col-3">Dont have an account ? </p>
               <div className=" col-3 form-group ">
-                <button className="btn btn-primary" type="submit" onClick={this.goSignUp} >
+                <button className="btn btn-primary" disabled={!this.state.formValid} type="submit" onClick={this.goSignUp} >
                   Sign Up
            </button>
               </div>
