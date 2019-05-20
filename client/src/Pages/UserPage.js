@@ -23,8 +23,9 @@ import ScrollableTabsButtonAuto from "../Components/ScrollBar/Scroll"
 import {Logout} from "../Components/Buttons/index"
 import Barra from '../Components/Bar/index'
 import Line from '../Components/Line/index'
-import "./style.css";
 import { Redirect } from 'react-router-dom';
+// import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import "./style.css";
 
 const styles = theme => ({
   root: {
@@ -63,23 +64,25 @@ class UserPage extends Component {
     CarName: [],
     Trip: [],
     TripType: [],
-    maintenance: [],
     TripPurposeId: "",
     value: 0,
     CarId: "",
     purpose: "",
     loadingCar: false,
     loadingTrip: false,
+    loadCarMaintenance:false,
     selectedCar: "",
     message: "",
     messageTrip:"",
     id: "",
-    username: ""
+    username: "",
+    Maintenance: [],
+    loadingMaintenance: false,
+    carMaintenance:""
   };
 
   componentDidMount() {  
     this.loadTripTypes();
-    this.loadMaintenance();
     this.setState({
       username:localStorage.getItem('user'),
       id:localStorage.getItem('userid')
@@ -120,16 +123,28 @@ class UserPage extends Component {
       }, 
       )
       .then(res => {
-        this.loadTrip() 
+        this.loadTrip()
       })
       .catch(err => {
         console.log(err)
       });
     }
+    if(this.state.loadCarMaintenance) {
+      API.resetCarMaint({
+        CarId: this.state.selectedCar,
+        MaintenanceId: this.state.carMaintenance,
+      }, 
+      )
+      .then(res => () =>
+        this.loadMaintenance())
+      .catch(err => {
+        console.log(err)
+      });
+
+    }
   }
 
 loadCars = () => {
-    // API.getCarName(car)
     API.getCarName(this.state.id)
       .then(res =>  { 
           this.setState({
@@ -161,10 +176,22 @@ loadCars = () => {
         purpose: "",
         CarId: this.state.selectedCar,
         loadingTrip: false
-      })) 
-    .catch(err => console.log(err));
-    
+      }, () => {
+        this.loadMaintenance()
+      }))
+    .catch(err => console.log(err)); 
   }
+
+  loadMaintenance = () => {
+    API.getMaintenance(this.state.selectedCar)
+     .then(res =>       
+       this.setState({
+         Maintenance: res.data,
+         loadingMaintenance: false
+       })) 
+     .catch(err => console.log(err));
+     
+   }
 
   loadTripTypes = () => {
     API.getTripType()
@@ -202,34 +229,6 @@ loadCars = () => {
 
   selectPurpose = key => {
     this.setState({TripPurposeId: key})
-  }
-
-  selectCar = car => {
-    this.setState({
-       CarId: car.id,
-       selectedCar: car.id
-    }, () => {this.loadTrip(this.state.selectedCar)})
-       console.log(this.state.selectedCar)
-  }
-
-  logout = () => {
-    localStorage.clear();
-
-    this.setState({
-      username: null,
-      redirectTo: '/'
-    })
-
-    // if (this.state.redirectTo) {
-    
-    // }
-
-  }
-
-  loadMaintenance=() => {
-    API.getMaintenance()
-    .then(res => this.setState({maintenance: res.data}))
-    .catch(err => console.log(err));
   }
 
   handleFormSubmit = event => {
@@ -292,335 +291,354 @@ loadCars = () => {
     }
   };
 
-  render() {
+  
+  selectCar = car => {
+    this.setState({
+       CarId: car.id,
+       selectedCar: car.id
+    }, () => {this.loadTrip(this.state.selectedCar)})
+       console.log(this.state.selectedCar)
+  }
+
+  resetMaint = clear => {
+    this.setState({
+      loadCarMaintenance: true,
+      carMaintenance: clear.maintenanceId
+    });
+  }
+
+  logout = () => {
+    localStorage.clear();
+ 
+    this.setState({
+      username: null,
+      redirectTo: '/'
+    })
+  }
+render() {    
     const { value } = this.state;
     const { classes } = this.props;
 
-   
+    if (this.state.username) {
 
-   if (this.state.username) {
+    return (
+      <div>
+        <Wrapper><div id="logout">
+           <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
+         </div>
+        <Welcome username={this.state.username}>       
 
-      return (
-        <div>
-          <Wrapper> <div id="logout">
-            <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
-          </div>
-            <Welcome username={this.state.username}>
-            </Welcome>
+        </Welcome>
 
-            {this.state.CarName.length ? (
-              <div id="tabBar" className={classes.root} >
-                <AppBar position="static" color="default">
-                  <Tabs
-                    value={value}
-                    onChange={this.handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="scrollable"
-                    scrollButtons="on"
-                  >
 
-                    {this.state.CarName.map(car => (
 
-                      <div key={car.id} onClick={(e) => this.selectCar(car)}>
-                        <Tab label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab>
-                        {/* {this.loadTrip(this.state.selectedCar)} */}
+    {this.state.CarName.length ? (      
+      <div id="tabBar" className={classes.root} >
+        <AppBar position="static" color="default">
+            <Tabs
+            value={value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="on"
+          >
 
-                      </div>
-
-                    ))}
-                    <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                      Add a Car
+        {this.state.CarName.map(car => (
+          
+            <div  key={car.id} onClick={(e) => this.selectCar(car)}>
+              <Tab  label={car.nickname} key={car.value} id={car.id} value={car.id} ></Tab>                
+            </div>
+          ))} 
+         <Button className= "addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
+          Add a Car 
         </Button>
-                  </Tabs>
-                </AppBar>
-                {/* <TabContainer></TabContainer> */}
-                {console.log(this.state.selectedCar)}
-                {console.log(this.state.Trip)}
+          </Tabs>
+        </AppBar>  
+        {/* <TabContainer></TabContainer> */}
+  {console.log(this.state.selectedCar)}
+  {console.log(this.state.Trip)}
+  
 
 
-
-              </div>
-            ) : (
-                <div>
-                  <h3> Add a car to your Account: </h3>
-                  <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                    Add a Car
-            </Button>
-                </div>
-              )
-            }
-
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Car</DialogTitle>
-              <DialogContent >
-                <DialogContentText>
-                  Add a Car to your profile
-            </DialogContentText>
-                <Grid container spacing={24}>
-                  <Grid item xs={6}>
-                    <TextField
-                      required
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      className={classes.textField}
-                      id="nickname"
-                      label="Car Name"
-                      name="nickname"
-                      value={this.state.nickname}
-                      type="text"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="plate"
-                      label="Plate"
-                      name="plate"
-                      value={this.state.plate}
-                      type="text"
-                      fullWidth
-                      required
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="initial-mileage"
-                      label="Initial Mileage"
-                      name="initialMileage"
-                      value={this.state.initialMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="Mileage at last oil change"
-                      label="Mileage at last oil change"
-                      name="oilMileage"
-                      value={this.state.oilMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <h5>* is a required field</h5>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="Mileage at last air filter change"
-                      label="Mileage at last air filter change"
-                      name="filterMileage"
-                      value={this.state.filterMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="Mileage at last tire rotation"
-                      label="Mileage at last tire rotation"
-                      name="tireMileage"
-                      value={this.state.tireMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="Mileage at last battery change"
-                      label="Mileage at last battery change"
-                      name="batMileage"
-                      value={this.state.batMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <TextField
-                      autoFocus
-                      onChange={this.handleInputChange}
-                      margin="dense"
-                      id="Mileage at last break check"
-                      label="Mileage at last break check"
-                      name="brakeMileage"
-                      value={this.state.brakeMileage}
-                      type="number"
-                      fullWidth
-                      required
-                    />
-                    <h5>{this.state.message}</h5>
-                  </Grid>
-                </Grid>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose} color="primary">
-                  Cancel
-          </Button>
-                <Button className="addCar" onClick={this.handleFormSubmit} color="primary">
-                  Add Car
-          </Button>
-              </DialogActions>
-            </Dialog>
-
-            <Grid container spacing={12}>
-              <Grid className="" item xs={9}>
-                <Line mileage={this.state.Trip} />
-                <Barra
-                  maintenance={this.state.maintenance}
-                // miles={whatever we save in state as sum of totalmiles}
-                />
-                {/* <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} />
-    <Barra maintenance={this.state.CarName} /> */}
-              </Grid>
-              <Grid id="tripTable" item xs={3}>
-
-                <TripLog>
-
-                  <Table className="tripTable">
-                    {this.state.Trip.length ? (
-                      <Fragment>
-                        <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
-
-                        {this.state.Trip.map(triparr => (
-
-                          <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow>
-
-                        ))}
-                      </Fragment>
-                    ) : (<h6> Add a Trip with your car </h6>)
-                    }
-
-                  </Table>
-                </TripLog>
-                <Button variant="outlined" color="primary" onClick={this.handleClickOpen1} >
-                  Add a Trip
-      </Button>
-              </Grid>
-            </Grid>
-            {/* Add a Trip dialog */}
-
-            <Dialog
-              open={this.state.open1}
-              onClose={this.handleClose1}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Trip</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Add a Trip for your Car
-            </DialogContentText>
-                <br></br>
+    </div>      
+         ) : (
+          <div>
+          <h3> Add a car to your Account: </h3>
+          <h5>Welcome to your personal Mileage Tracker!</h5>
+          <h5>Here is how to use your mileage tracker:</h5>
+          <h6>1. Add a car to your profile with this button <i class="fas fa-long-arrow-alt-down"></i></h6>
+          <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}> Add a Car </Button>
+          <h6>Then either before your trip or after you've arrived to your destination you should enter that here <i class="fas fa-long-arrow-alt-right"></i></h6>
+          <h6> We will then help you see how often you drive and when it is getting close to that time to check on your car, you will see that too!</h6>
+          </div>
+          )    
+         }
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Car Information</DialogTitle>
+          <DialogContent >
+            <DialogContentText>
+             Add a Car to your profile
+            </DialogContentText> 
+            <Grid container spacing={24}>
+              <Grid item xs={6}>
                 <TextField
-                  id="date"
+                  required
+                  autoFocus
                   onChange={this.handleInputChange}
-                  label="Date of trip"
-                  type="date"
-                  name="date"
-                  value={this.state.date}
-                  defaultValue="date"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
+                  margin="dense"
+                  id="nickname"
+                  label="Car Name"
+                  name="nickname"
+                  value={this.state.nickname}
+                  type="text"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
+                  fullWidth
+                  required
                 />
                 <TextField
                   autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Total Mileage"
-                  name="totalmiles"
                   onChange={this.handleInputChange}
-                  value={this.state.totalmiles}
+                  margin="dense"
+                  id="plate"
+                  label="Plate"
+                  name="plate"
+                  value={this.state.plate}
+                  type="text"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
+                  fullWidth
+                  required
+                />
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="initial-mileage"
+                  label="Initial Car Mileage"
+                  name="initialMileage"
+                  value={this.state.initialMileage}
+                  type="number"
+                  // validators={['minNumber:0', 'maxNumber:255', 'matchRegexp:^[1-9]$']}
+                  // errorMessages={['this field is required', 'Must be a number', 'Number must be greater than zero']}
+                  fullWidth
+                  required
+                />   
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="Mileage at last oil change"
+                  label="Mileage at last oil change"
+                  name="oilMileage"
+                  value={this.state.oilMileage}
+                  type="number"
+                  fullWidth
+                  required
+                /> 
+                <h5>* is a required field</h5>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="Mileage at last air filter change"
+                  label="Mileage at last air filter change"
+                  name="filterMileage"
+                  value={this.state.filterMileage}
                   type="number"
                   fullWidth
                   required
                 />
-                <p>Trip Type:</p>
-                {this.state.TripType.length ? (
-                  <TPList onChange={(e) => {
-                    this.selectPurpose(parseInt(e.target.value))
-                  }}>
-                    <option label="Select Trip Type" disabled selected></option>
-                    {this.state.TripType.map(trip => (
-                      <TPItem key={trip.id} id={trip.id} name="trippurpose">{trip.purpose}
-                      </TPItem>
-                    ))}
-                  </TPList>
-                ) : (<h6>Please insert Trip purposes</h6>)}
-                <h5>{this.state.messageTrip}</h5>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose1} color="primary">
-                  Cancel
-            </Button>
-                <Button onClick={this.handleFormSubmit2} color="primary">
-                  Add Trip
-            </Button>
-              </DialogActions>
-            </Dialog>
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="Mileage at last tire rotation"
+                  label="Mileage at last tire rotation"
+                  name="tireMileage"
+                  value={this.state.tireMileage}
+                  type="number"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="Mileage at last battery change"
+                  label="Mileage at last battery change"
+                  name="batMileage"
+                  value={this.state.batMileage}
+                  type="number"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  autoFocus
+                  onChange={this.handleInputChange}
+                  margin="dense"
+                  id="Mileage at last break check"
+                  label="Mileage at last break check"
+                  name="brakeMileage"
+                  value={this.state.brakeMileage}
+                  type="number"
+                  fullWidth
+                  required
+                /> 
+                <h5>{this.state.message}</h5>
+              </Grid>
+            </Grid>
+          </DialogContent> 
+        <DialogActions>   
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button className="addCar" onClick={this.handleFormSubmit} color="primary">
+            Add Car
+          </Button>
+        </DialogActions>
+      </Dialog>
+    <Grid className="bar" container spacing={12}>
+    <Grid className="" item xs={8}>
+    <Line mileage={this.state.Trip} />
+    <Barra 
+    maintenance={this.state.Maintenance}
+    />
+    {this.state.Maintenance.map(clear => (
+          
+          <Button key={clear.maintenanceId} onClick={(e) => this.resetMaint(clear)} >{clear.name}</Button>
+      
+            
+    ))}
 
-          </Wrapper>
-        </div>
-      );
-    }
-    else {
-      return (
+    </Grid>
+    <Grid id="tripTable" item xs={4}>
+        <TripLog>
+          
+    <Table className="tripTable">
+        {this.state.Trip.length ? (
+
         <div>
-          {this.state.redirectTo && <Redirect to={{ pathname: this.state.redirectTo }} />}
-        "404 not found"
+
+        <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
+                      {this.state.Trip.map(triparr => (
+                        <TableRow> <td>{triparr.date}</td> <td>{triparr.totalmiles}</td> <td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
+                    ))} 
+              <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
+                Add a Trip 
+              </Button>
+
         </div>
-      );
-    }
-  }
+        
+           ) : (
+            <Fragment>
+            <h6> After you've input your car information you may add a trip with this button 
+                   <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} > Add a Trip </Button> </h6>
+            <h6> After you create your trip, your trips will be recorded here </h6>
+            <h6>* Note: if you have multiple cars, please make sure to select that car before adding that trip</h6>
+            </Fragment>
+           )}
+        </Table>
+        </TripLog> 
+
+    </Grid>
+    </Grid>
+        {/* Add a Trip dialog */}
+
+        <Dialog
+          open={this.state.open1}
+          onClose={this.handleClose1}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Trip</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Add a Trip for your Car
+            </DialogContentText>
+            <br></br>
+              <TextField
+                id="date"
+                onChange={this.handleInputChange}
+                label="Date of trip"
+                type="date"
+                name="date"
+                value={this.state.date}
+                defaultValue="date"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Total Mileage"
+                name="totalmiles"
+                onChange={this.handleInputChange}
+                value={this.state.totalmiles}
+                type="number"
+                fullWidth
+                required
+              />
+              <p>Trip Type:</p>
+              {this.state.TripType.length ? (
+              <TPList onChange={(e) => {
+                this.selectPurpose(parseInt(e.target.value))
+              }}> 
+              <option label="Select Trip Type" disabled selected></option>
+              {this.state.TripType.map(trip => (
+                <TPItem key={trip.id} id={trip.id} name="trippurpose">{trip.purpose}
+            </TPItem> 
+            ))}      
+          </TPList>
+          ) : (<h6>Please insert Trip purposes</h6>)}
+          <h5>{this.state.messageTrip}</h5>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose1} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleFormSubmit2}  color="primary">
+              Add Trip
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        </Wrapper>
+      </div>
+    );
+  
+}
+else {
+  return (
+    <div>
+      {this.state.redirectTo && <Redirect to={{ pathname: this.state.redirectTo }} />}
+    "404 not found"
+    </div>
+  );
 }
 
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-UserPage.propTypes = {
-  classes: PropTypes.object.isRequired
 }
-ScrollableTabsButtonAuto.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+}
 
 
+      TabContainer.propTypes = {
+        children: PropTypes.node.isRequired,
+      };
+      UserPage.propTypes = {
+        classes: PropTypes.object.isRequired
+      }
+      ScrollableTabsButtonAuto.propTypes = {
+        classes: PropTypes.object.isRequired,
+      };
+
+      
 
 export default withStyles(styles)(UserPage);
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-
- 

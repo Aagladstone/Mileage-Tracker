@@ -133,7 +133,7 @@ export default class Barra extends PureComponent {
   render() {
     return (
       <BarChart
-        width={500}
+        width={800}
         height={300}
         data={this.props.maintenance}
         margin={{
@@ -141,12 +141,12 @@ export default class Barra extends PureComponent {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="type" />
+        <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-        <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+        <Bar dataKey="frequency" stackId="b" fill="#8884d8" />
+        <Bar dataKey="mileage" stackId="" fill="#82ca9d" />
       </BarChart>
     );
   }

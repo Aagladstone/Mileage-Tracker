@@ -1,4 +1,9 @@
+var Sequelize = require("sequelize");
 const db = require("../models");
+var Op = Sequelize.Op;
+var moment = require("moment");
+
+
 
 
 module.exports = {
@@ -10,6 +15,20 @@ module.exports = {
             res.json(results);
           });
         },
+  reset: function(req, res) {
+    console.log(req.body.CarId)
+    console.log(req.body.MaintenanceId)
+
+    db.Car_Maintenance
+    .create({
+      mileage: 0,
+      CarId: req.body.CarId,
+      MaintenanceId: req.body.MaintenanceId
+    }).then(response => 
+      
+      res.json(response))
+      .catch(err => res.status(422).json(err))
+  },
     createCar: function(req, res) {
         db.Car
           .create({      
@@ -48,7 +67,6 @@ module.exports = {
             totalmiles: req.body.totalmiles,
             CarId: req.body.CarId,
             TripPurposeId: req.body.TripPurposeId
-
         })
           .then(response => res.json(response))
           .catch(err => res.status(422).json(err));
@@ -66,14 +84,74 @@ module.exports = {
               order: ['date'], 
               include: [db.Trip_Purpose]
             }).then(function(results) {
-                console.log(req.query.carId);
               return res.json(results);
             });
         },
-        getMaintenance: function(req, res) {
-          db.Maintenance.findAll({}).then(function(results) {
-              res.json(results);
-            });
+  getMaintenance: function(req, res) {
+
+    const maintenancesArr = [1, 2, 3, 4, 5];
+    let sum = [];
+    var k = 0;
+    var totalmiles = 0;
+    const maintenancePromises = maintenancesArr
+      .reduce((arr, i) => {
+        return arr.concat(
+          db.Car_Maintenance.findOne({
+            where: {
+              CarId: req.query.carId,
+              MaintenanceId: i
+            },
+            order: [["CreatedAt", "DESC"]],
+            include: [db.Maintenance]
+          }) 
+        )
+      }, []);
+      console.log('MAINTENANCE PROMISES')
+      console.log(maintenancePromises)
+      // console.log('---------------------')
+      return Promise.all(maintenancePromises)
+        .then(responses => {
+          console.log("hello")
+          console.log(maintenancePromises)
+          sum = responses.reduce((arr, response) => {
+
+            console.log(response.dataValues.MaintenanceId)
+            return arr.concat(
+              {
+                name: response.Maintenance.dataValues.type,
+                frequency: response.Maintenance.dataValues.frecuency,
+                maintenanceId: response.dataValues.MaintenanceId
+              }
+            )
+          }, []);
+          console.log(responses[0].dataValues.createdAt)
+          return Promise.all(responses.map(response => 
+
+            db.Trip.findAll({
+              where: {
+                CarId: req.query.carId,
+                CreatedAt: {
+                  [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
+                }
+              }, 
+              include: 
+                [db.Car]
+            })
+          ))
+        })
+        .then(responses => {
+
+          for(var i = 0; i < responses[0].length; i++){
+
+          totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
           }
-    }
-        
+
+          for (var i = 0; i < responses.length; i++) {
+            sum[i].mileage = totalmiles;
+          }
+          console.log(sum)
+          res.json(sum)
+        })
+  },
+
+}

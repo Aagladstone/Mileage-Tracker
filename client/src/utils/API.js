@@ -20,7 +20,6 @@ export default {
     return axios.get("/api/trippurpose")
   }, 
   getTrip: function(car) {
-    console.log(car)
     return axios.get("/api/trip", {
       params: {
         carId: car
@@ -36,8 +35,15 @@ export default {
     postUser:function(PostUser){
         return axios.post("/user/login", PostUser)
         },
-        getMaintenance:function(){
-          return axios.get("/api/maintenance")
+        getMaintenance:function(car){
+          return axios.get("/api/maintenance" ,{
+            params: {
+              carId: car
+            }})
+        },
+        resetCarMaint: function(clearMiles) {
+          console.log(clearMiles)
+          return axios.post("/api/clearmaint", clearMiles)
         }
 
 };

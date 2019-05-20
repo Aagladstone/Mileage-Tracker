@@ -9,7 +9,7 @@ function TripLog(props) {
   return <div className="tripLog">
   
 
-  <h4 className="logTitle"><u> Trip Log</u></h4>
+  <h4 className="logTitle">Trip Log</h4>
   {props.children}
   </div>;
 }

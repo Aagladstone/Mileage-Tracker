@@ -18,7 +18,7 @@ export function Welcome(props) {
 
     return (<div className="jumbotron jumbotron-fluid" id="welcome">
     <div className="container">
-      <h2 className="display-5">Welcome {props.username}</h2>
+      <p className="display-5">Welcome {props.username},</p>
     </div>
   </div>
     )
