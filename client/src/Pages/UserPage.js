@@ -307,12 +307,25 @@ loadCars = () => {
     });
   }
 
+  logout = () => {
+    localStorage.clear();
+ 
+    this.setState({
+      username: null,
+      redirectTo: '/'
+    })
+  }
 render() {    
     const { value } = this.state;
     const { classes } = this.props;
+
+    if (this.state.username) {
+
     return (
       <div>
-        <Wrapper><Logout />
+        <Wrapper><div id="logout">
+           <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
+         </div>
         <Welcome username={this.state.username}>       
 
         </Welcome>
@@ -601,8 +614,20 @@ render() {
         </Wrapper>
       </div>
     );
-  }
+  
 }
+else {
+  return (
+    <div>
+      {this.state.redirectTo && <Redirect to={{ pathname: this.state.redirectTo }} />}
+    "404 not found"
+    </div>
+  );
+}
+
+}
+}
+
 
       TabContainer.propTypes = {
         children: PropTypes.node.isRequired,
