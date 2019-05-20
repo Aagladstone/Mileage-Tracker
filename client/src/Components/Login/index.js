@@ -13,7 +13,7 @@ class LoginForm extends Component {
       email: '',
       password: '',
       redirectTo: null,
-      // userMessage: ""
+      loginMessage: "",
       formErrors: { email: '', password: '' },
       emailValid: false,
       passwordValid: false,
@@ -27,7 +27,6 @@ class LoginForm extends Component {
 
   goSignUp() {
     console.log(this.props);
-    // document.location.pathname = '/signup'
     this.props.history.push('/signup')
 
   }
@@ -70,16 +69,6 @@ class LoginForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-
-    // if (this.state.email === "") {
-    //   this.setState({
-    //     userMessage: "Plese enter the user email"
-    //   })
-    // } else if (this.state.password === "") {
-    //   this.setState({
-    //     userMessage: "Plese enter the password"
-    //   })
-    // } else {
     API.postUser({
       email: this.state.email,
       password: this.state.password
@@ -87,7 +76,19 @@ class LoginForm extends Component {
       .then(response => {
         console.log('login response: ')
         console.log(response)
-        if (response.status === 200) {
+        console.log(response.data)
+
+        if (!response.data.firstname) {
+          this.setState({
+            loginMessage: "Plese check your username"
+          })
+        } else if (!response.data.password) {
+          this.setState({
+            loginMessage: "oops ! worng password"
+          })
+        }
+
+        else {
           // update App.js state
           this.props.updateUser({
             loggedIn: true,
@@ -106,7 +107,6 @@ class LoginForm extends Component {
         console.log(error);
 
       })
-    // }
   }
 
   render() {
@@ -119,6 +119,9 @@ class LoginForm extends Component {
           <h4>Login</h4>
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
+          </div>
+          <div>
+            <h5>{this.state.loginMessage}</h5>
           </div>
           <form className="pure-form pure-form-stacked">
             <div className="form-group">
@@ -155,13 +158,13 @@ class LoginForm extends Component {
               <button
                 className="btn btn-primary col-1 col-mr-auto"
                 onClick={this.handleSubmit}
-                type="submit">Login</button>
+                type="submit" disabled={!this.state.formValid}>Login</button>
             </div>
-            <h5>{this.state.userMessage}</h5>
+
             <div className="row">
               <p className="col-3">Dont have an account ? </p>
               <div className=" col-3 form-group ">
-                <button className="btn btn-primary" disabled={!this.state.formValid} type="submit" onClick={this.goSignUp} >
+                <button className="btn btn-primary" type="submit" onClick={this.goSignUp} >
                   Sign Up
            </button>
               </div>

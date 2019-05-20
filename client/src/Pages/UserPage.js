@@ -306,10 +306,7 @@ loadCars = () => {
             <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
           </div>
             <Welcome username={this.state.username}>
-
             </Welcome>
-
-
 
             {this.state.CarName.length ? (
               <div id="tabBar" className={classes.root} >
