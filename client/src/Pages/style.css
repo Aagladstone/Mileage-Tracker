@@ -56,3 +56,47 @@ table {
     margin-top: 50px;
     position: relative;
 }
+
+/* LOGIN PAGE */
+#road img{
+    width: 101%;
+ }
+ #logo img{
+    width: 110px;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+ }
+#account{
+    font-size: 12px;
+    text-align: center;
+    color: green;
+}
+#create {
+    margin-bottom: 100px;
+    margin-top: -10px;
+}
+#login {
+    margin-bottom: 15px;
+    margin-left: 15px;
+    background-color: rgb(102,102,255);
+    border-color: rgb(102,102,255);
+}
+#initialmessage {
+    color: gray;
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+#titletext {
+    color: rgb(102,102,255);
+    font-size: 16px;
+    text-align: center;
+}
+#loginmessage {
+    color: rgb(102,102,255);
+}
+
+tr, td {
+    font-family: 'Raleway', sans-serif;
+}

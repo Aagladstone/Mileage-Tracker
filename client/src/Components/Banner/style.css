@@ -2,12 +2,18 @@
 .jumbotron {
     width: 100%;
     text-align: center;
-    height: 22%;
+    height: 10%;
     vertical-align: middle;
+    margin-bottom: -50px;
 }
 
 #welcome {
     text-align: left;
-    height: 10%;
     margin-top: -30px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 40px;
+}
+
+.container{
+    margin-left: 55px;
 }

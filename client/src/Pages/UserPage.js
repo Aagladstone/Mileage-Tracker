@@ -23,6 +23,8 @@ import ScrollableTabsButtonAuto from "../Components/ScrollBar/Scroll"
 import {Logout} from "../Components/Buttons/index"
 import Barra from '../Components/Bar/index'
 import Line from '../Components/Line/index'
+import { Redirect } from 'react-router-dom';
+// import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import "./style.css";
 
 const styles = theme => ({
@@ -68,13 +70,15 @@ class UserPage extends Component {
     purpose: "",
     loadingCar: false,
     loadingTrip: false,
+    loadCarMaintenance:false,
     selectedCar: "",
     message: "",
     messageTrip:"",
     id: "",
     username: "",
     Maintenance: [],
-    loadingMaintenance: false
+    loadingMaintenance: false,
+    carMaintenance:""
   };
 
   componentDidMount() {  
@@ -125,10 +129,22 @@ class UserPage extends Component {
         console.log(err)
       });
     }
+    if(this.state.loadCarMaintenance) {
+      API.resetCarMaint({
+        CarId: this.state.selectedCar,
+        MaintenanceId: this.state.carMaintenance,
+      }, 
+      )
+      .then(res => () =>
+        this.loadMaintenance())
+      .catch(err => {
+        console.log(err)
+      });
+
+    }
   }
 
 loadCars = () => {
-    // API.getCarName(car)
     API.getCarName(this.state.id)
       .then(res =>  { 
           this.setState({
@@ -172,7 +188,7 @@ loadCars = () => {
        this.setState({
          Maintenance: res.data,
          loadingMaintenance: false
-       }, () => {console.log(this.state.Maintenance)})) 
+       })) 
      .catch(err => console.log(err));
      
    }
@@ -213,14 +229,6 @@ loadCars = () => {
 
   selectPurpose = key => {
     this.setState({TripPurposeId: key})
-  }
-
-  selectCar = car => {
-    this.setState({
-       CarId: car.id,
-       selectedCar: car.id
-    }, () => {this.loadTrip(this.state.selectedCar)})
-       console.log(this.state.selectedCar)
   }
 
   handleFormSubmit = event => {
@@ -283,6 +291,22 @@ loadCars = () => {
     }
   };
 
+  
+  selectCar = car => {
+    this.setState({
+       CarId: car.id,
+       selectedCar: car.id
+    }, () => {this.loadTrip(this.state.selectedCar)})
+       console.log(this.state.selectedCar)
+  }
+
+  resetMaint = clear => {
+    this.setState({
+      loadCarMaintenance: true,
+      carMaintenance: clear.maintenanceId
+    });
+  }
+
 render() {    
     const { value } = this.state;
     const { classes } = this.props;
@@ -342,7 +366,7 @@ render() {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Car</DialogTitle>
+          <DialogTitle id="form-dialog-title">Car Information</DialogTitle>
           <DialogContent >
             <DialogContentText>
              Add a Car to your profile
@@ -354,13 +378,15 @@ render() {
                   autoFocus
                   onChange={this.handleInputChange}
                   margin="dense"
-                  className={classes.textField}
                   id="nickname"
                   label="Car Name"
                   name="nickname"
                   value={this.state.nickname}
                   type="text"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
+                  required
                 />
                 <TextField
                   autoFocus
@@ -371,6 +397,8 @@ render() {
                   name="plate"
                   value={this.state.plate}
                   type="text"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 />
@@ -379,10 +407,12 @@ render() {
                   onChange={this.handleInputChange}
                   margin="dense"
                   id="initial-mileage"
-                  label="Initial Mileage"
+                  label="Initial Car Mileage"
                   name="initialMileage"
                   value={this.state.initialMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255', 'matchRegexp:^[1-9]$']}
+                  // errorMessages={['this field is required', 'Must be a number', 'Number must be greater than zero']}
                   fullWidth
                   required
                 />   
@@ -463,27 +493,37 @@ render() {
         </DialogActions>
       </Dialog>
     <Grid className="bar" container spacing={12}>
-    <Grid className="" item xs={9}>
+    <Grid className="" item xs={8}>
     <Line mileage={this.state.Trip} />
     <Barra 
     maintenance={this.state.Maintenance}
-    // miles={whatever we save in state as sum of totalmiles}
     />
+    {this.state.Maintenance.map(clear => (
+          
+          <Button key={clear.maintenanceId} onClick={(e) => this.resetMaint(clear)} >{clear.name}</Button>
+      
+            
+    ))}
+
     </Grid>
-    <Grid id="tripTable" item xs={3}>
+    <Grid id="tripTable" item xs={4}>
         <TripLog>
           
-                  <Table className="tripTable">
+    <Table className="tripTable">
         {this.state.Trip.length ? (
-          <Fragment>
-              <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
-               {this.state.Trip.map(triparr => (
-                <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
-            ))} 
-      <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
-        Add a Trip 
-      </Button>
-              </Fragment>
+
+        <div>
+
+        <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
+                      {this.state.Trip.map(triparr => (
+                        <TableRow> <td>{triparr.date}</td> <td>{triparr.totalmiles}</td> <td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
+                    ))} 
+              <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
+                Add a Trip 
+              </Button>
+
+        </div>
+        
            ) : (
             <Fragment>
             <h6> After you've input your car information you may add a trip with this button 
