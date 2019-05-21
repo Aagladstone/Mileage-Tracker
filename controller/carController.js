@@ -42,6 +42,7 @@ module.exports = {
         
           .then(response => {
             const maintenances = [req.body.oilMileage, req.body.tireMileage, req.body.filterMileage, req.body.batMileage, req.body.brakeMileage];
+
             const promises = maintenances.reduce((arr, maintenance, i) => {
               arr.push(
                 db.Car_Maintenance.create({
@@ -87,6 +88,7 @@ module.exports = {
             });
         },
   getMaintenance: function(req, res) {
+
     const maintenancesArr = [1, 2, 3, 4, 5];
     let sum = [];
     var totalmiles = 0;
@@ -103,9 +105,6 @@ module.exports = {
           }) 
         )
       }, []);
-      console.log('MAINTENANCE PROMISES')
-      console.log(maintenancePromises)
-      // console.log('---------------------')
       return Promise.all(maintenancePromises)
         .then(responses => {
           sum = responses.reduce((arr, response) => {
@@ -118,16 +117,7 @@ module.exports = {
               }
             )
           }, []);
-            db.Trip.findAll({
-              where: {
-                CarId: req.query.carId,
-                CreatedAt: {
-                  [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
-                }
-              }, 
-              include: 
-                [db.Car]
-            })
+
           // responses.map((currElement, index) => {
           //   console.log("The current iteration is: " + index);
           //   console.log("The current element is: " + currElement);
@@ -162,15 +152,7 @@ module.exports = {
         })
         .then(responses => {
           console.log("hello")
-          for(var i = 0; i < responses[0].length; i++){
 
-          totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
-          }
-
-          for (var i = 0; i < responses.length; i++) {
-            sum[i].mileage = totalmiles;
-          }
-          console.log(sum)
           console.log(this.responses)
 
           // for(var i = 0; i < responses[0].length; i++){
@@ -184,6 +166,6 @@ module.exports = {
           // console.log(sum)
           res.json(sum)
         })
-  }
+  },
 
 }

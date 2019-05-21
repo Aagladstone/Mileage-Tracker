@@ -55,8 +55,6 @@ table {
 .bar {
     margin-top: 50px;
     position: relative;
-<<<<<<< HEAD
-=======
 }
 
 /* LOGIN PAGE */
@@ -85,7 +83,7 @@ table {
     border-color: rgb(102,102,255);
 }
 #initialmessage {
-    color: gray;
+    color: rgb(107, 107, 107);
     font-size: 13px;
     text-align: left;
     margin-bottom: 30px;
@@ -101,5 +99,4 @@ table {
 
 tr, td {
     font-family: 'Raleway', sans-serif;
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 }

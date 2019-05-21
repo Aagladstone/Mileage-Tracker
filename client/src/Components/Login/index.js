@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 import "./style.css";
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import API from "../../utils/API";
 import { FormErrors } from '../../Pages/FormErrors';
-<<<<<<< HEAD
-
-=======
 import Logo from '../../Components/Logo/index'
 import Road from '../../Components/Road/index'
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 
 class LoginForm extends Component {
   constructor(props) {
@@ -21,11 +13,7 @@ class LoginForm extends Component {
       email: '',
       password: '',
       redirectTo: null,
-<<<<<<< HEAD
-      // userMessage: ""
-=======
       loginMessage: "",
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
       formErrors: { email: '', password: '' },
       emailValid: false,
       passwordValid: false,
@@ -39,10 +27,6 @@ class LoginForm extends Component {
 
   goSignUp() {
     console.log(this.props);
-<<<<<<< HEAD
-    // document.location.pathname = '/signup'
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     this.props.history.push('/signup')
 
   }
@@ -85,19 +69,6 @@ class LoginForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-<<<<<<< HEAD
-
-    // if (this.state.email === "") {
-    //   this.setState({
-    //     userMessage: "Plese enter the user email"
-    //   })
-    // } else if (this.state.password === "") {
-    //   this.setState({
-    //     userMessage: "Plese enter the password"
-    //   })
-    // } else {
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     API.postUser({
       email: this.state.email,
       password: this.state.password
@@ -105,9 +76,6 @@ class LoginForm extends Component {
       .then(response => {
         console.log('login response: ')
         console.log(response)
-<<<<<<< HEAD
-        if (response.status === 200) {
-=======
         console.log(response.data)
 
         if (!response.data.firstname) {
@@ -121,7 +89,6 @@ class LoginForm extends Component {
         }
 
         else {
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
           // update App.js state
           this.props.updateUser({
             loggedIn: true,
@@ -140,10 +107,6 @@ class LoginForm extends Component {
         console.log(error);
 
       })
-<<<<<<< HEAD
-    // }
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
   }
 
   render() {
@@ -151,61 +114,6 @@ class LoginForm extends Component {
       return <Redirect to={{ pathname: this.state.redirectTo }} />
     } else {
 
-<<<<<<< HEAD
-      return (
-        <div id="signin" >
-          <h4>Login</h4>
-          <div className="panel panel-default">
-            <FormErrors formErrors={this.state.formErrors} />
-          </div>
-          <form className="pure-form pure-form-stacked">
-            <div className="form-group">
-              <div className="col-1 col-ml-auto">
-                <label className="form-label" htmlFor="email">email</label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-1 col-ml-auto">
-                <label className="form-label" htmlFor="password">Password: </label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  placeholder="password"
-                  type="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group ">
-              <div className="col-7"></div>
-              <button
-                className="btn btn-primary col-1 col-mr-auto"
-                onClick={this.handleSubmit}
-                type="submit">Login</button>
-            </div>
-            <h5>{this.state.userMessage}</h5>
-            <div className="row">
-              <p className="col-3">Dont have an account ? </p>
-              <div className=" col-3 form-group ">
-                <button className="btn btn-primary" disabled={!this.state.formValid} type="submit" onClick={this.goSignUp} >
-                  Sign Up
-           </button>
-              </div>
-            </div>
-          </form>
-=======
 
       return (
         <div id="signin" >
@@ -337,7 +245,6 @@ class LoginForm extends Component {
           </div>
 
 
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
         </div>
       )
     }
@@ -345,8 +252,5 @@ class LoginForm extends Component {
 }
 
 export default LoginForm
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab

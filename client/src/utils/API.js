@@ -20,10 +20,6 @@ export default {
     return axios.get("/api/trippurpose")
   }, 
   getTrip: function(car) {
-<<<<<<< HEAD
-    console.log(car)
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     return axios.get("/api/trip", {
       params: {
         carId: car
@@ -44,13 +40,10 @@ export default {
             params: {
               carId: car
             }})
-<<<<<<< HEAD
-=======
         },
         resetCarMaint: function(clearMiles) {
           console.log(clearMiles)
           return axios.post("/api/clearmaint", clearMiles)
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
         }
 
 };

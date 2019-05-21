@@ -41,13 +41,3 @@ export function Logout() {
 </div>
   )
 }
-
-export function Logout() {
-
-
-  return (
-  <div id="logout">
-<button class="pure-button logout">Logout</button>
-</div>
-  )
-}

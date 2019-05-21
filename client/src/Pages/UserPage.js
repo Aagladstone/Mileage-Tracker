@@ -23,11 +23,8 @@ import ScrollableTabsButtonAuto from "../Components/ScrollBar/Scroll"
 import {Logout} from "../Components/Buttons/index"
 import Barra from '../Components/Bar/index'
 import Line from '../Components/Line/index'
-<<<<<<< HEAD
-=======
 import { Redirect } from 'react-router-dom';
 // import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 import "./style.css";
 
 const styles = theme => ({
@@ -73,22 +70,15 @@ class UserPage extends Component {
     purpose: "",
     loadingCar: false,
     loadingTrip: false,
-<<<<<<< HEAD
-=======
     loadCarMaintenance:false,
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     selectedCar: "",
     message: "",
     messageTrip:"",
     id: "",
     username: "",
     Maintenance: [],
-<<<<<<< HEAD
-    loadingMaintenance: false
-=======
     loadingMaintenance: false,
     carMaintenance:""
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
   };
 
   componentDidMount() {  
@@ -139,12 +129,6 @@ class UserPage extends Component {
         console.log(err)
       });
     }
-<<<<<<< HEAD
-  }
-
-loadCars = () => {
-    // API.getCarName(car)
-=======
     if(this.state.loadCarMaintenance) {
       API.resetCarMaint({
         CarId: this.state.selectedCar,
@@ -161,7 +145,6 @@ loadCars = () => {
   }
 
 loadCars = () => {
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     API.getCarName(this.state.id)
       .then(res =>  { 
           this.setState({
@@ -205,11 +188,7 @@ loadCars = () => {
        this.setState({
          Maintenance: res.data,
          loadingMaintenance: false
-<<<<<<< HEAD
-       }, () => {console.log(this.state.Maintenance)})) 
-=======
        })) 
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
      .catch(err => console.log(err));
      
    }
@@ -252,17 +231,6 @@ loadCars = () => {
     this.setState({TripPurposeId: key})
   }
 
-<<<<<<< HEAD
-  selectCar = car => {
-    this.setState({
-       CarId: car.id,
-       selectedCar: car.id
-    }, () => {this.loadTrip(this.state.selectedCar)})
-       console.log(this.state.selectedCar)
-  }
-
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
   handleFormSubmit = event => {
     event.preventDefault();
     if(this.state.nickname === ""){
@@ -323,14 +291,6 @@ loadCars = () => {
     }
   };
 
-<<<<<<< HEAD
-render() {    
-    const { value } = this.state;
-    const { classes } = this.props;
-    return (
-      <div>
-        <Wrapper><Logout />
-=======
   
   selectCar = car => {
     this.setState({
@@ -366,7 +326,6 @@ render() {
         <Wrapper><div id="logout">
            <button class="pure-button logout" type="submit" onClick={this.logout} >Logout</button>
          </div>
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
         <Welcome username={this.state.username}>       
 
         </Welcome>
@@ -420,11 +379,7 @@ render() {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-<<<<<<< HEAD
-          <DialogTitle id="form-dialog-title">Car</DialogTitle>
-=======
           <DialogTitle id="form-dialog-title">Car Information</DialogTitle>
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
           <DialogContent >
             <DialogContentText>
              Add a Car to your profile
@@ -436,23 +391,15 @@ render() {
                   autoFocus
                   onChange={this.handleInputChange}
                   margin="dense"
-<<<<<<< HEAD
-                  className={classes.textField}
-=======
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
                   id="nickname"
                   label="Car Name"
                   name="nickname"
                   value={this.state.nickname}
                   type="text"
-<<<<<<< HEAD
-                  fullWidth
-=======
                   // validators={['minNumber:0', 'maxNumber:255']}
                   // errorMessages={['this field is required']}
                   fullWidth
                   required
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
                 />
                 <TextField
                   autoFocus
@@ -463,11 +410,8 @@ render() {
                   name="plate"
                   value={this.state.plate}
                   type="text"
-<<<<<<< HEAD
-=======
                   // validators={['minNumber:0', 'maxNumber:255']}
                   // errorMessages={['this field is required']}
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
                   fullWidth
                   required
                 />
@@ -476,19 +420,12 @@ render() {
                   onChange={this.handleInputChange}
                   margin="dense"
                   id="initial-mileage"
-<<<<<<< HEAD
-                  label="Initial Mileage"
-                  name="initialMileage"
-                  value={this.state.initialMileage}
-                  type="number"
-=======
                   label="Initial Car Mileage"
                   name="initialMileage"
                   value={this.state.initialMileage}
                   type="number"
                   // validators={['minNumber:0', 'maxNumber:255', 'matchRegexp:^[1-9]$']}
                   // errorMessages={['this field is required', 'Must be a number', 'Number must be greater than zero']}
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
                   fullWidth
                   required
                 />   
@@ -569,29 +506,6 @@ render() {
         </DialogActions>
       </Dialog>
     <Grid className="bar" container spacing={12}>
-<<<<<<< HEAD
-    <Grid className="" item xs={9}>
-    <Line mileage={this.state.Trip} />
-    <Barra 
-    maintenance={this.state.Maintenance}
-    // miles={whatever we save in state as sum of totalmiles}
-    />
-    </Grid>
-    <Grid id="tripTable" item xs={3}>
-        <TripLog>
-          
-                  <Table className="tripTable">
-        {this.state.Trip.length ? (
-          <Fragment>
-              <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
-               {this.state.Trip.map(triparr => (
-                <TableRow> <td>{triparr.date}</td><td>{triparr.totalmiles}</td><td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
-            ))} 
-      <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
-        Add a Trip 
-      </Button>
-              </Fragment>
-=======
     <Grid className="" item xs={8}>
     <Line mileage={this.state.Trip} />
     <Barra 
@@ -623,7 +537,6 @@ render() {
 
         </div>
         
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
            ) : (
             <Fragment>
             <h6> After you've input your car information you may add a trip with this button 
@@ -701,11 +614,6 @@ render() {
         </Wrapper>
       </div>
     );
-<<<<<<< HEAD
-  }
-}
-
-=======
   
 }
 else {
@@ -721,7 +629,6 @@ else {
 }
 
 
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
       TabContainer.propTypes = {
         children: PropTypes.node.isRequired,
       };
