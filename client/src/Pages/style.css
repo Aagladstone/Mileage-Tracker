@@ -83,7 +83,7 @@ table {
     border-color: rgb(102,102,255);
 }
 #initialmessage {
-    color: gray;
+    color: rgb(107, 107, 107);
     font-size: 13px;
     text-align: left;
     margin-bottom: 30px;

@@ -1,5 +1,7 @@
 import React from "react";
+import Logo from "../../Components/Logo/index"
 import "./style.css";
+
 
 export default function Banner(props) {
 
@@ -16,9 +18,13 @@ export default function Banner(props) {
 
 export function Welcome(props) {
 
-    return (<div className="jumbotron jumbotron-fluid" id="welcome">
+    return (
+    <div className="jumbotron jumbotron-fluid" id="welcome">
+    
+    
     <div className="container">
-      <p className="display-5">Welcome {props.username},</p>
+    
+      <p className="display-5"> <Logo id="logo" />Welcome {props.username},</p>
     </div>
   </div>
     )

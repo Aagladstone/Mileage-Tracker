@@ -2,8 +2,8 @@ import React from 'react';
 import logo from './logo.png';
 
 
-function Logo() {
-  return <img src={logo} alt="Logo" />;
+function Logo(props) {
+  return <img src={logo} id={props.id} alt="Logo" />;
 }
 
 export default Logo;
