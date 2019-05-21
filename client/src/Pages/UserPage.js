@@ -438,6 +438,8 @@ render() {
                   name="oilMileage"
                   value={this.state.oilMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 /> 
@@ -453,6 +455,8 @@ render() {
                   name="filterMileage"
                   value={this.state.filterMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 />
@@ -465,6 +469,8 @@ render() {
                   name="tireMileage"
                   value={this.state.tireMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 />
@@ -477,6 +483,8 @@ render() {
                   name="batMileage"
                   value={this.state.batMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 />
@@ -489,6 +497,8 @@ render() {
                   name="brakeMileage"
                   value={this.state.brakeMileage}
                   type="number"
+                  // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                   fullWidth
                   required
                 /> 
@@ -511,22 +521,21 @@ render() {
     <Barra 
     maintenance={this.state.Maintenance}
     />
+    <p id="resetMaint">Reset Your Maintenance Milestones</p>
+    <div id="resets">
     {this.state.Maintenance.map(clear => (
-          
-          <Button key={clear.maintenanceId} onClick={(e) => this.resetMaint(clear)} >{clear.name}</Button>
-      
-            
+        <Fragment>
+          <Button key={clear.maintenanceId} id="buttonMap" onClick={(e) => this.resetMaint(clear)} >{clear.name}  <i className="fas fa-sync-alt"></i> </Button>
+       </Fragment>
     ))}
-
+    </div>
     </Grid>
     <Grid id="tripTable" item xs={4}>
         <TripLog>
           
     <Table className="tripTable">
         {this.state.Trip.length ? (
-
-        <div>
-
+          <Fragment>
         <tr><td>Date</td><td>Mileage</td><td>Purpose</td></tr>
                       {this.state.Trip.map(triparr => (
                         <TableRow> <td>{triparr.date}</td> <td>{triparr.totalmiles}</td> <td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
@@ -534,9 +543,7 @@ render() {
               <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
                 Add a Trip 
               </Button>
-
-        </div>
-        
+          </Fragment>
            ) : (
             <Fragment>
             <h6> After you've input your car information you may add a trip with this button 
@@ -584,6 +591,8 @@ render() {
                 onChange={this.handleInputChange}
                 value={this.state.totalmiles}
                 type="number"
+                // validators={['minNumber:0', 'maxNumber:255']}
+                  // errorMessages={['this field is required']}
                 fullWidth
                 required
               />

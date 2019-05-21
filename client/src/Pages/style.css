@@ -100,3 +100,22 @@ table {
 tr, td {
     font-family: 'Raleway', sans-serif;
 }
+
+#buttonMap {
+    padding: 10px 15px;
+    /* margin-left: 3px */
+}
+
+#resetMaint {
+    margin: 10px 2px 5px 0px;
+    border-bottom: solid black 2px;
+    width: 350px
+}
+
+i {
+    margin-left: 5px;
+}
+
+#resets {
+    margin-left: 76px;
+}
