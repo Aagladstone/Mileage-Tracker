@@ -4,28 +4,22 @@
     background-color: rgb(102,102,255);
     border-color: rgb(102,102,255);
     margin-top: 10px;
-}
-#logo{
-    margin-left: 75px;
-}
-
-#error{
+  }
+  #logo{
+    margin-left: 150px;
+    margin-top: 10px;
+  }
+  #error{
     margin-left: 30px;
-}
-.roadImageOne{
-    width: 410px;  
-    margin-left: -25px;
-}
-.roadImageTwo{
-    width: 410px;  
-    margin-left: 15px;
-}
-.pure-form{
+  }
+  .roadImageOne{
+    width: 410px; 
+    margin-left: -45px;
+  }
+  .roadImageTwo{
+    width: 410px; 
+    margin-left: 25px;
+  }
+  #SignupForm{
     margin-left: 45px;
-}
-
-
-
-
-
-
+  }
