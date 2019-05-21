@@ -15,6 +15,23 @@ module.exports = {
             res.json(results);
           });
         },
+<<<<<<< HEAD
+=======
+  reset: function(req, res) {
+    console.log(req.body.CarId)
+    console.log(req.body.MaintenanceId)
+
+    db.Car_Maintenance
+    .create({
+      mileage: 0,
+      CarId: req.body.CarId,
+      MaintenanceId: req.body.MaintenanceId
+    }).then(response => 
+      
+      res.json(response))
+      .catch(err => res.status(422).json(err))
+  },
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     createCar: function(req, res) {
         db.Car
           .create({      
@@ -28,6 +45,10 @@ module.exports = {
         
           .then(response => {
             const maintenances = [req.body.oilMileage, req.body.tireMileage, req.body.filterMileage, req.body.batMileage, req.body.brakeMileage];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             const promises = maintenances.reduce((arr, maintenance, i) => {
               arr.push(
                 db.Car_Maintenance.create({
@@ -86,13 +107,18 @@ module.exports = {
               CarId: req.query.carId,
               MaintenanceId: i
             },
+<<<<<<< HEAD
             order: [["CreatedAt", "DESc"]],
+=======
+            order: [["CreatedAt", "DESC"]],
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             include: [db.Maintenance]
           }) 
         )
       }, []);
       console.log('MAINTENANCE PROMISES')
       console.log(maintenancePromises)
+<<<<<<< HEAD
       console.log('---------------------')
       return Promise.all(maintenancePromises)
         .then(responses => {
@@ -111,20 +137,50 @@ module.exports = {
   
           return Promise.all(responses.map(response => 
             // console.log(response),
+=======
+      // console.log('---------------------')
+      return Promise.all(maintenancePromises)
+        .then(responses => {
+          console.log("hello")
+          console.log(maintenancePromises)
+          sum = responses.reduce((arr, response) => {
+
+            console.log(response.dataValues.MaintenanceId)
+            return arr.concat(
+              {
+                name: response.Maintenance.dataValues.type,
+                frequency: response.Maintenance.dataValues.frecuency,
+                maintenanceId: response.dataValues.MaintenanceId
+              }
+            )
+          }, []);
+          console.log(responses[0].dataValues.createdAt)
+          return Promise.all(responses.map(response => 
+
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             db.Trip.findAll({
               where: {
                 CarId: req.query.carId,
                 CreatedAt: {
+<<<<<<< HEAD
                   [Op.gte]:moment(response.dataValues.createdAt).format('YYYY-MM-DD')
                 }
               }, 
               include: [db.Car]
+=======
+                  [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
+                }
+              }, 
+              include: 
+                [db.Car]
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             })
           ))
         })
         .then(responses => {
 
           for(var i = 0; i < responses[0].length; i++){
+<<<<<<< HEAD
           // console.log('trip responses')
           // console.log(responses[0])
           // console.log(responses[0][i].dataValues.totalmiles)
@@ -137,10 +193,15 @@ module.exports = {
           // console.log('SUM')
           console.log(sum)
           // console.log('---------------------')
+=======
+
+          totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
           }
 
           for (var i = 0; i < responses.length; i++) {
             sum[i].mileage = totalmiles;
+<<<<<<< HEAD
             // console.log(responses[0].length)
             // console.log(sum)
           }
@@ -195,4 +256,12 @@ module.exports = {
     // console.log(array5)
 
   }
+=======
+          }
+          console.log(sum)
+          res.json(sum)
+        })
+  },
+
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 }

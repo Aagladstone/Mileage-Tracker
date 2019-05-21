@@ -18,7 +18,11 @@ export function Welcome(props) {
 
     return (<div className="jumbotron jumbotron-fluid" id="welcome">
     <div className="container">
+<<<<<<< HEAD:client/src/Components/Banner/index.js
       <h2 className="display-5">Welcome {props.username}</h2>
+=======
+      <p className="display-5">Welcome {props.username},</p>
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab:client/src/Components/Banner/index.js
     </div>
   </div>
     )

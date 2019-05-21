@@ -22,12 +22,22 @@ export function AddTrip() {
   }
 
   
-export function ResetMaint() {
+export function ResetMaint(props) {
 
 
   return (
   <div id="resetMaint">
-<button class="pure-button resetMaint">Reset</button>
+<button key={props.key} onClick={onclick}>{props.children}</button>
+</div>
+  )
+}
+
+export function Logout() {
+
+
+  return (
+  <div id="logout">
+<button class="pure-button logout">Logout</button>
 </div>
   )
 }

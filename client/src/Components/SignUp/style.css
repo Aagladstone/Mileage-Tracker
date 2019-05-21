@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #SignupForm {
     padding: 3%;
     border-style: solid;
@@ -8,4 +9,36 @@
     background-color: #0078e7;
 
 } */
+=======
+#signup{
+    margin-bottom: 15px;
+    margin-left: 15px;
+    background-color: rgb(102,102,255);
+    border-color: rgb(102,102,255);
+    margin-top: 10px;
+}
+#logo{
+    margin-left: 75px;
+}
+
+#error{
+    margin-left: 30px;
+}
+.roadImageOne{
+    width: 410px;  
+    margin-left: -25px;
+}
+.roadImageTwo{
+    width: 410px;  
+    margin-left: 15px;
+}
+.pure-form{
+    margin-left: 45px;
+}
+
+
+
+
+
+>>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 
