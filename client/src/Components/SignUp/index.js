@@ -3,7 +3,9 @@ import { Redirect } from 'react-router-dom'
 import API from '../../utils/API'
 import "./style.css";
 import { FormErrors } from '../../Pages/FormErrors';
-
+import Logo from '../../Components/Logo/index'
+import Roadimage1 from '../../Components/Roadimage1/index'
+import Roadimage2 from '../../Components/Roadimage2/index'
 
 
 class SignUp extends Component {
@@ -143,103 +145,104 @@ class SignUp extends Component {
     } else {
       return (
         <div id="SignupForm">
-          <h4>Sign up</h4>
-          <div className="panel panel-default">
-            <FormErrors formErrors={this.state.formErrors} />
-          </div>
-          <div>
-            <h5>{this.state.signupMessage}</h5>
-          </div>
+          <div class="row">
+            <div className="roadImageOne" class="col-4">
+              <Roadimage1 />
+            </div>
+            <div class="col-3">
+              <div id="logo"> <Logo /> </div>
+              <div id="error" className="panel panel-default">
+                <FormErrors formErrors={this.state.formErrors} />
+              </div>
+              <div>
+                <h5>{this.state.signupMessage}</h5>
+              </div>
 
-          <form className="pure-form pure-form-stacked">
-            <div className="form-group">
-              <div className="col-7">
-                <label className="form-label" htmlFor="firstname">First Name:</label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  type="text"
-                  id="firstname"
-                  name="firstname"
-                  placeholder="First Name"
-                  value={this.state.firstname}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-7">
-                <label className="form-label" htmlFor="lastname">Last Name:</label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  type="text"
-                  id="lastname"
-                  name="lastname"
-                  placeholder="Last Name"
-                  value={this.state.lastname}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-3 col-ml-auto">
-                <label className="form-label" htmlFor="email">email: </label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-3 col-ml-auto">
-                <label className="form-label" htmlFor="password">Password: </label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  placeholder="password"
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-7 ">
-                <label className="form-label" htmlFor="Confirm Password">Confirm Password: </label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  placeholder="Confirm Password"
-                  id="confirmPassword"
-                  type="password"
-                  name="confirmPassword"
-                  value={this.state.confirmPassword}
-                  onChange={this.handleChange}
-                />
-              </div>
+              <form className="pure-form pure-form-stacked">
+                <div className="form-group">
+
+                  <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                      type="text"
+                      id="firstname"
+                      name="firstname"
+                      placeholder="First Name"
+                      value={this.state.firstname}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+
+                  <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                      type="text"
+                      id="lastname"
+                      name="lastname"
+                      placeholder="Last Name"
+                      value={this.state.lastname}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+
+                  <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                      type="text"
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      value={this.state.email}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+
+                  <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                      placeholder="password"
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={this.state.password}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+
+                  <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                      placeholder="Confirm Password"
+                      id="confirmPassword"
+                      type="password"
+                      name="confirmPassword"
+                      value={this.state.confirmPassword}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group ">
+                  <div className="col-7"></div>
+                  <button id="signup"
+                    className="btn btn-primary  col-mr-auto"
+                    onClick={this.handleSubmit}
+                    disabled={!this.state.formValid}
+                    type="submit"
+                  >Sign up</button>
+                </div>
+              </form>
+
             </div>
 
-            <div className="form-group ">
-              <div className="col-7"></div>
-              <button
-                className="btn btn-primary col-1 col-mr-auto"
-                onClick={this.handleSubmit}
-                disabled={!this.state.formValid}
-                type="submit"
-              >Sign up</button>
+            <div className="roadImageTwo" class="col-5">
+              <Roadimage2 />
             </div>
-          </form>
+          </div>
         </div>
-
       )
     }
   }
