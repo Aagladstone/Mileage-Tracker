@@ -1,0 +1,58 @@
+#user-list {
+    margin-left: 5px;
+}
+
+.list-group-item {
+    padding: 0px;
+    font-size: 18px;
+}
+
+.pure-menu-horizontal .pure-menu-list {
+    display: flex;
+    width: 75%;
+    margin-left: 202px;
+}
+
+.pure-menu-list {
+    margin: 0px;
+}
+
+/* h3 {
+    margin-left: 195px;
+} */
+
+/* .MuiPaper-root-64, .MuiPaper-elevation4-70, .MuiAppBar-root-55, .MuiAppBar-positionStatic-59, .MuiAppBar-colorDefault-61, .tabBar {
+    width: 70%;
+} */
+
+.tripTable {
+display: center;
+
+}
+
+.MuiGrid-spacing-xs-24-72, .MuiGrid-item-49 {
+    padding-top: 30px;
+    text-align: -webkit-center;
+}
+
+h5{
+    color: red;
+}
+
+#tripTable {
+    align-content: center;
+}
+
+table {
+    width: 80%
+}
+
+.MuiGrid-spacing-xs-24-72 {
+    width: 100%;
+    margin: 0px;
+}
+
+.bar {
+    margin-top: 50px;
+    position: relative;
+}

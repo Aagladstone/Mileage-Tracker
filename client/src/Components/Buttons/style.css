@@ -1,0 +1,26 @@
+.addCar, .addTrip {
+    background-color: rgb(60, 241, 60);
+}
+
+#addCar {
+    /* margin-right: 300px; */
+    /* margin-left: -180px; */
+    position: relative;  
+}
+.addTrip {
+    /* margin-right: 400px; */
+    margin-left: -75px;
+    position: relative;
+}
+
+.MuiTouchRipple-child-48 {
+    margin-left: 30px;
+}
+
+.logout {
+    position: absolute;
+    z-index: 10;
+    top: 30px;
+    right: 35px;
+    background-color: burlywood
+}
