@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import API from "../../utils/API";
 import { FormErrors } from '../../Pages/FormErrors';
-
+import Logo from '../../Components/Logo/index'
+import Road from '../../Components/Road/index'
 
 class LoginForm extends Component {
   constructor(props) {
@@ -113,62 +114,137 @@ class LoginForm extends Component {
       return <Redirect to={{ pathname: this.state.redirectTo }} />
     } else {
 
+
       return (
         <div id="signin" >
-          <h4>Login</h4>
+
+
+          <div class="row">
+            <div class="col-4" id="logo"> <Logo />
+
+
+
+              <div class="row">
+
+                <div class="col-4">
+                </div>
+                <div class="col-3">
+                  <p id="loginmessage">Login</p>
+                </div>
+              </div>
+
+              <div id="error" className="panel panel-default">
+                <FormErrors formErrors={this.state.formErrors} />
+              </div>
+
+
+              <div class="row">
+
+
+                <div class="col-3">
+                </div>
+
+
+
+
+                <form class="col-6" className="pure-form pure-form-stacked">
+                  <div className="form-group">
+                    <div className="col-1 col-ml-auto">
+                      <label className="form-label" htmlFor="email"></label>
+                    </div>
+                    <div className="col-3 col-mr-auto">
+                      <input className="form-input"
+                        type="text"
+                        id="email"
+                        name="email"
+                        placeholder="E-mail"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <div className="col-1 col-ml-auto">
+                      <label className="form-label" htmlFor="password"></label>
+                    </div>
+                    <div className="col-3 col-mr-auto">
+                      <input className="form-input"
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group ">
+                    <div className="col-7"></div>
+                    <button id="login"
+                      className="btn-sm btn-primary col-mr-auto"
+                      onClick={this.handleSubmit}
+                      type="submit">Login</button>
+                  </div>
+                  <h5>{this.state.userMessage}</h5>
+
+
+                </form>
+
+              </div>
+
+
+              <div class="row">
+                <div class="col-3">
+                </div>
+                <div class="col-6">
+                  <p id="account">Don't you have an account?</p>
+                </div>
+              </div>
+
+
+
+              <div class="row">
+                <div class="col-4">
+                </div>
+
+                <button id="create" className="btn-sm btn-success" disabled={!this.state.formValid} type="submit" onClick={this.goSignUp} >
+                  Create my account
+              </button>
+              </div>
+
+              <div class="row">
+
+                <div class="col-1">
+                </div>
+                <div class="col-10">
+                  <p id="titletext">What we do.</p>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-1">
+                </div>
+                <div class="col-10">
+                  <p id="initialmessage">We help you to organize your car mileage and also you car maintenance.</p>
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+
+            <div class="col-5" id="road"> <Road /> </div>
+          </div>
+
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
           </div>
-          <div>
-            <h5>{this.state.loginMessage}</h5>
-          </div>
-          <form className="pure-form pure-form-stacked">
-            <div className="form-group">
-              <div className="col-1 col-ml-auto">
-                <label className="form-label" htmlFor="email">email</label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="col-1 col-ml-auto">
-                <label className="form-label" htmlFor="password">Password: </label>
-              </div>
-              <div className="col-3 col-mr-auto">
-                <input className="form-input"
-                  placeholder="password"
-                  type="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-            <div className="form-group ">
-              <div className="col-7"></div>
-              <button
-                className="btn btn-primary col-1 col-mr-auto"
-                onClick={this.handleSubmit}
-                type="submit" disabled={!this.state.formValid}>Login</button>
-            </div>
 
-            <div className="row">
-              <p className="col-3">Dont have an account ? </p>
-              <div className=" col-3 form-group ">
-                <button className="btn btn-primary" type="submit" onClick={this.goSignUp} >
-                  Sign Up
-           </button>
-              </div>
-            </div>
-          </form>
+
         </div>
       )
     }
@@ -176,3 +252,5 @@ class LoginForm extends Component {
 }
 
 export default LoginForm
+
+
