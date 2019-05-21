@@ -521,7 +521,6 @@ render() {
     <Barra 
     maintenance={this.state.Maintenance}
     />
-    <p id="resetMaint">Reset Your Maintenance Milestones</p>
     <div id="resets">
     {this.state.Maintenance.map(clear => (
         <Fragment>
