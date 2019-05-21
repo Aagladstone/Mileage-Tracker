@@ -15,8 +15,6 @@ module.exports = {
             res.json(results);
           });
         },
-<<<<<<< HEAD
-=======
   reset: function(req, res) {
     console.log(req.body.CarId)
     console.log(req.body.MaintenanceId)
@@ -31,7 +29,6 @@ module.exports = {
       res.json(response))
       .catch(err => res.status(422).json(err))
   },
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
     createCar: function(req, res) {
         db.Car
           .create({      
@@ -45,10 +42,6 @@ module.exports = {
         
           .then(response => {
             const maintenances = [req.body.oilMileage, req.body.tireMileage, req.body.filterMileage, req.body.batMileage, req.body.brakeMileage];
-<<<<<<< HEAD
-=======
-
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             const promises = maintenances.reduce((arr, maintenance, i) => {
               arr.push(
                 db.Car_Maintenance.create({
@@ -94,10 +87,8 @@ module.exports = {
             });
         },
   getMaintenance: function(req, res) {
-
     const maintenancesArr = [1, 2, 3, 4, 5];
     let sum = [];
-    var k = 0;
     var totalmiles = 0;
     const maintenancePromises = maintenancesArr
       .reduce((arr, i) => {
@@ -107,161 +98,92 @@ module.exports = {
               CarId: req.query.carId,
               MaintenanceId: i
             },
-<<<<<<< HEAD
-            order: [["CreatedAt", "DESc"]],
-=======
             order: [["CreatedAt", "DESC"]],
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             include: [db.Maintenance]
           }) 
         )
       }, []);
       console.log('MAINTENANCE PROMISES')
       console.log(maintenancePromises)
-<<<<<<< HEAD
-      console.log('---------------------')
-      return Promise.all(maintenancePromises)
-        .then(responses => {
-          console.log('maintenance responses')
-          console.log(responses)
-          console.log('---------------------')
-          sum = responses.reduce((arr, response) => {
-            return arr.concat(
-              {
-                name: response.Maintenance.dataValues.type,
-                frequency: response.Maintenance.dataValues.frecuency
-              }
-            )
-          }, []);
-          
-  
-          return Promise.all(responses.map(response => 
-            // console.log(response),
-=======
       // console.log('---------------------')
       return Promise.all(maintenancePromises)
         .then(responses => {
-          console.log("hello")
-          console.log(maintenancePromises)
           sum = responses.reduce((arr, response) => {
-
-            console.log(response.dataValues.MaintenanceId)
             return arr.concat(
               {
                 name: response.Maintenance.dataValues.type,
                 frequency: response.Maintenance.dataValues.frecuency,
-                maintenanceId: response.dataValues.MaintenanceId
+                maintenanceId: response.dataValues.MaintenanceId,
+                date: response.dataValues.createdAt
               }
             )
           }, []);
-          console.log(responses[0].dataValues.createdAt)
-          return Promise.all(responses.map(response => 
-
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             db.Trip.findAll({
               where: {
                 CarId: req.query.carId,
                 CreatedAt: {
-<<<<<<< HEAD
-                  [Op.gte]:moment(response.dataValues.createdAt).format('YYYY-MM-DD')
-                }
-              }, 
-              include: [db.Car]
-=======
                   [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
                 }
               }, 
               include: 
                 [db.Car]
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
             })
+          // responses.map((currElement, index) => {
+          //   console.log("The current iteration is: " + index);
+          //   console.log("The current element is: " + currElement);
+          //   console.log("\n");
+          //   return 'X';
+          //  });
+          // console.log(responses[0].dataValues.createdAt)
+          // return Promise.all(responses.map(response => {
+          return Promise.all(responses.map((currElement, index, responses) => {
+            // console.log("The current iteration is: " + index);
+            // console.log("The current element is: " + currElement);
+            // console.log("\n");
+          //  let k = 0
+          //   console.log(k)
+            // for(var k = 0; k < sum.length; k++){
+              // console.log(sum[index].date)
+
+              db.Trip.findAll({
+                where: {
+                  CarId: req.query.carId,
+                  CreatedAt: {
+                    [Op.gt]:moment(sum[index].date).format('YYYY-MM-DD')
+                  }
+                }, 
+                include: 
+                  [db.Car]
+              })
+            // }
+          //   ,k+1
+          }
           ))
         })
         .then(responses => {
-
+          console.log("hello")
           for(var i = 0; i < responses[0].length; i++){
-<<<<<<< HEAD
-          // console.log('trip responses')
-          // console.log(responses[0])
-          // console.log(responses[0][i].dataValues.totalmiles)
-          // console.log(totalmiles)
-          totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
-          // console.log(i)
-          // console.log(totalmiles)
-          // console.log('---------------------')
-          
-          // console.log('SUM')
-          console.log(sum)
-          // console.log('---------------------')
-=======
 
           totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
           }
 
           for (var i = 0; i < responses.length; i++) {
             sum[i].mileage = totalmiles;
-<<<<<<< HEAD
-            // console.log(responses[0].length)
-            // console.log(sum)
           }
-          
+          console.log(sum)
+          console.log(this.responses)
 
+          // for(var i = 0; i < responses[0].length; i++){
+
+          // totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
+          // }
+
+          // for (var i = 0; i < responses.length; i++) {
+          //   sum[i].mileage = totalmiles;
+          // }
           // console.log(sum)
           res.json(sum)
         })
-
-      // for(var i = 0; i <= maintenancesArr.length; i++){
-      //     db.Car_Maintenance.findOne({
-      //   where: {
-      //     CarId: req.query.carId,
-      //     MaintenanceId: maintenancesArr[i]
-      //   },
-      //   order: [["CreatedAt", "DESC"]],
-      //   include: [db.Maintenance]
-      // })     
-      //.then(response => {
-        // sum.push({
-        //   name: response.Maintenance.dataValues.type,
-        //   frecuency: response.Maintenance.dataValues.frecuency
-        // })
-        
-    //     .then(results => {    
-    //       // console.log(results.Trip.Car[0])    
-    //       totalmiles = 0;
-    //       for(var j = 0; j < results.length ; j++){
-    //         totalmiles += results[j].dataValues.totalmiles
-    //       }
-    //       // console.log(sum[k]);
-    //       let obj = sum[k];
-    //       // console.log(obj);
-    //       let copyObj = Object.assign(obj, {mileage: totalmiles});
-    //       // console.log(copyObj);
-    //       // console.log(sum);
-    //       array5 = sum;
-    // // console.log(sum)
-
-    //       k++;
-    //     // return sum;
-    //     })
-    //   // return sum
-    //   // console.log(maintenancesArr)
-    //   // console.log(sum)
-    //   // return sum;
-    //      console.log(sum)
-        //})      
-    //}
-    // console.log(maintenancesArr)
-    // console.log("hello")
-    // console.log(array5)
-
   }
-=======
-          }
-          console.log(sum)
-          res.json(sum)
-        })
-  },
 
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab
 }
