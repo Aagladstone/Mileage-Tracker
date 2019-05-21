@@ -1,6 +1,13 @@
 #road img{
+<<<<<<< HEAD
     width: 680px;
     margin-left: -100px;
+=======
+    width: 155%;
+    margin-left: -100px;
+    padding-right: -100px;
+    height: 100%;
+>>>>>>> dc1ac1a9d327aa99d78c042cb7c0f70c0e8c0c2e
  }
  #logo img{
     width: 110px;
@@ -27,7 +34,11 @@
 }
 #initialmessage {
     color: gray;
+<<<<<<< HEAD
     width: 250px;
+=======
+    width: 100%;
+>>>>>>> dc1ac1a9d327aa99d78c042cb7c0f70c0e8c0c2e
     font-size: 13px;
     text-align: left;
     text-align: center;
