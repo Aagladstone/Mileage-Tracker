@@ -207,7 +207,7 @@ class LoginForm extends Component {
                 <div class="col-4">
                 </div>
 
-                <button id="create" className="btn-sm btn-success" disabled={!this.state.formValid} type="submit" onClick={this.goSignUp} >
+                <button id="create" className="btn-sm btn-success" type="submit" onClick={this.goSignUp} >
                   Create my account
               </button>
               </div>
