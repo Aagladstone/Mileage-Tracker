@@ -32,10 +32,7 @@
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-<<<<<<< HEAD:package.json
-=======
     "react-material-ui-form-validator": "^2.0.8",
->>>>>>> 58838340a1723d1901b2123014e7c00ed32ee8ab:package.json
     "recharts": "^1.5.0",
     "sequelize": "^5.8.4"
   },
