@@ -232,7 +232,7 @@ class LoginForm extends Component {
                 </div>
 
                 <div class="col-11">
-                  <p id="initialmessage">We help you to organize your car mileage and also your car maintenance.</p>
+                  <p id="initialmessage">We help you to organize your car mileage and also help you keep track of your car maintenance.</p>
                 </div>
             </div>
 

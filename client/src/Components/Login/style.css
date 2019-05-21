@@ -2,6 +2,7 @@
     width: 155%;
     margin-left: -100px;
     padding-right: -100px;
+    height: 100%;
  }
  #logo img{
     width: 110px;
@@ -28,7 +29,7 @@
 }
 #initialmessage {
     color: gray;
-    width: 250px;
+    width: 100%;
     font-size: 13px;
     text-align: left;
     text-align: center;
