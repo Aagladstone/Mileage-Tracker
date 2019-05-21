@@ -91,6 +91,7 @@ module.exports = {
 
     const maintenancesArr = [1, 2, 3, 4, 5];
     let sum = [];
+    var k = 0;
     var totalmiles = 0;
     const maintenancePromises = maintenancesArr
       .reduce((arr, i) => {
@@ -105,64 +106,49 @@ module.exports = {
           }) 
         )
       }, []);
+      console.log('MAINTENANCE PROMISES')
+      console.log(maintenancePromises)
+      // console.log('---------------------')
       return Promise.all(maintenancePromises)
         .then(responses => {
+          console.log("hello")
+          console.log(maintenancePromises)
           sum = responses.reduce((arr, response) => {
+
+            console.log(response.dataValues.MaintenanceId)
             return arr.concat(
               {
                 name: response.Maintenance.dataValues.type,
                 frequency: response.Maintenance.dataValues.frecuency,
-                maintenanceId: response.dataValues.MaintenanceId,
-                date: response.dataValues.createdAt
+                maintenanceId: response.dataValues.MaintenanceId
               }
             )
           }, []);
+          console.log(responses[0].dataValues.createdAt)
+          return Promise.all(responses.map(response => 
 
-          // responses.map((currElement, index) => {
-          //   console.log("The current iteration is: " + index);
-          //   console.log("The current element is: " + currElement);
-          //   console.log("\n");
-          //   return 'X';
-          //  });
-          // console.log(responses[0].dataValues.createdAt)
-          // return Promise.all(responses.map(response => {
-          return Promise.all(responses.map((currElement, index, responses) => {
-            // console.log("The current iteration is: " + index);
-            // console.log("The current element is: " + currElement);
-            // console.log("\n");
-          //  let k = 0
-          //   console.log(k)
-            // for(var k = 0; k < sum.length; k++){
-              // console.log(sum[index].date)
-
-              db.Trip.findAll({
-                where: {
-                  CarId: req.query.carId,
-                  CreatedAt: {
-                    [Op.gt]:moment(sum[index].date).format('YYYY-MM-DD')
-                  }
-                }, 
-                include: 
-                  [db.Car]
-              })
-            // }
-          //   ,k+1
-          }
+            db.Trip.findAll({
+              where: {
+                CarId: req.query.carId,
+                CreatedAt: {
+                  [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
+                }
+              }, 
+              include: 
+                [db.Car]
+            })
           ))
         })
         .then(responses => {
-          console.log("hello")
 
-          console.log(this.responses)
+          for(var i = 0; i < responses[0].length; i++){
 
-          // for(var i = 0; i < responses[0].length; i++){
+          totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
+          }
 
-          // totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
-          // }
-
-          // for (var i = 0; i < responses.length; i++) {
-          //   sum[i].mileage = totalmiles;
-          // }
+          for (var i = 0; i < responses.length; i++) {
+            sum[i].mileage = totalmiles;
+          }
           // console.log(sum)
           res.json(sum)
         })

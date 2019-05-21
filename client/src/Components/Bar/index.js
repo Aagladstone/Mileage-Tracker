@@ -133,7 +133,7 @@ export default class Barra extends PureComponent {
   render() {
     return (
       <BarChart
-        width={800}
+        width={850}
         height={300}
         data={this.props.maintenance}
         margin={{

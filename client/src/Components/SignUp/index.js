@@ -158,7 +158,7 @@ class SignUp extends Component {
                 <h5>{this.state.signupMessage}</h5>
               </div>
 
-              <form className="pure-form pure-form-stacked">
+              <form id="SignupForm" className="pure-form pure-form-stacked">
                 <div className="form-group">
 
                   <div className="col-3 col-mr-auto">
@@ -230,7 +230,6 @@ class SignUp extends Component {
                   <button id="signup"
                     className="btn btn-primary  col-mr-auto"
                     onClick={this.handleSubmit}
-                    disabled={!this.state.formValid}
                     type="submit"
                   >Sign up</button>
                 </div>

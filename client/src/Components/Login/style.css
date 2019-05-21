@@ -1,21 +1,23 @@
-/* LOGIN PAGE */
 #road img{
     width: 680px;
+    margin-left: -100px;
  }
  #logo img{
     width: 110px;
     margin-top: 15px;
-    /* margin-left: 5 px; */
-    margin-bottom: 30px;
+    margin-left: -50px;
+    margin-bottom: 40px;
  }
 #account{
     font-size: 12px;
     text-align: center;
     color: green;
+    margin-left: -240px;
 }
 #create {
     margin-bottom: 100px;
     margin-top: -10px;
+    margin-left: -120px;
 }
 #login {
     margin-bottom: 15px;
@@ -25,24 +27,26 @@
 }
 #initialmessage {
     color: gray;
+    width: 250px;
     font-size: 13px;
     text-align: left;
-    margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-left: -100px;
 }
 #titletext {
     color: rgb(102,102,255);
     font-size: 16px;
     text-align: center;
+    margin-left: -220px;
 }
 #loginmessage {
     color: rgb(102,102,255);
+    margin-left: -60px;
 }
-
-
 #error{
-
     margin-left: 40px;
 }
-
-
-
+.pure-form {
+    margin-left: -160px;
+}
