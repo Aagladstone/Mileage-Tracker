@@ -1,6 +1,7 @@
 #road img{
-    width: 680px;
+    width: 155%;
     margin-left: -100px;
+    padding-right: -100px;
  }
  #logo img{
     width: 110px;

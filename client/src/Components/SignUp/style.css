@@ -13,12 +13,15 @@
     margin-left: 30px;
   }
   .roadImageOne{
-    width: 410px; 
+    width: 100%; 
     margin-left: -45px;
+    height: 85%;
+
   }
   .roadImageTwo{
-    width: 410px; 
+    width: 100%; 
     margin-left: 25px;
+    height: 83%;
   }
   #SignupForm{
     margin-left: 45px;

@@ -223,26 +223,28 @@ class LoginForm extends Component {
 
               <div class="row">
 
-                <div class="col-1">
+              <div class="col-11">
+                  <p id="initialmessage">Drivers around the world have to report mileage every year for tax purposes. However, on a daily basis that task can become very messy and confusing.</p>
                 </div>
-                <div class="col-10">
-                  <p id="initialmessage">We help you to organize your car mileage and also you car maintenance.</p>
+
+                <div class="col-11">
+                  <p id="initialmessage">Are you facing this trouble? Don't worry, we are here to help you!</p>
                 </div>
-              </div>
 
-
-
-
+                <div class="col-11">
+                  <p id="initialmessage">We help you to organize your car mileage and also your car maintenance.</p>
+                </div>
             </div>
 
 
-
+          </div>
             <div class="col-5" id="road"> <Road /> </div>
           </div>
 
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
           </div>
+
 
 
         </div>
