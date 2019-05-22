@@ -24,7 +24,7 @@ import {Logout} from "../Components/Buttons/index"
 import Barra from '../Components/Bar/index'
 import Line from '../Components/Line/index'
 import { Redirect } from 'react-router-dom';
-// import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import "./style.css";
 
 const styles = theme => ({
@@ -135,7 +135,7 @@ class UserPage extends Component {
         MaintenanceId: this.state.carMaintenance,
       }, 
       )
-      .then(res => () =>
+      .then(res => 
         this.loadMaintenance())
       .catch(err => {
         console.log(err)
@@ -190,7 +190,6 @@ loadCars = () => {
          loadingMaintenance: false
        })) 
      .catch(err => console.log(err));
-     
    }
 
   loadTripTypes = () => {
@@ -356,21 +355,18 @@ render() {
           </Tabs>
         </AppBar>  
         {/* <TabContainer></TabContainer> */}
-  {console.log(this.state.selectedCar)}
-  {console.log(this.state.Trip)}
-  
-
 
     </div>      
          ) : (
-          <div>
+          <div id="welcomeText">
           <h3> Add a car to your Account: </h3>
-          <h5>Welcome to your personal Mileage Tracker!</h5>
-          <h5>Here is how to use your mileage tracker:</h5>
-          <h6>1. Add a car to your profile with this button <i class="fas fa-long-arrow-alt-down"></i></h6>
+          <h4>Welcome to your personal Mileage Tracker!</h4>
+          <h6>Here is how to use your mileage tracker:</h6>
+          <h6><i class="fas fa-long-arrow-alt-down"></i> 1. Add a car to your profile with this button </h6>
           <Button className="addCar" variant="outlined" color="primary" onClick={this.handleClickOpen}> Add a Car </Button>
           <h6>Then either before your trip or after you've arrived to your destination you should enter that here <i class="fas fa-long-arrow-alt-right"></i></h6>
-          <h6> We will then help you see how often you drive and when it is getting close to that time to check on your car, you will see that too!</h6>
+          <h6> We will then help you see how often you drive and when it is getting close to that time to check on your car,</h6>
+          <h6> you will see that too!</h6>
           </div>
           )    
          }
@@ -386,7 +382,8 @@ render() {
             </DialogContentText> 
             <Grid container spacing={24}>
               <Grid item xs={6}>
-                <TextField
+              <ValidatorForm>
+                <TextValidator
                   required
                   autoFocus
                   onChange={this.handleInputChange}
@@ -401,7 +398,7 @@ render() {
                   fullWidth
                   required
                 />
-                <TextField
+                <TextValidator
                   autoFocus
                   onChange={this.handleInputChange}
                   margin="dense"
@@ -410,12 +407,12 @@ render() {
                   name="plate"
                   value={this.state.plate}
                   type="text"
-                  // validators={['minNumber:0', 'maxNumber:255']}
-                  // errorMessages={['this field is required']}
+                  // validators={['minNumber:5', 'maxNumber:255']}
+                  // errorMessages={['plate must be at least 5 character', 'this field is required']}
                   fullWidth
                   required
                 />
-                <TextField
+                <TextValidator
                   autoFocus
                   onChange={this.handleInputChange}
                   margin="dense"
@@ -425,11 +422,11 @@ render() {
                   value={this.state.initialMileage}
                   type="number"
                   // validators={['minNumber:0', 'maxNumber:255', 'matchRegexp:^[1-9]$']}
-                  // errorMessages={['this field is required', 'Must be a number', 'Number must be greater than zero']}
+                  // errorMessages={['initial mileage is required', 'initial mileage is required', 'Number must be greater than zero']}
                   fullWidth
                   required
                 />   
-                <TextField
+                <TextValidator
                   autoFocus
                   onChange={this.handleInputChange}
                   margin="dense"
@@ -443,7 +440,8 @@ render() {
                   fullWidth
                   required
                 /> 
-                <h5>* is a required field</h5>
+                </ValidatorForm>
+                <h6>* is a required field</h6>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -531,7 +529,10 @@ render() {
     </Grid>
     <Grid id="tripTable" item xs={4}>
         <TripLog>
-          
+        <h4 className="logTitle">Trip Log <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
+                Add a Trip 
+              </Button></h4>
+       <br></br>
     <Table className="tripTable">
         {this.state.Trip.length ? (
           <Fragment>
@@ -539,14 +540,10 @@ render() {
                       {this.state.Trip.map(triparr => (
                         <TableRow> <td>{triparr.date}</td> <td>{triparr.totalmiles}</td> <td>{triparr.Trip_Purpose.purpose}</td> </TableRow> 
                     ))} 
-              <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} >
-                Add a Trip 
-              </Button>
           </Fragment>
            ) : (
             <Fragment>
-            <h6> After you've input your car information you may add a trip with this button 
-                   <Button  variant="outlined" color="primary" onClick={this.handleClickOpen1} > Add a Trip </Button> </h6>
+            <h6> After you've input your car information you may add a trip with this button </h6>
             <h6> After you create your trip, your trips will be recorded here </h6>
             <h6>* Note: if you have multiple cars, please make sure to select that car before adding that trip</h6>
             </Fragment>
@@ -635,8 +632,6 @@ else {
 
 }
 }
-
-
       TabContainer.propTypes = {
         children: PropTypes.node.isRequired,
       };
