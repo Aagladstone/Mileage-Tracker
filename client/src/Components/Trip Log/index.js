@@ -8,8 +8,6 @@ function TripLog(props) {
 
   return <div className="tripLog">
   
-
-  <h4 className="logTitle">Trip Log</h4>
   {props.children}
   </div>;
 }
