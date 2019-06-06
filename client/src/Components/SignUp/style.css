@@ -13,18 +13,6 @@
     margin-left: 30px;
   }
   .roadImageOne{
-<<<<<<< HEAD
-    width: 410px; 
-    margin-left: -45px;
-  }
-  .roadImageTwo{
-    width: 410px; 
-    margin-left: 25px;
-  }
-  #SignupForm{
-    margin-left: 45px;
-  }
-=======
     width: 100%; 
     margin-left: -45px;
     height: 85%;
@@ -38,4 +26,3 @@
   #SignupForm{
     margin-left: 45px;
   }
->>>>>>> dc1ac1a9d327aa99d78c042cb7c0f70c0e8c0c2e
