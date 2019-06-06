@@ -119,3 +119,8 @@ i {
 #resets {
     margin-left: 76px;
 }
+
+.MuiTab-label-208{
+    color:black;
+    font-weight: bold;
+}

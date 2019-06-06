@@ -4,7 +4,7 @@
     text-align: center;
     height: 10%;
     vertical-align: middle;
-    background-color: rgb(216, 215, 215);
+    background-color: black;
     margin-bottom: -50px;
 }
 
@@ -22,4 +22,7 @@
 #logo {
     width: 130px;
     margin-right: 10px;
+}
+.display-5 {
+color: rgb(102,102,255)
 }

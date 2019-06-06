@@ -93,6 +93,10 @@ module.exports = {
     let sum = [];
     var k = 0;
     var totalmiles = 0;
+    var totalmiles1 = 0;
+    var mileage = [];
+    var mileagetotal = 0;
+
     const maintenancePromises = maintenancesArr
       .reduce((arr, i) => {
         return arr.concat(
@@ -106,16 +110,16 @@ module.exports = {
           }) 
         )
       }, []);
-      console.log('MAINTENANCE PROMISES')
-      console.log(maintenancePromises)
+      // console.log('MAINTENANCE PROMISES')
+      // console.log(maintenancePromises)
       // console.log('---------------------')
       return Promise.all(maintenancePromises)
         .then(responses => {
-          console.log("hello")
-          console.log(maintenancePromises)
+          // console.log("hello")
+          // console.log(maintenancePromises)
           sum = responses.reduce((arr, response) => {
 
-            console.log(response.dataValues.MaintenanceId)
+            //console.log(response.dataValues.MaintenanceId)
             return arr.concat(
               {
                 name: response.Maintenance.dataValues.type,
@@ -124,32 +128,48 @@ module.exports = {
               }
             )
           }, []);
-          console.log(responses[0].dataValues.createdAt)
-          return Promise.all(responses.map(response => 
 
-            db.Trip.findAll({
+          return Promise.all(responses.map((response, i) => {
+            sum[i].createdDate = moment(response.dataValues.createdAt).format('YYYY-MM-DD');
+            return db.Trip.findAll({
               where: {
                 CarId: req.query.carId,
-                CreatedAt: {
-                  [Op.gt]:moment(responses[0].dataValues.createdAt).format('YYYY-MM-DD')
+                date: {
+                  [Op.gt]:moment(response.dataValues.createdAt).format("YYYY-MM-DD")
                 }
               }, 
               include: 
                 [db.Car]
             })
+          }
           ))
         })
         .then(responses => {
+          //console.log(responses[0]);
 
           for(var i = 0; i < responses[0].length; i++){
-
           totalmiles += parseInt(responses[0][i].dataValues.totalmiles)
           }
 
           for (var i = 0; i < responses.length; i++) {
-            sum[i].mileage = totalmiles;
+            mileagetotal = 0;
+            // sum[i].mileage = totalmiles;
+            sum[i].trips = responses[i];
+            sum[i].trips.forEach(trip => {
+              console.log(trip.dataValues.date)
+              mileagetotal += parseInt(trip.dataValues.totalmiles)
+              mileage[i] = mileagetotal
+              // console.log(totalmiles1 += trip.dataValues.totalmiles)
+
+            })
+            console.log('-----------------------')
+            console.log(mileage);
+            sum[i].mileage = mileage[i];
           }
-          // console.log(sum)
+          
+
+          // console.log('SUM 00000')
+          // console.log(sum[0].trips)
           res.json(sum)
         })
   },
