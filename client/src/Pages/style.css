@@ -17,14 +17,6 @@
     margin: 0px;
 }
 
-/* h3 {
-    margin-left: 195px;
-} */
-
-/* .MuiPaper-root-64, .MuiPaper-elevation4-70, .MuiAppBar-root-55, .MuiAppBar-positionStatic-59, .MuiAppBar-colorDefault-61, .tabBar {
-    width: 70%;
-} */
-
 .tripTable {
 display: center;
 
@@ -103,7 +95,6 @@ tr, td {
 
 #buttonMap {
     padding: 10px 15px;
-    /* margin-left: 3px */
 }
 
 #resetMaint {

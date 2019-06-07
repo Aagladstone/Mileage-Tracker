@@ -6,12 +6,9 @@ var bCrypt = require('bcrypt-nodejs');
 var strategy = new LocalStrategy(
     {
         usernameField: 'email',
-        // passwordField: 'password',
-        // passReqToCallback: true // allows us to pass back the entire request to the callback
     },
 
     function (email, password, done) {
-
         console.log(email);
         console.log(password);
         User.findOne({ where: { email: email } }).then(function (user) {
@@ -33,12 +30,8 @@ var strategy = new LocalStrategy(
             var userinfo = user.get();
             console.log(userinfo)
             return done(null, userinfo, { message: 'user found' });
-
-
         })
     }
 )
-
-
 
 module.exports = strategy;

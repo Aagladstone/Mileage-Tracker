@@ -28,7 +28,6 @@ class LoginForm extends Component {
   goSignUp() {
     console.log(this.props);
     this.props.history.push('/signup')
-
   }
 
   handleChange(e) {
@@ -54,7 +53,6 @@ class LoginForm extends Component {
         break;
       default:
         break;
-      // break;
     }
     this.setState({
       formErrors: fieldValidationErrors,
@@ -73,80 +71,61 @@ class LoginForm extends Component {
       email: this.state.email,
       password: this.state.password
     })
-      .then(response => {
-        console.log('login response: ')
-        console.log(response)
-        console.log(response.data)
-
-        if (!response.data.firstname) {
-          this.setState({
-            loginMessage: "Plese check your username"
-          })
-        } else if (!response.data.password) {
-          this.setState({
-            loginMessage: "oops ! worng password"
-          })
-        }
-
-        else {
-          // update App.js state
-          this.props.updateUser({
-            loggedIn: true,
-            email: response.data.email
-          })
-          // update the state to redirect to home
-          localStorage.setItem('user', response.data.firstname);
-          localStorage.setItem('userid', response.data.id);
-          this.setState({
-            redirectTo: '/UserPage'
-          })
-
-        }
-      }).catch(error => {
-        console.log('login error: ')
-        console.log(error);
-
-      })
+    .then(response => {
+      console.log('login response: ')
+      console.log(response)
+      console.log(response.data)
+      if (!response.data.firstname) {
+        this.setState({
+          loginMessage: "Plese check your username"
+        })
+      } else if (!response.data.password) {
+        this.setState({
+          loginMessage: "oops ! worng password"
+        })
+      }
+      else {
+        // update App.js state
+        this.props.updateUser({
+          loggedIn: true,
+          email: response.data.email
+        })
+        // update the state to redirect to home
+        localStorage.setItem('user', response.data.firstname);
+        localStorage.setItem('userid', response.data.id);
+        this.setState({
+          redirectTo: '/UserPage'
+        })
+      }
+    }).catch(error => {
+      console.log('login error: ')
+      console.log(error);
+    })
   }
 
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={{ pathname: this.state.redirectTo }} />
-    } else {
-
-
+    } 
+    else {
       return (
         <div id="signin" >
-
-
           <div class="row">
-            <div class="col-4" id="logo"> <Logo />
-
-
-
+            <div class="col-4" id="logo"> 
+            {/* <Logo /> */}
               <div class="row">
-
                 <div class="col-4">
                 </div>
                 <div class="col-3">
                   <p id="loginmessage">Login</p>
                 </div>
               </div>
-
               <div id="error" className="panel panel-default">
                 <FormErrors formErrors={this.state.formErrors} />
               </div>
-
-
               <div class="row">
-
-
                 <div class="col-3">
                 </div>
-
-
-
-
                 <form class="col-6" className="pure-form pure-form-stacked">
                   <div className="form-group">
                     <div className="col-1 col-ml-auto">
@@ -163,7 +142,6 @@ class LoginForm extends Component {
                       />
                     </div>
                   </div>
-
                   <div className="form-group">
                     <div className="col-1 col-ml-auto">
                       <label className="form-label" htmlFor="password"></label>
@@ -186,13 +164,8 @@ class LoginForm extends Component {
                       type="submit">Login</button>
                   </div>
                   <h5>{this.state.userMessage}</h5>
-
-
                 </form>
-
               </div>
-
-
               <div class="row">
                 <div class="col-3">
                 </div>
@@ -200,53 +173,37 @@ class LoginForm extends Component {
                   <p id="account">Don't you have an account?</p>
                 </div>
               </div>
-
-
-
               <div class="row">
                 <div class="col-4">
                 </div>
-
                 <button id="create" className="btn-sm btn-success" type="submit" onClick={this.goSignUp} >
                   Create my account
-              </button>
+                </button>
               </div>
-
               <div class="row">
-
                 <div class="col-1">
                 </div>
                 <div class="col-10">
                   <p id="titletext">What we do.</p>
                 </div>
               </div>
-
               <div class="row">
-
-              <div class="col-11">
+                <div class="col-11">
                   <p id="initialmessage">Drivers around the world have to report mileage every year for tax purposes. However, on a daily basis that task can become very messy and confusing.</p>
                 </div>
-
                 <div class="col-11">
                   <p id="initialmessage">Are you facing this trouble? Don't worry, we are here to help you!</p>
                 </div>
-
                 <div class="col-11">
                   <p id="initialmessage">We help you to organize your car mileage and also help you keep track of your car maintenance.</p>
                 </div>
+              </div>
             </div>
-
-
-          </div>
             <div class="col-5" id="road"> <Road /> </div>
           </div>
-
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
           </div>
-
-
-
         </div>
       )
     }

@@ -25,7 +25,6 @@ class SignUp extends Component {
       emailValid: false,
       passwordValid: false,
       confirmPasswordValid: false
-
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -46,7 +45,6 @@ class SignUp extends Component {
     let passwordValid = this.state.passwordValid;
     let confirmPasswordValid = this.confirmPasswordValid
     switch (fieldName) {
-
       case 'firstname':
         firstnameValid = value !== "";
         fieldValidationErrors.firstname = firstnameValid ? '' : 'is required';
@@ -73,7 +71,6 @@ class SignUp extends Component {
         break;
       default:
         break;
-      // break;
     }
     this.setState({
       formErrors: fieldValidationErrors,
@@ -137,12 +134,11 @@ class SignUp extends Component {
 
   }
 
-
   render() {
-
     if (this.state.redirectTo) {
       return <Redirect to={{ pathname: this.state.redirectTo }} />
-    } else {
+    } 
+    else {
       return (
         <div id="SignupForm">
           <div class="row">
@@ -224,7 +220,6 @@ class SignUp extends Component {
                     />
                   </div>
                 </div>
-
                 <div className="form-group ">
                   <div className="col-7"></div>
                   <button id="signup"
@@ -236,7 +231,6 @@ class SignUp extends Component {
               </form>
 
             </div>
-
             <div className="roadImageTwo" class="col-5">
               <Roadimage2 />
             </div>
