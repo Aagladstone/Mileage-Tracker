@@ -1,15 +1,9 @@
-// import React, { Fragment } from "react";
-
 import React, { Component } from 'react';
 import { Route } from "react-router-dom";
 import UserPage from './Pages/UserPage';
-//import Reports from './Pages/Reports';
-
 import Signup from "./Components/SignUp"
 import LoginForm from './Components/Login'
 import API from "./utils/API";
-
-
 
 class App extends Component {
   constructor() {
@@ -18,7 +12,6 @@ class App extends Component {
       loggedIn: false,
       email: null
     }
-
     this.getUser = this.getUser.bind(this)
     this.componentDidMount = this.componentDidMount.bind(this)
     this.updateUser = this.updateUser.bind(this)
@@ -32,7 +25,7 @@ class App extends Component {
     this.setState(userObject)
   }
 
-  getUser=() =>{
+  getUser = () => {
     API.getRegister().then(response => {
       console.log('Get user response: ')
       console.log(response.data)
@@ -56,15 +49,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
-        {/* <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} /> */}
-        {/* greet user if logged in: */}
-        {/* {this.state.loggedIn &&
-          <p>Join the party, {this.state.username}!</p>
-        } */}
-
-
-        {/* Routes to different components */}
         <Route
           exact path="/UserPage"
           component={UserPage} />
@@ -81,13 +65,11 @@ class App extends Component {
           render={() =>
             <Signup />}
         />
-      
-      <Route
+        <Route
           path="/NoMatch"
           render={() =>
             <Signup />}
         />
-
       </div>
     );
   }

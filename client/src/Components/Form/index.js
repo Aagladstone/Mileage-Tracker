@@ -22,7 +22,6 @@ class SignIn extends React.Component {
       password: "",
       password2: ""
     }
-
     this.handleSaveClick = this.handleSaveClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -33,11 +32,9 @@ class SignIn extends React.Component {
       [name]: value
 
     });
-    debugger;
   };
 
   handleSaveClick = function (e) {
-
     const userData = {
       firstname: this.props.firstname,
       lastname: this.props.lastname,
@@ -64,13 +61,10 @@ class SignIn extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   }
+
   render() {
-
     return (
-
-
       <div id="signin">
-
         <form className="pure-form pure-form-stacked">
           <fieldset>
             <legend>Please input your email and password</legend>
@@ -88,7 +82,7 @@ class SignIn extends React.Component {
             {/* Add a Car dialog */}
             <Button className="signup" variant="outlined" color="primary" onClick={this.handleClickOpen}>
               Sign Up
-        </Button>
+            </Button>
             <Dialog
               open={this.state.open}
               onClose={this.handleClose}
@@ -98,7 +92,7 @@ class SignIn extends React.Component {
               <DialogContent>
                 <DialogContentText>
                   Please fill out all fields.
-            </DialogContentText>
+                </DialogContentText>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -157,13 +151,12 @@ class SignIn extends React.Component {
               <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
                   Cancel
-            </Button>
+                </Button>
                 <Button onClick={this.handleSaveClick} color="primary">
                   Sign Up
-            </Button>
+                </Button>
               </DialogActions>
             </Dialog>
-
           </fieldset>
         </form>
       </div>

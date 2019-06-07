@@ -43,8 +43,6 @@ module.exports = {
             }
         })
     },
-
-
     userGet: function (req, res) {
         console.log('===== user!!======')
         console.log(req.user)
@@ -54,7 +52,6 @@ module.exports = {
             res.json({ user: null })
         }
     },
-
     userlogout: function (req, res) {
         if (req.user) {
             req.logout()
@@ -63,7 +60,6 @@ module.exports = {
             res.send({ msg: 'no user to log out' })
         }
     },
-
     userLogin: function (req, res) {
         passport.authenticate('local',
             function (error, user, info) {
@@ -78,7 +74,6 @@ module.exports = {
                         firstname: false,
                         message: info
                     });
-
                     console.log(info)
                 }
                 //if no matching password
@@ -89,7 +84,6 @@ module.exports = {
                         password: false,
                         message: info
                     });
-
                 }
                 else {
                     console.log('logged in', user.firstname);
@@ -102,7 +96,6 @@ module.exports = {
                 }
             })(req, res);
     }
-
 }
 
 
