@@ -34,7 +34,7 @@
     "passport-local": "^1.0.0",
     "react-material-ui-form-validator": "^2.0.8",
     "recharts": "^1.5.0",
-    "sequelize": "^5.8.4"
+    "sequelize": "^5.15.1"
   },
   "repository": {
     "type": "git",
